@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_scope :user do
+    # Redirests signing out users to home
+    get "users", to: "pages#home"
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users
+
+  root "pages#home"
 end
