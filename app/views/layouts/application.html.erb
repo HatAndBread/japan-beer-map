@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>JapanBeerMap</title>
+    <title>Japan Beer Map</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,7 +11,10 @@
   </head>
 
   <body>
-    <main class="container flex px-5 mx-auto mt-28">
+    <%= render Views::Nav.new %>
+    <main class="flex flex-col md:flex-row">
+      <p class="notice" id="the-notice"><%=notice%></p>
+      <p class="alert" id="the-alert"><%=alert%></p>
       <%= yield %>
     </main>
   </body>

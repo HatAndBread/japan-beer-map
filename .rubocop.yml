@@ -1,0 +1,16 @@
+require:
+  - standard
+  - rubocop-rspec
+
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+
+RSpec:
+  Enabled: true
+
+RSpec/ExampleLength:
+  Enabled: false

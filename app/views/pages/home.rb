@@ -3,12 +3,9 @@ module Views
     include ApplicationView
 
     def template
-      render Layout.new(title: "Pages Home") do
-        div(class: "") do
-          h1 { "👋 Hello World!" }
-        end
+      div(class: "") do
+        h1 { "👋 Hello World!" }
       end
     end
   end
 end
-
