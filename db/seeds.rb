@@ -10,7 +10,7 @@ data.each_with_index do |place, i|
   print "..#{((i / count.to_f).round(2) * 100).to_i}%" if i % 100 == 0
   place = place.with_indifferent_access
   next if place[:business_status] == "CLOSED_PERMANENTLY"
-  is_a = -> (thing) {!!place[:types]&.find{ |t| t == thing }}
+  is_a = ->(thing) { !!place[:types]&.find { |t| t == thing } }
   next if is_a.("zoo")
 
   lng = place[:geometry][:location][:lng]
@@ -39,7 +39,6 @@ data.each_with_index do |place, i|
   google_photos = place[:photos]&.map do |photo|
     photo.dig(:raw_reference, :fife_url)
   end || []
-  data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, is_restaurant:, has_food:, is_shop:, is_bar:, google_photos:, is_brewery: }
+  data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, is_restaurant:, has_food:, is_shop:, is_bar:, google_photos:, is_brewery:}
   Place.create(data)
 end
-
