@@ -21,3 +21,6 @@ rails db:migrate
 rails db:seed
 bin/dev
 ```
+
+## Why?
+Let's learn Hotwire!
