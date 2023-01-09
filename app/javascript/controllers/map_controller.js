@@ -3,18 +3,22 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = [];
   connect() {
-    const mapName = map.getStyle().name;
-    const language = this.getLanguage();
-    if (mapName === "Mapbox Streets Japan-en" && language !== "en") {
-      map.setStyle(window.japaneseURL);
-    } else if (mapName !== "Mapbox Streets Japan-en" && language === "en") {
-      map.setStyle(window.englishURL);
-    }
+    this.map = new mapboxgl.Map({
+      container: this.element,
+      style: this.mapStyle(),
+      center: [139.6503, 35.6762],
+      zoom: 9,
+    });
     this.addMarkers();
   }
 
   getLanguage() {
     return document.getElementsByName("i18n-lang")[0].dataset.lang;
+  }
+
+  mapStyle() {
+    if (this.getLanguage() === "ja") return window.japaneseURL;
+    return window.englishURL;
   }
 
   places() {
@@ -23,12 +27,10 @@ export default class extends Controller {
 
   addMarkers() {
     this.places().forEach((place) => {
-      const el = document.createElement("div");
+      const el = document.createElement("a");
       el.className = "marker";
-      const marker = new mapboxgl.Marker(el).setLngLat({lng: parseFloat(place.lng), lat: parseFloat(place.lat)}).addTo(map);
-      el.addEventListener("click", ()=> {
-        window.location.assign(`/places/${place.id}`) 
-      });
+      el.href = `/places/${place.id}`
+      const marker = new mapboxgl.Marker(el).setLngLat({lng: parseFloat(place.lng), lat: parseFloat(place.lat)}).addTo(this.map);
     });
   }
 }

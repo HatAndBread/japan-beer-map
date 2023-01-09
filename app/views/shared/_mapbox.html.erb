@@ -2,8 +2,8 @@
 .marker {
   background-image: url('<%= image_path("beer-kun.png") %>');
   background-size: cover;
-  width: 50px;
-  height: 50px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -11,32 +11,7 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet' />
 <script defer async>
-  var c = document.getElementById("the-map");
-  if (c) {
-    if (!window.map) {
-      mapboxgl.accessToken = "<%=ENV["MAPBOX_KEY"]%>"
-      var lang = document.getElementsByName("i18n-lang")[0].dataset.lang
-      window.japaneseURL = "mapbox://styles/hatandbeard/clcn4yuyh000014nyxtgmilu7"
-      window.englishURL = "mapbox://styles/hatandbeard/clco3a4v7001j15rqepdt67y1"
-      var url;
-      if (lang === "ja") {
-        url = window.japaneseURL;
-      } else {
-        url = window.englishURL;
-      }
-      window.mapContainer = document.createElement("div");
-      window.mapContainer.className = "w-[90vw] h-[800px]"
-      window.map = new mapboxgl.Map({
-        container: window.mapContainer,
-        style: url,
-        center: [139.6503, 35.6762],
-        zoom: 9,
-      });
-      c.appendChild(window.mapContainer)
-      window.map.resize()
-    } else if (!c.children.length){
-      c.appendChild(window.mapContainer)
-      window.map.resize()
-    }
-  }
+  mapboxgl.accessToken = "<%=ENV["MAPBOX_KEY"]%>"
+  window.japaneseURL = "mapbox://styles/hatandbeard/clcn4yuyh000014nyxtgmilu7"
+  window.englishURL = "mapbox://styles/hatandbeard/clco3a4v7001j15rqepdt67y1"
 </script>
