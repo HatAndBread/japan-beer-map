@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  get "/:locale" => "pages#home"
   root "pages#home"
+
   get "/a", to: "admin#index"
+
+  scope "(:locale)", locale: /en|ja/ do
+    resources :users
+  end
 end

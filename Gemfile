@@ -33,6 +33,8 @@ gem "jbuilder"
 
 gem "awesome_print"
 
+gem "http_accept_language"
+
 gem "devise", "~> 4.8"
 
 # Use Redis adapter to run Action Cable in production

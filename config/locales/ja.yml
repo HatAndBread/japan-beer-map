@@ -29,10 +29,10 @@
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
-en:
-  hello: "Japan Craft Beer Adventure"
+ja:
+  hello: "クラフトビールの冒険"
   nav:
-    home: "Home"
-    sign_in: "Sign In"
-    sign_up: "Sign Up"
-    sign_out: "Sign Out"
+    home: "ホーム"
+    sign_in: "ログイン"
+    sign_up: "会員登録"
+    sign_out: "ログアウト"

@@ -4,7 +4,8 @@ module Views
 
     def template
       div(class: "") do
-        h1 { "👋 Hello World!" }
+        h1 { helpers.t(:hello) }
+        render Views::Map.new
       end
     end
   end

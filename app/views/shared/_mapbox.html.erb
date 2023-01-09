@@ -1,0 +1,24 @@
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+<script defer async>
+  var c = document.getElementById("the-map");
+  if (c) {
+    if (!window.map) {
+      mapboxgl.accessToken = "<%=ENV["MAPBOX_KEY"]%>"
+      window.mapContainer = document.createElement("div");
+      window.mapContainer.className = "w-[90vw] h-[800px]"
+      window.map = new mapboxgl.Map({
+        container: window.mapContainer,
+        style: "mapbox://styles/hatandbeard/clcn4yuyh000014nyxtgmilu7",
+        center: [139.6503, 35.6762],
+        zoom: 9,
+      });
+      c.appendChild(window.mapContainer)
+      window.map.resize()
+    } else if (!c.children.length){
+      c.appendChild(window.mapContainer)
+      window.map.resize()
+    }
+  }
+</script>
