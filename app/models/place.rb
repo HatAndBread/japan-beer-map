@@ -6,7 +6,7 @@ class Place < ApplicationRecord
   class << self
     def map_data
       Rails.cache.fetch("all_places", expires_in: 12.hours) do
-        select(:id, :lng, :lat, :name, :is_brewery, :is_bar, :is_shop, :is_restaurant).to_json
+        select(:id, :lng, :lat, :name, :is_brewery, :is_bar, :is_shop, :is_restaurant).to_a
       end
     end
   end

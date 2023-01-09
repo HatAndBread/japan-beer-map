@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   scope "(:locale)", locale: /en|ja/ do
     resources :users
-    resources :places, only: [:show]
   end
+
+  resources :places, only: [:show]
 end

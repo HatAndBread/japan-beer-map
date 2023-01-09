@@ -36,3 +36,8 @@ en:
     sign_in: "Sign In"
     sign_up: "Sign Up"
     sign_out: "Sign Out"
+  place:
+    show:
+      bottle_shop: "Bottle Shop"
+      has_food: "Food"
+      brewery: "Brewery"

@@ -10,6 +10,10 @@ export default class extends Controller {
       zoom: 9,
     });
     this.addMarkers();
+    document.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("marker")) return;
+      e.target.children[0].click()
+    })
   }
 
   getLanguage() {
@@ -21,16 +25,20 @@ export default class extends Controller {
     return window.englishURL;
   }
 
-  places() {
-    return JSON.parse(this.element.dataset.places);
+  clearMarkers() {
+    const existingMarkers = Array.from(document.getElementsByClassName("marker"));
+    existingMarkers.forEach((marker) => {
+      marker.remove();
+    })
   }
 
   addMarkers() {
-    this.places().forEach((place) => {
-      const el = document.createElement("a");
-      el.className = "marker";
-      el.href = `/places/${place.id}`
-      const marker = new mapboxgl.Marker(el).setLngLat({lng: parseFloat(place.lng), lat: parseFloat(place.lat)}).addTo(this.map);
-    });
+    const markers = document.getElementsByClassName("marker");
+    for (const place of markers) {
+      const data = place.children[0]
+      new mapboxgl.Marker(place)
+        .setLngLat({lng: parseFloat(data.dataset.lng), lat: parseFloat(data.dataset.lat)})
+        .addTo(this.map);
+    };
   }
 }
