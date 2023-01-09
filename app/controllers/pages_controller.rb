@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   def home
-    render Views::Pages::Home.new
+    places = Place.map_data
+    render Views::Pages::Home.new(places:)
   end
 end
