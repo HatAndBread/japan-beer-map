@@ -75,7 +75,6 @@ export default class extends Controller {
     })
     this.removePlaceLayer()
     this.addPlaceLayer(newGeoJson)
-    console.log(newGeoJson)
   }
 
   selectedTypes() {
@@ -133,8 +132,7 @@ export default class extends Controller {
       },
       { distance: 99999, id: 99999, lng: 0, lat: 0 }
     );
-    document.getElementById(`place_${closest.id}`).click();
-    console.log(closest);
+    document.getElementById(`place_${closest.id}`).children[0].click();
     this.map.flyTo({
       center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
       zoom: 14,
