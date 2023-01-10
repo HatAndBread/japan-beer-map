@@ -34,15 +34,14 @@ def seed_places
     address = place[:formatted_address]
     phone = place[:formatted_phone_number]
     google_place_id = place[:place_id]
-    is_restaurant = is_a.("restaurant")
-    has_food = is_a.("food")
+    has_food = is_a.("restaurant")
+    has_food ||= is_a.("food")
     is_shop = is_a.("liquor_store")
-    is_bar = is_a.("bar")
     is_brewery = name.downcase.match?(/brewery/) || name.downcase.match?(/jozo/)
     google_photos = place[:photos]&.map do |photo|
       photo.dig(:raw_reference, :fife_url)
     end || []
-    data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, is_restaurant:, has_food:, is_shop:, is_bar:, google_photos:, is_brewery:}
+    data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, google_photos:, is_brewery:}
     p = Place.create!(data)
     user = User.find_by(username: "Anonymous")
     place[:reviews]&.map do |review|

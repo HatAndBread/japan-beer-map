@@ -10,43 +10,27 @@ export default class extends Controller {
       zoom: 9,
     });
     this.map = map;
-    // this.addMarkers();
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("marker")) return;
-      e.target.children[0].click();
-    });
     this.addUserLocation();
     this.map.addControl(new mapboxgl.NavigationControl());
     if (!"geolocation" in navigator) {
       this.findMeTarget.remove();
       this.noGeolocation = true;
     }
-    const geoJson = this.geoJson();
-    console.log(geoJson)
+    const geoJson = JSON.parse(this.geoJson());
+    this.___g = geoJson;
     const iconUrl = this.iconUrl();
     map.on("load", () => {
       map.loadImage(iconUrl, (error, image) => {
         if (error) throw new Error(error)
-        console.log(image)
 
         map.addImage("icon", image);
 
-        map.addSource("point", JSON.parse(geoJson));
+        this.addPlaceLayer(geoJson);
 
-        map.addLayer({
-          id: "points",
-          type: "symbol",
-          source: "point", // reference the data source
-          layout: {
-            "icon-image": "icon", // reference the image
-            "icon-size": 0.6,
-            "icon-allow-overlap": true
-          },
-        });
         map.on("click", "points", (e) => {
           const {id} = e.features[0].properties
-          document.getElementById(`place_${id}`).click()
+          document.getElementById(`place_${id}`).children[0].click()
         })
       });
     });
@@ -71,15 +55,27 @@ export default class extends Controller {
 
   handleChange() {
     const selectedTypes = this.selectedTypes();
-    this.markers().forEach((m) => {
-      // If it has any of the selected categories keep it.
-      const myCategories = Object.keys(m.dataset);
-      if (!selectedTypes.find((t) => myCategories.includes(t))) {
-        m.classList.add("hidden");
-      } else {
-        m.classList.remove("hidden");
+    const legend = {
+      is_brewery: "brewery",
+      has_food: "food",
+      is_shop: "shop"
+    }
+    const newGeoJson = {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: []
       }
-    });
+    }
+    this.___g.data.features.forEach((f) => {
+      const myTypes = Object.keys(f.properties).map((p) => f.properties[p] && legend[p] ? legend[p] : null).filter((p) => p);
+      if (selectedTypes.find((t) => myTypes.includes(t))) {
+        newGeoJson.data.features.push(f)
+      }
+    })
+    this.removePlaceLayer()
+    this.addPlaceLayer(newGeoJson)
+    console.log(newGeoJson)
   }
 
   selectedTypes() {
@@ -91,6 +87,28 @@ export default class extends Controller {
     return Array.from(this.element.querySelectorAll("*")).filter(
       (el) => el.type === "checkbox"
     );
+  }
+
+
+  addPlaceLayer(geoJson) {
+    const map = this.map;
+    map.addSource("point", geoJson);
+
+    map.addLayer({
+      id: "points",
+      type: "symbol",
+      source: "point", // reference the data source
+      layout: {
+        "icon-image": "icon", // reference the image
+        "icon-size": 0.6,
+        "icon-allow-overlap": true
+      },
+    });
+  }
+
+  removePlaceLayer() {
+    this.map.removeLayer("points")
+    this.map.removeSource("point")
   }
 
   markers() {
@@ -135,19 +153,6 @@ export default class extends Controller {
         resolve(this.userLocation);
       });
     });
-  }
-
-  addMarkers() {
-    const markers = document.getElementsByClassName("marker");
-    for (const place of markers) {
-      const data = place.children[0];
-      new mapboxgl.Marker(place)
-        .setLngLat({
-          lng: parseFloat(data.dataset.lng),
-          lat: parseFloat(data.dataset.lat),
-        })
-        .addTo(this.map);
-    }
   }
 
   addUserLocation() {

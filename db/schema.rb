@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_08_231121) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_10_221600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,10 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_231121) do
     t.string "address"
     t.string "phone"
     t.string "google_place_id"
-    t.boolean "is_restaurant"
     t.boolean "has_food"
     t.boolean "is_shop"
-    t.boolean "is_bar"
     t.jsonb "google_photos", default: [], null: false
     t.boolean "is_brewery"
     t.datetime "created_at", null: false

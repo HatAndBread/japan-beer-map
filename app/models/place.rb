@@ -6,7 +6,7 @@ class Place < ApplicationRecord
   class << self
     def map_data
       Rails.cache.fetch("all_places", expires_in: 12.hours) do
-        select(:id, :lng, :lat, :name, :is_brewery, :is_bar, :is_shop, :is_restaurant, :has_food).to_a
+        select(:id, :lng, :lat, :name, :is_brewery, :is_shop, :has_food).to_a
       end
     end
 
@@ -28,9 +28,7 @@ class Place < ApplicationRecord
                 lat: place.lat,
                 name: place.name,
                 is_brewery: place.is_brewery,
-                is_bar: place.is_bar,
                 is_shop: place.is_shop,
-                is_restaurant: place.is_restaurant,
                 has_food: place.has_food
               }
             }
