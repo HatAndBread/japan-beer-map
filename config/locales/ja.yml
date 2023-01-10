@@ -41,4 +41,7 @@ ja:
       bottle_shop: "ボトルショップ"
       has_food: "食べ物"
       brewery: "ブルワリー"
+  map_controls:
+    nearest_beer: "一番近いビール"
+    my_location: "現在地"
 

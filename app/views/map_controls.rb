@@ -4,7 +4,9 @@ module Views
 
     def template
       div(class: "") do
-        form(data_action: "change->controls#change", data_controller: "controls") do
+        button(data_map_target: "findMe", data_action: "click->map#findMe") { helpers.t("map_controls.my_location") }
+        button(data_map_target: "findMe", data_action: "click->map#nearestBeer") { helpers.t("map_controls.nearest_beer") }
+        form(data_action: "change->map#handleChange") do
           %w[brewery food shop].map do |type|
             box(type)
           end

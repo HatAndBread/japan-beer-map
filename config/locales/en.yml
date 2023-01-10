@@ -41,3 +41,6 @@ en:
       bottle_shop: "Bottle Shop"
       has_food: "Food"
       brewery: "Brewery"
+  map_controls:
+    nearest_beer: "Nearest Beer"
+    my_location: "Find My Location"
