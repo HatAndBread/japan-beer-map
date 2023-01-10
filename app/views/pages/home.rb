@@ -12,7 +12,6 @@ module Views
       div(class: "") do
         h1 { helpers.t(:hello) }
         turbo_frame(id: "place_being_viewed") do
-          p {"fuck"}
         end
 
         render Views::Map.new(places: @places)

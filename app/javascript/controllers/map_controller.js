@@ -25,11 +25,8 @@ export default class extends Controller {
     return window.englishURL;
   }
 
-  clearMarkers() {
-    const existingMarkers = Array.from(document.getElementsByClassName("marker"));
-    existingMarkers.forEach((marker) => {
-      marker.remove();
-    })
+  controlls(e) {
+    console.log("hi!")
   }
 
   addMarkers() {
