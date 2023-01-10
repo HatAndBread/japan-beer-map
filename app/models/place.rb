@@ -9,6 +9,35 @@ class Place < ApplicationRecord
         select(:id, :lng, :lat, :name, :is_brewery, :is_bar, :is_shop, :is_restaurant, :has_food).to_a
       end
     end
+
+    def geo_json
+      {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: all.map do |place|
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [place.lng, place.lat]
+              },
+              properties: {
+                id: place.id,
+                lng: place.lng,
+                lat: place.lat,
+                name: place.name,
+                is_brewery: place.is_brewery,
+                is_bar: place.is_bar,
+                is_shop: place.is_shop,
+                is_restaurant: place.is_restaurant,
+                has_food: place.has_food
+              }
+            }
+          end
+        }
+      }.to_json
+    end
   end
 
   def owner = user

@@ -11,15 +11,8 @@ module Views
         render MapControls.new
         div(id: "the-map", class: "w-[90vw] h-[800px]")
         @places.map do |place|
-          turbo_frame(id: "place_#{place.id}", class: "marker group hover:z-10", data_food: place.has_food || place.is_restaurant, data_brewery: place.is_brewery, data_shop: place.is_shop) do
-            a(href: helpers.place_path(place), class: "relative", data_lng: place.lng, data_lat: place.lat, data_id: place.id, data_turbo_frame: "place_being_viewed") do
-              div(class: tooltip) do
-                ul do
-                  li(class: "whitespace-nowrap") { place.name }
-                end
-                div(class: triangle)
-              end
-            end
+          turbo_frame(id: "place_#{place.id}", class: "marker hidden", data_food: place.has_food || place.is_restaurant, data_brewery: place.is_brewery, data_shop: place.is_shop) do
+            a(href: helpers.place_path(place), data_lng: place.lng, data_lat: place.lat, data_id: place.id, data_turbo_frame: "place_being_viewed")
           end
         end
       end
