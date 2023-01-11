@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   end
 
   resources :places, only: [:show, :create]
+  resources :visits, only: [:create]
 end
