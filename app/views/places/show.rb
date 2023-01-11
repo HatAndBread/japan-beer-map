@@ -1,5 +1,6 @@
 module Views
   class Places::Show < Phlex::HTML
+    include Phlex::Rails::Helpers::FormWith
     include ApplicationView
 
     register_element :turbo_frame
@@ -12,6 +13,13 @@ module Views
       turbo_frame(id: "place_being_viewed") do
         div(class: "", data_controller: "place-show", data_place: @place.to_json) do
           h1(class: "") { @place.name }
+          div(class: "bg-red-100 text-red-600 hidden", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
+          turbo_frame(id: "visit") do
+            form_with(model: Visit.new(place: @place), class: "hidden") do |f|
+              f.text_field(:place_id, readonly: "readonly")
+              f.submit(data: {place_show_target: "visit"})
+            end
+          end
           button(class: "", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
           ul do
             li(class: "flex") do

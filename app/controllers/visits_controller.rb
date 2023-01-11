@@ -3,7 +3,8 @@ class VisitsController < ApplicationController
 
   def create
     Time.zone = "Japan"
-    Visit.create(visit_params.merge(time: Time.zone.now, user_id: current_user.id))
+    visit = Visit.create(visit_params.merge(time: Time.zone.now, user_id: current_user.id))
+    render Views::Places::Visit.new(visit:)
   end
 
   private

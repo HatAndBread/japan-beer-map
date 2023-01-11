@@ -1,6 +1,7 @@
-<%= button_to(
+<%= link_to(
   defined?(text) ? text : nil,
   defined?(path) ? path : nil,
   method: defined?(method) ? method : nil,
-  class: defined?(klass) ? klass : nil
+  class: defined?(klass) ? klass : nil,
+  data: defined?(data) ? data : nil
 ) %>

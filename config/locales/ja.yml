@@ -43,6 +43,8 @@ ja:
       has_food: "食べ物"
       brewery: "ブルワリー"
       check_in: "チェックイン"
+      too_far: "どうやらこの場所にいないようです。ブラウザの設定を確認して、位置トラッキングが有効になっていることを確認してください。"
+      saved: "保存しました。"
   map_controls:
     nearest_beer: "一番近いビール"
     my_location: "現在地"

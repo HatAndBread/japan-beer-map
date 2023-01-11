@@ -43,6 +43,8 @@ en:
       has_food: "Food"
       brewery: "Brewery"
       check_in: "Check In"
+      too_far: "It seems you are not at this location. Please check your browser settings and make sure location tracking is on."
+      saved: "Your visit has been saved."
   map_controls:
     nearest_beer: "Nearest Beer"
     my_location: "Find My Location"
