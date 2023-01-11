@@ -10,8 +10,9 @@ module Views
 
     def template
       turbo_frame(id: "place_being_viewed") do
-        div(class: "") do
+        div(class: "", data_controller: "place-show", data_place: @place.to_json) do
           h1(class: "") { @place.name }
+          button(class: "", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
           ul do
             li(class: "flex") do
               text "#{helpers.t("place.show.bottle_shop")}: "

@@ -36,11 +36,13 @@ en:
     sign_in: "Sign In"
     sign_up: "Sign Up"
     sign_out: "Sign Out"
+    new_place: "Add a Location To The Map"
   place:
     show:
       bottle_shop: "Bottle Shop"
       has_food: "Food"
       brewery: "Brewery"
+      check_in: "チェックイン"
   map_controls:
     nearest_beer: "Nearest Beer"
     my_location: "Find My Location"
