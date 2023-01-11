@@ -16,6 +16,7 @@ MAPBOX_KEY=add_the_secret_key_here
 
 Run the following in the root directory:
 ```bash
+bundle
 rails db:create
 rails db:migrate
 rails db:seed
