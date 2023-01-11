@@ -42,7 +42,7 @@ en:
       bottle_shop: "Bottle Shop"
       has_food: "Food"
       brewery: "Brewery"
-      check_in: "チェックイン"
+      check_in: "Check In"
   map_controls:
     nearest_beer: "Nearest Beer"
     my_location: "Find My Location"
