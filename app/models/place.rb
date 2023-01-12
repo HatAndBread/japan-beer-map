@@ -11,31 +11,35 @@ class Place < ApplicationRecord
     end
 
     def geo_json
-      {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: all.map do |place|
-            {
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: [place.lng, place.lat]
-              },
-              properties: {
-                id: place.id,
-                lng: place.lng,
-                lat: place.lat,
-                name: place.name,
-                is_brewery: place.is_brewery,
-                is_shop: place.is_shop,
-                has_food: place.has_food
+      Rails.cache.fetch("geo_json", expires_in: 12.hours) do
+        {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: all.map do |place|
+              {
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [place.lng, place.lat]
+                },
+                properties: {
+                  id: place.id,
+                  lng: place.lng,
+                  lat: place.lat,
+                  name: place.name,
+                  is_brewery: place.is_brewery,
+                  is_shop: place.is_shop,
+                  has_food: place.has_food
+                }
               }
-            }
-          end
-        }
-      }.to_json
+            end
+          }
+        }.to_json
+      end
     end
+
+    def needs_approval = Place.where(approved: false)
   end
 
   def owner = user
@@ -44,5 +48,6 @@ class Place < ApplicationRecord
 
   def clear_cache!
     Rails.cache.delete("all_places")
+    Rails.cache.delete("geo_json")
   end
 end

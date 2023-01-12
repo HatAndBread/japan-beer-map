@@ -9,13 +9,12 @@ Rails.application.routes.draw do
   get "/:locale" => "pages#home"
   root "pages#home"
 
-  get "/a", to: "admin#index"
-
   scope "(:locale)", locale: /en|ja/ do
     resources :users
     resources :places, only: [:new]
   end
 
+  get "/admin/index", to: "admin#index"
   resources :places, only: [:show, :create]
   resources :visits, only: [:create]
 end
