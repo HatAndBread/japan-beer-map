@@ -41,7 +41,7 @@ def seed_places
     google_photos = place[:photos]&.map do |photo|
       photo.dig(:raw_reference, :fife_url)
     end || []
-    data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, google_photos:, is_brewery:}
+    data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, google_photos:, is_brewery:, approved: true}
     p = Place.create!(data)
     user = User.find_by(username: "Anonymous")
     place[:reviews]&.map do |review|
