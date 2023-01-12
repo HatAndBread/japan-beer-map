@@ -1,4 +1,3 @@
-
 puts "Cleaning database.. 🧹"
 `rails db:schema:load`
 

@@ -37,7 +37,20 @@ module Views
           end
           a(href: @place.website, target: "_blank") { "Website" } if @place.website
         end
+        if admin?
+          div(class: "bg-slate-800 text-slate-100 rounded p-2 flex flex-col items-center") do
+            h1 { "ADMIN" }
+            div(class: "flex justify-center") do
+              a(class: "m-2 underline", href: helpers.admin_place_path(@place, place: {approved: true}), data_turbo_method: :patch) { "Approve" }
+              a(class: "m-2 underline", href: helpers.admin_place_path(@place), data_turbo_method: :delete) { "Approve" }
+            end
+          end
+        end
       end
+    end
+
+    def admin?
+      helpers.current_user&.admin? && helpers.controller.class.name.split("::").first == "Admin"
     end
   end
 end

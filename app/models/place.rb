@@ -6,7 +6,7 @@ class Place < ApplicationRecord
   class << self
     def map_data
       Rails.cache.fetch("all_places", expires_in: 12.hours) do
-        select(:id, :lng, :lat, :name, :is_brewery, :is_shop, :has_food).to_a
+        approved.select(:id, :lng, :lat, :name, :is_brewery, :is_shop, :has_food).to_a
       end
     end
 
@@ -16,7 +16,7 @@ class Place < ApplicationRecord
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: all.map do |place|
+            features: approved.map do |place|
               {
                 type: "Feature",
                 geometry: {
@@ -40,6 +40,8 @@ class Place < ApplicationRecord
     end
 
     def needs_approval = Place.where(approved: false)
+
+    def approved = Place.where(approved: true)
   end
 
   def owner = user
