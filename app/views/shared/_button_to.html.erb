@@ -1,5 +1,6 @@
 <%= button_to(
-  text,
-  path,
-  method: method
+  defined?(text) ? text : nil,
+  defined?(path) ? path : nil,
+  method: defined?(method) ? method : nil,
+  class: defined?(klass) ? klass : nil
 ) %>

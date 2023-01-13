@@ -4,7 +4,7 @@ module Views
 
     register_element :turbo_frame
 
-    def initialize(place)
+    def initialize(place:)
       @place = place
     end
 

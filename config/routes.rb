@@ -6,10 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  get "/:locale" => "pages#home"
   root "pages#home"
-
-  get "/a", to: "admin#index"
 
   scope "(:locale)", locale: /en|ja/ do
     resources :users
@@ -18,4 +15,9 @@ Rails.application.routes.draw do
 
   resources :places, only: [:show, :create]
   resources :visits, only: [:create]
+
+  get "admin", to: "admin#index"
+  namespace :admin do
+    resources :places, only: [:show, :update, :destroy]
+  end
 end
