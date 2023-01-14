@@ -3,7 +3,7 @@ module Views
     register_element :turbo_frame
 
     def template
-      div(data_controller: "new-map", class: "w-[90vw] h-[800px]") do
+      div(data_controller: "new-map", class: "w-full h-[300px]") do
       end
     end
   end
