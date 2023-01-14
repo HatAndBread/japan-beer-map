@@ -11,7 +11,7 @@ module Views
           h1(class: "underline") { "Places needing approval (#{places.count})" }
           ul(class: "flex flex-col") do
             places.map do |place|
-              turbo_frame(id: "place_being_viewed") do
+              turbo_frame(id: "place_#{place.id}") do
                 a(href: helpers.admin_place_path(place), class: "underline") { place.id }
               end
             end

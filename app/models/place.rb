@@ -1,5 +1,5 @@
 class Place < ApplicationRecord
-  has_many :reviews
+  has_many :reviews, dependent: :destroy
   belongs_to :user, optional: true
   after_commit :clear_cache!, on: [:create, :update, :destroy]
 

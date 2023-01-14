@@ -1,19 +1,19 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance"
 
+const startLngLat = [139.6503, 35.6762]
 export default class extends Controller {
-  static targets = ["findMe"];
+  static targets = ["findMe", "userLocation"];
   connect() {
     const map = new mapboxgl.Map({
       container: "the-map",
       style: this.mapStyle(),
-      center: [139.6503, 35.6762],
+      center: startLngLat,
       zoom: 9,
     });
     this.map = map;
+    window.map = map;
 
-    this.addUserLocation();
-    this.map.addControl(new mapboxgl.NavigationControl());
     if (!"geolocation" in navigator) {
       this.findMeTarget.remove();
       this.noGeolocation = true;
@@ -26,6 +26,7 @@ export default class extends Controller {
         if (error) throw new Error(error)
 
         map.addImage("icon", image);
+        this.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget).setLngLat(startLngLat).addTo(map);
 
         this.addPlaceLayer(geoJson);
 
@@ -115,16 +116,32 @@ export default class extends Controller {
     return Array.from(document.getElementsByClassName("marker"));
   }
 
-  findMe() {
-    if (this.findMeButton) {
-      this.findMeButton.click();
-    }
-    this.updateUserLocation();
+  async findMe() {
+    await this.updateUserLocation();
+    this.map.flyTo({
+      center: this.userLocation,
+      zoom: 14,
+    });
   }
 
   async nearestBeer() {
-    const location = await this.updateUserLocation();
-    const closest = this.markers().reduce(
+    const goToNearest = (closest) => {
+      document.getElementById(`place_${closest.id}`).children[0].click();
+      this.map.flyTo({
+        center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
+        zoom: 14,
+      });
+    }
+    if (this.userLocation) {
+      goToNearest(this._nearestBeer(this.userLocation))
+    } else {
+      const location = await this.updateUserLocation();
+      goToNearest(this._nearestBeer(location))
+    }
+  }
+
+  _nearestBeer(location) {
+    return this.markers().reduce(
       (prev, curr) => {
         const { lng, lat, id } = curr.children[0].dataset;
         const d = distance(lng, lat, location.lng, location.lat);
@@ -133,45 +150,24 @@ export default class extends Controller {
       },
       { distance: 99999, id: 99999, lng: 0, lat: 0 }
     );
-    document.getElementById(`place_${closest.id}`).children[0].click();
-    this.map.flyTo({
-      center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
-      zoom: 14,
-    });
+
   }
 
   updateUserLocation() {
     return new Promise((resolve, reject) => {
       if (this.noGeolocation) reject("noGeolocation");
-      navigator.geolocation.getCurrentPosition((position) => {
+      const update = (position) => {
         this.userLocation = {
           lng: position.coords.longitude,
           lat: position.coords.latitude,
         };
+        this.userHeading = position.coords.heading || 0;
         window.userLocation = this.userLocation;
+        this.userLocationMarker.setLngLat(this.userLocation);
+        this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`
         resolve(this.userLocation);
-      });
-    });
-  }
-
-  addUserLocation() {
-    this.map.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        // When active the map will receive updates to the device's location as it changes.
-        trackUserLocation: true,
-        // Draw an arrow next to the location dot to indicate which direction the device is heading.
-        showUserHeading: true,
-      })
-    );
-    const interval = setInterval(() => {
-      const btn = document.querySelector(".mapboxgl-ctrl-geolocate");
-      if (btn) {
-        clearInterval(interval);
-        this.findMeButton = btn;
       }
+      navigator.geolocation.watchPosition(update)
     });
   }
 }
