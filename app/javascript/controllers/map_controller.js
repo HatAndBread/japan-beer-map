@@ -3,7 +3,7 @@ import { distance } from "lib/distance"
 
 const startLngLat = [139.6503, 35.6762]
 export default class extends Controller {
-  static targets = ["findMe", "userLocation"];
+  static targets = ["findMe", "nearestBeer", "userLocation"];
   connect() {
     const map = new mapboxgl.Map({
       container: "the-map",
@@ -16,6 +16,7 @@ export default class extends Controller {
 
     if (!"geolocation" in navigator) {
       this.findMeTarget.remove();
+      this.nearestBeerTarget.remove();
       this.noGeolocation = true;
     }
     const geoJson = JSON.parse(this.geoJson());
@@ -117,7 +118,17 @@ export default class extends Controller {
   }
 
   async findMe() {
-    await this.updateUserLocation();
+    if(this.userLocation) {
+      this.flyToUser()
+    } else {
+      this.findMeTarget.children[0].classList.remove("hidden")
+      await this.updateUserLocation();
+      this.flyToUser();
+    }
+  }
+
+  flyToUser() {
+    if (!this.userLocation) throw new Error("Must create userLocation before calling flyToUser")
     this.map.flyTo({
       center: this.userLocation,
       zoom: 14,
@@ -127,6 +138,7 @@ export default class extends Controller {
   async nearestBeer() {
     const goToNearest = (closest) => {
       document.getElementById(`place_${closest.id}`).children[0].click();
+      this.nearestBeerTarget.children[0].classList.add("hidden")
       this.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 14,
@@ -135,6 +147,7 @@ export default class extends Controller {
     if (this.userLocation) {
       goToNearest(this._nearestBeer(this.userLocation))
     } else {
+      this.nearestBeerTarget.children[0].classList.remove("hidden")
       const location = await this.updateUserLocation();
       goToNearest(this._nearestBeer(location))
     }
@@ -155,19 +168,24 @@ export default class extends Controller {
 
   updateUserLocation() {
     return new Promise((resolve, reject) => {
-      if (this.noGeolocation) reject("noGeolocation");
-      const update = (position) => {
-        this.userLocation = {
-          lng: position.coords.longitude,
-          lat: position.coords.latitude,
-        };
-        this.userHeading = position.coords.heading || 0;
-        window.userLocation = this.userLocation;
-        this.userLocationMarker.setLngLat(this.userLocation);
-        this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`
-        resolve(this.userLocation);
+      if (this.noGeolocation) {
+        reject("noGeolocation")
+      } else {
+        const update = (position) => {
+          this.userLocation = {
+            lng: position.coords.longitude,
+            lat: position.coords.latitude,
+          };
+          this.userHeading = position.coords.heading || 0;
+          window.userLocation = this.userLocation;
+          this.userLocationMarker.setLngLat(this.userLocation);
+          this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`
+          this.userLocationTarget.classList.remove("hidden")
+          this.findMeTarget.children[0].classList.add("hidden")
+          resolve(this.userLocation);
+        }
+        navigator.geolocation.watchPosition(update)
       }
-      navigator.geolocation.watchPosition(update)
     });
   }
 }

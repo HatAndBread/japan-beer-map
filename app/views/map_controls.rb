@@ -4,8 +4,22 @@ module Views
 
     def template
       div(class: "") do
-        button(data_map_target: "findMe", data_action: "click->map#findMe") { helpers.t("map_controls.my_location") }
-        button(data_map_target: "findMe", data_action: "click->map#nearestBeer") { helpers.t("map_controls.nearest_beer") }
+        button(data_map_target: "findMe", data_action: "click->map#findMe", class: "btn-primary w-full") do
+          div(class: "hidden") do
+            div(class: "loader")
+          end
+          span(class: "") do
+            text(helpers.t("map_controls.my_location"))
+          end
+        end
+        button(data_map_target: "nearestBeer", data_action: "click->map#nearestBeer", class: "btn-primary w-full") do
+          div(class: "hidden") do
+            div(class: "loader")
+          end
+          span(class: "") do
+            helpers.t("map_controls.nearest_beer")
+          end
+        end
         form(data_action: "change->map#handleChange") do
           %w[brewery food shop].map do |type|
             box(type)
