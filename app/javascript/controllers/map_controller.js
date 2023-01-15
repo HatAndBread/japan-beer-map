@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
+import debounce from "lodash.debounce"
 
 const startLngLat = [139.6503, 35.6762];
 const maxBounds = [
@@ -212,21 +213,30 @@ export default class extends Controller {
 
   handleMouseOver() {
     const map = this.map;
-    const popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false
-    });
-    console.log(popup)
-    map.on("mouseenter", "points", (e) => {
-      map.getCanvas().style.cursor = "pointer";
-      const properties = e.features[0].properties;
-      const coordinates = e.features[0].geometry.coordinates.slice();
-      popup.setLngLat(coordinates).setHTML(`<h1>${properties.name}</h1>`).addTo(map);
-    });
+    const markerDiv = document.createElement("div");
+    const triangle = document.createElement("div");
+    markerDiv.className = "relative hidden p-2 rounded pointer-events-none bg-slate-800 text-slate-50"
+    triangle.className = "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_8px)]"
+    const marker = new mapboxgl.Marker(markerDiv, {offset: [0, -32]})
+      .setLngLat(startLngLat)
+      .addTo(map);
+    map.on("mouseenter", "points", () => map.getCanvas().style.cursor = "pointer");
+    const handleMouseMove = debounce((e)=>{
+      const features = map.queryRenderedFeatures(e.point);
+      if (features[0] && features[0].source === "point") {
+        const properties = features[0].properties;
+        const coordinates = {lng: properties.lng, lat: properties.lat};
+        marker.setLngLat(coordinates)
+        markerDiv.classList.remove("hidden")
+        markerDiv.innerText = `${properties.name}`
+        markerDiv.appendChild(triangle);
+      }
+    })
+    map.on("mousemove", handleMouseMove)
 
     map.on("mouseleave", "points", () => {
       map.getCanvas().style.cursor = "grab";
-      popup.remove();
+      markerDiv.classList.add("hidden")
     });
   }
 }
