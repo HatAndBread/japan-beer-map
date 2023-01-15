@@ -8,31 +8,50 @@ export default class extends Controller {
     this.tooFarTarget.classList.add("hidden")
   }
   async checkin() {
-    const {lng, lat} = await this.updateUserLocation();
-    const p = this.place()
-    const d = distance(lng, lat, p.lng, p.lat)
-    if (d < 3) {
-      // Let's assume 200 meters is close enough
-      // In production that means 0.2
-      console.log("close enough")
-      this.visitTarget.click()
-      this.visitTarget.disabled = true;
+    let lng;
+    let lat;
+    const validate = () => {
+      const p = this.place()
+      const d = distance(lng, lat, p.lng, p.lat)
+      if (d < 3) {
+        // Let's assume 200 meters is close enough
+        // In production that means 0.2
+        this.visitTarget.click()
+        this.visitTarget.disabled = true;
+      } else {
+        this.tooFarTarget.classList.remove("hidden")
+      }
+    }
+    if (window.userLocation) {
+      lng = window.userLocation.lng;
+      lat = window.userLocation.lat;
+      validate();
     } else {
-      this.tooFarTarget.classList.remove("hidden")
-      console.log("too far")
+      this.dispatch("updateUserLocation");
+      await this.updateUserLocation();
+      lng = window.userLocation.lng;
+      lat = window.userLocation.lat;
+      const interval = setInterval(() => {
+        if (window.userLocation || window.noGeolocation) {
+          clearInterval(interval);
+          validate();
+        }
+      })
     }
   }
 
   updateUserLocation() {
     return new Promise((resolve, reject) => {
-      if (this.noGeolocation) reject("noGeolocation");
+      if (window.noGeolocation) {
+        reject("noGeolocation");
+        return;
+      };
       navigator.geolocation.getCurrentPosition((position) => {
-        this.userLocation = {
+        window.userLocation = {
           lng: position.coords.longitude,
           lat: position.coords.latitude,
         };
-        window.userLocation = this.userLocation;
-        resolve(this.userLocation);
+        resolve(window.userLocation);
       });
     });
   }

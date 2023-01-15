@@ -33,6 +33,7 @@ export default class extends Controller {
       this.findMeTarget.remove();
       this.nearestBeerTarget.remove();
       this.noGeolocation = true;
+      window.noGeolocation = true;
     }
     const geoJson = JSON.parse(this.geoJson());
     this.___g = geoJson;

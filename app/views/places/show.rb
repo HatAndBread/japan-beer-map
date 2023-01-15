@@ -11,7 +11,7 @@ module Views
 
     def template
       turbo_frame(id: "place_being_viewed") do
-        div(class: "", data_controller: "place-show", data_place: @place.to_json) do
+        div(class: "", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
           h1(class: "") { @place.name }
           div(class: "bg-red-100 text-red-600 hidden", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
           turbo_frame(id: "visit") do
