@@ -7,8 +7,8 @@ module Views
     end
 
     def template
-      div(data_controller: "map") do
-        div(id: "the-map", class: "w-[90vw] h-[800px]") do
+      div(data_controller: "map", class: "w-full") do
+        div(id: "the-map", class: "w-screen h-[800px]") do
           render MapControls.new
         end
         @places.map do |place|

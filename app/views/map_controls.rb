@@ -3,33 +3,35 @@ module Views
     register_element :turbo_frame
 
     def template
-      div(class: "w-[200px] rounded p-2 border border-indigo-400 z-50 absolute bg-indigo-50 top-2 right-2", data_map_target: "toolsWrapper") do
+      div(class: "w-fit rounded p-2 border border-indigo-400 z-50 absolute bg-indigo-50 top-2 left-2", data_map_target: "toolsWrapper") do
         div(data_map_target: "toolsOpener", class: "hidden") do
           button(class: "las la-map-marked-alt border rounded text-indigo-600 text-3xl hover:text-indigo-800 transition", data_action: "click->map#openTools")
         end
-        div(data_map_target: "toolsContainer", class: "flex flex-col gap-2") do
+        div(data_map_target: "toolsContainer", class: "") do
           div(class: "flex justify-end") do
             button(class: "text-2xl text-indigo-600 hover:text-indigo-800 w-fit transition", data_action: "click->map#closeTools") { i(class: "las la-window-close") }
           end
-          button(data_map_target: "findMe", data_action: "click->map#findMe", class: "btn-primary w-full justify-center") do
-            div(class: "hidden") do
-              div(class: "loader")
+          div(id: "tools-content", class: "flex flex-col gap-2") do
+            button(data_map_target: "findMe", data_action: "click->map#findMe", class: "btn-primary w-full justify-center") do
+              div(class: "hidden") do
+                div(class: "loader")
+              end
+              span(class: "") do
+                text(helpers.t("map_controls.my_location"))
+              end
             end
-            span(class: "") do
-              text(helpers.t("map_controls.my_location"))
+            button(data_map_target: "nearestBeer", data_action: "click->map#nearestBeer", class: "btn-primary w-full justify-center") do
+              div(class: "hidden") do
+                div(class: "loader")
+              end
+              span(class: "") do
+                helpers.t("map_controls.nearest_beer")
+              end
             end
-          end
-          button(data_map_target: "nearestBeer", data_action: "click->map#nearestBeer", class: "btn-primary w-full justify-center") do
-            div(class: "hidden") do
-              div(class: "loader")
-            end
-            span(class: "") do
-              helpers.t("map_controls.nearest_beer")
-            end
-          end
-          form(data_action: "change->map#handleChange") do
-            %w[brewery food shop].map do |type|
-              box(type)
+            form(data_action: "change->map#handleChange") do
+              %w[brewery food shop].map do |type|
+                box(type)
+              end
             end
           end
         end

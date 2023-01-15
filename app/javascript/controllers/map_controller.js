@@ -35,6 +35,9 @@ export default class extends Controller {
       this.noGeolocation = true;
       window.noGeolocation = true;
     }
+    const search = document.querySelector(".mapboxgl-ctrl-geocoder")
+    document.getElementById("tools-content").prepend(search)
+    console.log(search)
     const geoJson = JSON.parse(this.geoJson());
     this.___g = geoJson;
     const iconUrl = this.iconUrl();
@@ -54,6 +57,7 @@ export default class extends Controller {
           document.getElementById(`place_${id}`).children[0].click();
         });
         this.handleMouseOver();
+
       });
     });
   }
