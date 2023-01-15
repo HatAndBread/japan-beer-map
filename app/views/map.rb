@@ -8,8 +8,9 @@ module Views
 
     def template
       div(data_controller: "map") do
-        render MapControls.new
-        div(id: "the-map", class: "w-[90vw] h-[800px]")
+        div(id: "the-map", class: "w-[90vw] h-[800px]") do
+          render MapControls.new
+        end
         @places.map do |place|
           turbo_frame(id: "place_#{place.id}", class: "marker hidden", data_food: place.has_food, data_brewery: place.is_brewery, data_shop: place.is_shop) do
             a(href: helpers.place_path(place), data_lng: place.lng, data_lat: place.lat, data_id: place.id, data_turbo_frame: "place_being_viewed")
