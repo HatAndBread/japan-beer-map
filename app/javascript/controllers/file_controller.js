@@ -24,6 +24,7 @@ export default class extends Controller {
         });
       }
       this.inputTarget.files = files.files
+      console.log(this.inputTarget.files)
     });
     this.element.addEventListener("dragover", (e) => {
       e.preventDefault();

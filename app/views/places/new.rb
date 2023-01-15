@@ -5,24 +5,40 @@ module Views
 
     register_element :turbo_frame
 
-    def initialize(place:)
-      @place = place
+    def initialize
+      @place = Place.new
     end
 
     def template
-      div(class: "flex flex-col items-center w-full") do
-        div(class: "max-w-[800px] w-[90%]", data_controller: "place-new") do
-          render Views::NewMap.new
-          form_with model: @place, data: {action: "submit->place-new#handleSubmit"} do |f|
+      div(class: "flex flex-col items-center w-full text-sm") do
+        div(class: "max-w-[800px] w-[90%] border border-grey-200 p-8 rounded mb-8", data_controller: "place-new") do
+          p(class: "leading-relaxed") do
+            div(class: "mb-4") do
+              b { "Thank you " }
+              text "for contributing to this project. There are a few steps you need to complete in order to a new business to this map."
+            end
+            ol(class: "") do
+              li(class: "mb-2") { "① Set the location of the business by clicking on it's location on the map. Please be as accuraate as possible." }
+              li(class: "mb-2") { '② Fill in as much information about the business as you can. If you don\'t know everything that\'s OK! "Name" is the only mandatory parameter.' }
+              li(class: "mb-2") { "③ Add any images you have available of the business." }
+              li(class: "mb-2") { "④ Our admins review every new submission to avoid spam. We will try to approve your submission within 1 day." }
+            end
+          end
+          div(class: "mt-8") do
+            render Views::NewMap.new
+          end
+          div(class: "bg-red-100 text-red-600", data_place_new_target: "notCompleted") { "Location not yet set." }
+          div(class: "bg-green-100 text-green-600 hidden", data_place_new_target: "completed") { "Location successfully added." }
+          form_with model: @place, class: "mt-8", data: {action: "submit->place-new#handleSubmit"} do |f|
             # website
-            div do
+            div(class: "mb-4") do
               label(for: "name", class: "block text-sm font-medium text-gray-700") { "Name Of Business" }
               div(class: "mt-1") do
-                f.text_field :name, name: "name", id: "name", placeholder: "Example Store", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                f.text_field :name, name: "name", id: "name", placeholder: "Example Store", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: {place_new_target: "placeName"}
               end
             end
             # website
-            div do
+            div(class: "mb-4") do
               div(class: "flex justify-between") do
                 label(for: "website", class: "block text-sm font-medium text-gray-700") { "Website" }
                 span(class: "text-sm text-gray-500") { "Optional" }
@@ -35,7 +51,7 @@ module Views
               end
             end
             # phone
-            div do
+            div(class: "mb-4") do
               div(class: "flex justify-between") do
                 label(for: "phone", class: "block text-sm font-medium text-gray-700") { "Phone" }
                 span(class: "text-sm text-gray-500") { "Optional" }
@@ -45,7 +61,7 @@ module Views
               end
             end
             # types
-            fieldset(class: "border-t border-b border-gray-200") do
+            fieldset(class: "border-t border-b border-gray-200 mb-4") do
               div(class: "divide-y divide-gray-200") do
                 div(class: "relative flex items-start py-4") do
                   div(class: "min-w-0 flex-1 text-sm") do
@@ -83,7 +99,7 @@ module Views
               end
             end
             # times
-            div do
+            div(class: "mb-4") do
               div(class: "min-w-0 flex-1 text-sm") do
                 div(class: "flex justify-between") do
                   span(class: "font-medium text-gray-700") { "Hours" }
@@ -113,8 +129,12 @@ module Views
             f.text_field :lng, name: :lng, id: :lng, class: "hidden", data: {place_new_target: "lng"}
             f.text_field :lat, name: :lat, id: :lat, class: "hidden", data: {place_new_target: "lat"}
             f.text_field :periods, name: :periods, id: :periods, class: "hidden", data: {place_new_target: "periods"}
+            div(class: "flex justify-between") do
+              span(class: "block text-sm font-medium text-gray-700") { "Images" }
+              span(class: "text-sm text-gray-500") { "Optional" }
+            end
             render("shared/file_input", f:)
-            f.button helpers.t("save"), class: "btn-primary", type: "submit"
+            f.button helpers.t("save"), class: "btn-large mt-8", type: "submit"
           end
         end
       end

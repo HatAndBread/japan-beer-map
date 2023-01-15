@@ -17,6 +17,14 @@ export default class extends Controller {
       zoom: 9,
       maxBounds: maxBounds,
     });
+    map.addControl(
+      new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        language: this.getLanguage(),
+        mapboxgl
+      }),
+      "top-left"
+    );
     this.map = map;
     window.map = map;
 
