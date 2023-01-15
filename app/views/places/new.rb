@@ -34,7 +34,7 @@ module Views
             div(class: "mb-4") do
               label(for: "name", class: "block text-sm font-medium text-gray-700") { "Name Of Business" }
               div(class: "mt-1") do
-                f.text_field :name, name: "name", id: "name", placeholder: "Example Store", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: {place_new_target: "placeName"}
+                f.text_field :name, id: "name", placeholder: "Example Store", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: {place_new_target: "placeName"}
               end
             end
             # website
@@ -47,7 +47,7 @@ module Views
                 div(class: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none") do
                   span(class: "text-gray-500") { "http://" }
                 end
-                f.text_field :website, name: "website", id: "website", placeholder: "www.example.com", class: "block w-full pl-16 border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:pl-14 sm:text-sm"
+                f.text_field :website, id: "website", placeholder: "www.example.com", class: "block w-full pl-16 border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:pl-14 sm:text-sm"
               end
             end
             # phone
@@ -57,7 +57,7 @@ module Views
                 span(class: "text-sm text-gray-500") { "Optional" }
               end
               div(class: "mt-1") do
-                f.text_field :phone, name: "phone", id: "phone", placeholder: "090-1111-1111", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                f.text_field :phone, id: "phone", placeholder: "090-1111-1111", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               end
             end
             # types
@@ -71,7 +71,7 @@ module Views
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
-                    input id: "is_brewery", aria_describedby: "is_brewery-description", name: "is_brewery", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    input id: "is_brewery", aria_describedby: "is_brewery-description", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   end
                 end
                 div(class: "relative flex items-start py-4") do
@@ -82,7 +82,7 @@ module Views
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
-                    input id: "is_shop", aria_describedby: "is_shop-description", name: "is_shop", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    input id: "is_shop", aria_describedby: "is_shop-description", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   end
                 end
                 div(class: "relative flex items-start py-4") do
@@ -93,7 +93,7 @@ module Views
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
-                    input id: "has_food", aria_describedby: "has_food-description", name: "has_food", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    input id: "has_food", aria_describedby: "has_food-description", type: "checkbox", class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   end
                 end
               end
@@ -126,9 +126,9 @@ module Views
                 end
               end
             end
-            f.text_field :lng, name: :lng, id: :lng, class: "hidden", data: {place_new_target: "lng"}
-            f.text_field :lat, name: :lat, id: :lat, class: "hidden", data: {place_new_target: "lat"}
-            f.text_field :periods, name: :periods, id: :periods, class: "hidden", data: {place_new_target: "periods"}
+            f.text_field :lng, id: :lng, class: "hidden", data: {place_new_target: "lng"}
+            f.text_field :lat, id: :lat, class: "hidden", data: {place_new_target: "lat"}
+            f.text_field :periods, id: :periods, class: "hidden", data: {place_new_target: "periods"}
             div(class: "flex justify-between") do
               span(class: "block text-sm font-medium text-gray-700") { "Images" }
               span(class: "text-sm text-gray-500") { "Optional" }
