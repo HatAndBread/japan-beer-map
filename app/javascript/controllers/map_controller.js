@@ -9,7 +9,7 @@ const maxBounds = [
 ];
 
 export default class extends Controller {
-  static targets = ["findMe", "nearestBeer", "userLocation"];
+  static targets = ["findMe", "nearestBeer", "userLocation", "toolsContainer", "toolsOpener", "toolsWrapper"];
   connect() {
     const map = new mapboxgl.Map({
       container: "the-map",
@@ -157,6 +157,18 @@ export default class extends Controller {
       center: this.userLocation,
       zoom: 14,
     });
+  }
+
+  closeTools() {
+    this.toolsContainerTarget.classList.add("hidden")
+    this.toolsOpenerTarget.classList.remove("hidden")
+    this.toolsWrapperTarget.classList.add("!w-fit")
+  }
+
+  openTools() {
+    this.toolsContainerTarget.classList.remove("hidden")
+    this.toolsOpenerTarget.classList.add("hidden")
+    this.toolsWrapperTarget.classList.remove("!w-fit")
   }
 
   async nearestBeer() {
