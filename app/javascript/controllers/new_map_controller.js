@@ -11,6 +11,30 @@ export default class extends Controller {
       zoom: 9,
     });
     this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.addControl(
+      new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        language: this.getLanguage(),
+        mapboxgl,
+      }),
+      "top-left"
+    );
+    this.map.on("click", (e) => {
+      this.lngLat(e);
+      if (!this.beerKun) {
+        const img = document.createElement("img");
+        img.src = document.getElementsByName("icon-url")[0].dataset.path
+        this.beerKun = new mapboxgl.Marker(img)
+          .setLngLat(e.lngLat)
+          .addTo(this.map);
+      } else {
+        this.beerKun.setLngLat(e.lngLat)
+      }
+    });
+  }
+
+  lngLat(e) {
+    this.dispatch("lngLat", { detail: e.lngLat });
   }
 
   getLanguage() {

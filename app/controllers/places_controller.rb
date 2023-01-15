@@ -6,12 +6,14 @@ class PlacesController < ApplicationController
   end
 
   def new
-    render Views::Places::New.new(place: Place.new)
+    render Views::Places::New.new
   end
 
   def create
-    # Don't actually create a place yet.
     # Notify admin to approve it to avoid spam.
+    Rails.logger.debug "++++++++++++++++++++++++"
+    Rails.logger.debug place_params
+    Rails.logger.debug params
     @place = Place.create(place_params)
     User.where(admin: true).each do |admin|
       UserMailer.new_place_admin_review(admin, @place).deliver_now
