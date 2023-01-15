@@ -1,11 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
-import { distance } from "lib/distance"
+import { distance } from "lib/distance";
 
-const startLngLat = [139.6503, 35.6762]
+const startLngLat = [139.6503, 35.6762];
 const maxBounds = [
   [121.83031059936349, 20.705762031300967], // Southwest coordinates
-  [154.74125158604622, 49.413834542307185] // Northeast coordinates
-  ]
+  [154.74125158604622, 49.413834542307185], // Northeast coordinates
+];
 
 export default class extends Controller {
   static targets = ["findMe", "nearestBeer", "userLocation"];
@@ -21,7 +21,7 @@ export default class extends Controller {
       new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         language: this.getLanguage(),
-        mapboxgl
+        mapboxgl,
       }),
       "top-left"
     );
@@ -38,17 +38,20 @@ export default class extends Controller {
     const iconUrl = this.iconUrl();
     map.on("load", () => {
       map.loadImage(iconUrl, (error, image) => {
-        if (error) throw new Error(error)
+        if (error) throw new Error(error);
 
         map.addImage("icon", image);
-        this.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget).setLngLat(startLngLat).addTo(map);
+        this.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget)
+          .setLngLat(startLngLat)
+          .addTo(map);
 
         this.addPlaceLayer(geoJson);
 
         map.on("click", "points", (e) => {
-          const {id} = e.features[0].properties
-          document.getElementById(`place_${id}`).children[0].click()
-        })
+          const { id } = e.features[0].properties;
+          document.getElementById(`place_${id}`).children[0].click();
+        });
+        this.handleMouseOver();
       });
     });
   }
@@ -58,7 +61,10 @@ export default class extends Controller {
   }
 
   iconUrl() {
-    return window.location.origin + document.getElementsByName("icon-url")[0].dataset.path;
+    return (
+      window.location.origin +
+      document.getElementsByName("icon-url")[0].dataset.path
+    );
   }
 
   geoJson() {
@@ -75,23 +81,25 @@ export default class extends Controller {
     const legend = {
       is_brewery: "brewery",
       has_food: "food",
-      is_shop: "shop"
-    }
+      is_shop: "shop",
+    };
     const newGeoJson = {
       type: "geojson",
       data: {
         type: "FeatureCollection",
-        features: []
-      }
-    }
+        features: [],
+      },
+    };
     this.___g.data.features.forEach((f) => {
-      const myTypes = Object.keys(f.properties).map((p) => f.properties[p] && legend[p] ? legend[p] : null).filter((p) => p);
+      const myTypes = Object.keys(f.properties)
+        .map((p) => (f.properties[p] && legend[p] ? legend[p] : null))
+        .filter((p) => p);
       if (selectedTypes.find((t) => myTypes.includes(t))) {
-        newGeoJson.data.features.push(f)
+        newGeoJson.data.features.push(f);
       }
-    })
-    this.removePlaceLayer()
-    this.addPlaceLayer(newGeoJson)
+    });
+    this.removePlaceLayer();
+    this.addPlaceLayer(newGeoJson);
   }
 
   selectedTypes() {
@@ -105,7 +113,6 @@ export default class extends Controller {
     );
   }
 
-
   addPlaceLayer(geoJson) {
     const map = this.map;
     map.addSource("point", geoJson);
@@ -117,14 +124,14 @@ export default class extends Controller {
       layout: {
         "icon-image": "icon", // reference the image
         "icon-size": 0.6,
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
       },
     });
   }
 
   removePlaceLayer() {
-    this.map.removeLayer("points")
-    this.map.removeSource("point")
+    this.map.removeLayer("points");
+    this.map.removeSource("point");
   }
 
   markers() {
@@ -132,17 +139,18 @@ export default class extends Controller {
   }
 
   async findMe() {
-    if(this.userLocation) {
-      this.flyToUser()
+    if (this.userLocation) {
+      this.flyToUser();
     } else {
-      this.findMeTarget.children[0].classList.remove("hidden")
+      this.findMeTarget.children[0].classList.remove("hidden");
       await this.updateUserLocation();
       this.flyToUser();
     }
   }
 
   flyToUser() {
-    if (!this.userLocation) throw new Error("Must create userLocation before calling flyToUser")
+    if (!this.userLocation)
+      throw new Error("Must create userLocation before calling flyToUser");
     this.map.flyTo({
       center: this.userLocation,
       zoom: 14,
@@ -152,18 +160,18 @@ export default class extends Controller {
   async nearestBeer() {
     const goToNearest = (closest) => {
       document.getElementById(`place_${closest.id}`).children[0].click();
-      this.nearestBeerTarget.children[0].classList.add("hidden")
+      this.nearestBeerTarget.children[0].classList.add("hidden");
       this.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 14,
       });
-    }
+    };
     if (this.userLocation) {
-      goToNearest(this._nearestBeer(this.userLocation))
+      goToNearest(this._nearestBeer(this.userLocation));
     } else {
-      this.nearestBeerTarget.children[0].classList.remove("hidden")
+      this.nearestBeerTarget.children[0].classList.remove("hidden");
       const location = await this.updateUserLocation();
-      goToNearest(this._nearestBeer(location))
+      goToNearest(this._nearestBeer(location));
     }
   }
 
@@ -177,13 +185,12 @@ export default class extends Controller {
       },
       { distance: 99999, id: 99999, lng: 0, lat: 0 }
     );
-
   }
 
   updateUserLocation() {
     return new Promise((resolve, reject) => {
       if (this.noGeolocation) {
-        reject("noGeolocation")
+        reject("noGeolocation");
       } else {
         const update = (position) => {
           this.userLocation = {
@@ -193,14 +200,33 @@ export default class extends Controller {
           this.userHeading = position.coords.heading || 0;
           window.userLocation = this.userLocation;
           this.userLocationMarker.setLngLat(this.userLocation);
-          this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`
-          this.userLocationTarget.classList.remove("hidden")
-          this.findMeTarget.children[0].classList.add("hidden")
+          this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`;
+          this.userLocationTarget.classList.remove("hidden");
+          this.findMeTarget.children[0].classList.add("hidden");
           resolve(this.userLocation);
-        }
-        navigator.geolocation.watchPosition(update)
+        };
+        navigator.geolocation.watchPosition(update);
       }
     });
   }
-}
 
+  handleMouseOver() {
+    const map = this.map;
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+    console.log(popup)
+    map.on("mouseenter", "points", (e) => {
+      map.getCanvas().style.cursor = "pointer";
+      const properties = e.features[0].properties;
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      popup.setLngLat(coordinates).setHTML(`<h1>${properties.name}</h1>`).addTo(map);
+    });
+
+    map.on("mouseleave", "points", () => {
+      map.getCanvas().style.cursor = "grab";
+      popup.remove();
+    });
+  }
+}
