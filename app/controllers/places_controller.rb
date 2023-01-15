@@ -11,10 +11,13 @@ class PlacesController < ApplicationController
 
   def create
     # Notify admin to approve it to avoid spam.
-    Rails.logger.debug "++++++++++++++++++++++++"
-    Rails.logger.debug place_params
-    Rails.logger.debug params
     @place = Place.create(place_params)
+    if @place
+      flash[:notice] = "Place successfully submitted. We will approve your submission soon."
+    else
+      flash[:alert] = "A server error prevented submission of this business. Please try again later."
+    end
+    redirect_to root_path
     User.where(admin: true).each do |admin|
       UserMailer.new_place_admin_review(admin, @place).deliver_now
     end

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
 
-  static targets = ["periods", "lng", "lat", "completed", "notCompleted", "placeName"];
+  static targets = ["periods", "lng", "lat", "completed", "notCompleted", "placeName", "submitButton", "submitButtonText"];
 
   handleSubmit(e) {
     const nums = [0,1,2,3,4,5,6]
@@ -17,10 +17,15 @@ export default class extends Controller {
     if (!parseFloat(this.lngTarget.value) || !parseFloat(this.lngTarget.value)) {
       alert("Please set the location of the business.")
       e.preventDefault();
+      return;
     } else if (!this.placeNameTarget.value) {
       e.preventDefault();
       alert("Please add the name of this business.")
+      return;
     }
+    this.submitButtonTarget.disabled = true;
+    this.submitButtonTextTarget.classList.add("loader")
+    this.submitButtonTextTarget.innerText = ""
   }
   lngLat(e) {
     const {lng, lat} = e.detail;

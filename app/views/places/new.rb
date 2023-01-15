@@ -134,7 +134,9 @@ module Views
               span(class: "text-sm text-gray-500") { "Optional" }
             end
             render("shared/file_input", f:)
-            f.button helpers.t("save"), class: "btn-large mt-8", type: "submit"
+            button(class: "btn-large mt-8 w-[120px] justify-center", type: "submit", name: "button", data_place_new_target: "submitButton") do
+              div(class: "", data_place_new_target: "submitButtonText") { helpers.t("save") }
+            end
           end
         end
       end
