@@ -1,7 +1,9 @@
 module Views
   class Nav < Phlex::HTML
+    register_element :turbo_frame
+
     def template
-      nav(class: "bg-white shadow") do
+      nav(class: "bg-white shadow", data_controller: "nav") do
         div(class: "mx-auto max-w-7xl px-2 sm:px-6 lg:px-8") do
           div(class: "relative flex h-16 justify-between") do
             div(class: "absolute inset-y-0 left-0 flex items-center sm:hidden") do
@@ -39,17 +41,17 @@ module Views
               end
               div(class: "relative ml-3") do
                 div do
-                  button(type: "button", class: "flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", id: "user-menu-button", aria_expanded: "false", aria_haspopup: "true") do
+                  button(type: "button", class: "flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", id: "user-menu-button", aria_expanded: "false", aria_haspopup: "true", data_action: "click->nav#openMenu", data_nav_target: "avatar") do
                     span(class: "sr-only") { "Open user menu" }
                     img class: "h-8 w-8 rounded-full", src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", alt: ""
                   end
                 end
-                div(class: "absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none", role: "menu", aria_orientation: "vertical", aria_labelledby: "user-menu-button", tabindex: "-1") do
+                div(class: "absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden", role: "menu", aria_orientation: "vertical", aria_labelledby: "user-menu-button", tabindex: "-1", data_nav_target: "menu") do
+                  if helpers.current_user
                   a(href: "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 flex items-center justify-between", role: "menuitem", tabindex: "-1", id: "user-menu-item-0") do
                     span { "Your Profile" }
                     i(class: "las la-tools")
                   end
-                  if helpers.current_user
                     a(class: "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 flex items-center justify-between", href: helpers.destroy_user_session_path, data_turbo_method: :delete) do
                       span { helpers.t("nav.sign_out") }
                       i(class: "las la-sign-out-alt")

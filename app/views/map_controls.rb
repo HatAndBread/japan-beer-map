@@ -3,7 +3,7 @@ module Views
     register_element :turbo_frame
 
     def template
-      div(class: "w-fit rounded p-2 border border-indigo-400 z-50 absolute bg-slate-50 top-2 left-2", data_map_target: "toolsWrapper") do
+      div(class: "w-fit rounded p-2 border border-indigo-400 z-50 absolute bg-slate-50 top-2 left-2 hidden", data_map_target: "toolsWrapper") do
         div(data_map_target: "toolsOpener", class: "hidden") do
           button(class: "las la-map-marked-alt border rounded text-indigo-600 text-3xl hover:text-indigo-800 transition", data_action: "click->map#openTools")
         end

@@ -4,12 +4,11 @@ const userLocation = () => {
       reject("noGeolocation");
     } else {
       const update = (position) => {
-        this.userLocation = {
+        window.userLocation = {
           lng: position.coords.longitude,
           lat: position.coords.latitude,
         };
-        this.userHeading = position.coords.heading || 0;
-        window.userLocation = this.userLocation;
+        window.userHeading = position.coords.heading || 0;
         this.userLocationMarker.setLngLat(this.userLocation);
         this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`;
         this.userLocationTarget.classList.remove("hidden");

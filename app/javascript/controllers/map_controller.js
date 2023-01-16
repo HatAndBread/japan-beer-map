@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
-import debounce from "lodash.debounce"
+import debounce from "lodash.debounce";
 
 const startLngLat = [139.6503, 35.6762];
 const maxBounds = [
@@ -9,7 +9,14 @@ const maxBounds = [
 ];
 
 export default class extends Controller {
-  static targets = ["findMe", "nearestBeer", "userLocation", "toolsContainer", "toolsOpener", "toolsWrapper"];
+  static targets = [
+    "findMe",
+    "nearestBeer",
+    "userLocation",
+    "toolsContainer",
+    "toolsOpener",
+    "toolsWrapper",
+  ];
   connect() {
     const map = new mapboxgl.Map({
       container: "the-map",
@@ -35,15 +42,16 @@ export default class extends Controller {
       this.noGeolocation = true;
       window.noGeolocation = true;
     }
-    const search = document.querySelector(".mapboxgl-ctrl-geocoder")
-    document.getElementById("tools-content").prepend(search)
-    console.log(search)
+    const search = document.querySelector(".mapboxgl-ctrl-geocoder");
+    document.getElementById("tools-content").prepend(search);
+    console.log(search);
     const geoJson = JSON.parse(this.geoJson());
     this.___g = geoJson;
     const iconUrl = this.iconUrl();
     map.on("load", () => {
       map.loadImage(iconUrl, (error, image) => {
         if (error) throw new Error(error);
+        this.toolsWrapperTarget.classList.remove("hidden");
 
         map.addImage("icon", image);
         this.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget)
@@ -57,7 +65,6 @@ export default class extends Controller {
           document.getElementById(`place_${id}`).children[0].click();
         });
         this.handleMouseOver();
-
       });
     });
   }
@@ -164,15 +171,15 @@ export default class extends Controller {
   }
 
   closeTools() {
-    this.toolsContainerTarget.classList.add("hidden")
-    this.toolsOpenerTarget.classList.remove("hidden")
-    this.toolsWrapperTarget.classList.add("!w-fit")
+    this.toolsContainerTarget.classList.add("hidden");
+    this.toolsOpenerTarget.classList.remove("hidden");
+    this.toolsWrapperTarget.classList.add("!w-fit");
   }
 
   openTools() {
-    this.toolsContainerTarget.classList.remove("hidden")
-    this.toolsOpenerTarget.classList.add("hidden")
-    this.toolsWrapperTarget.classList.remove("!w-fit")
+    this.toolsContainerTarget.classList.remove("hidden");
+    this.toolsOpenerTarget.classList.add("hidden");
+    this.toolsWrapperTarget.classList.remove("!w-fit");
   }
 
   async nearestBeer() {
@@ -232,28 +239,34 @@ export default class extends Controller {
     const map = this.map;
     const markerDiv = document.createElement("div");
     const triangle = document.createElement("div");
-    markerDiv.className = "relative hidden p-2 rounded pointer-events-none bg-slate-800 text-slate-50"
-    triangle.className = "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_8px)]"
-    const marker = new mapboxgl.Marker(markerDiv, {offset: [0, -32]})
+    markerDiv.className =
+      "relative hidden p-2 rounded pointer-events-none bg-slate-800 text-slate-50";
+    triangle.className =
+      "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_8px)]";
+    const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -32] })
       .setLngLat(startLngLat)
       .addTo(map);
-    map.on("mouseenter", "points", () => map.getCanvas().style.cursor = "pointer");
-    const handleMouseMove = debounce((e)=>{
+    map.on(
+      "mouseenter",
+      "points",
+      () => (map.getCanvas().style.cursor = "pointer")
+    );
+    const handleMouseMove = debounce((e) => {
       const features = map.queryRenderedFeatures(e.point);
       if (features[0] && features[0].source === "point") {
         const properties = features[0].properties;
-        const coordinates = {lng: properties.lng, lat: properties.lat};
-        marker.setLngLat(coordinates)
-        markerDiv.classList.remove("hidden")
-        markerDiv.innerText = `${properties.name}`
+        const coordinates = { lng: properties.lng, lat: properties.lat };
+        marker.setLngLat(coordinates);
+        markerDiv.classList.remove("hidden");
+        markerDiv.innerText = `${properties.name}`;
         markerDiv.appendChild(triangle);
       }
-    })
-    map.on("mousemove", handleMouseMove)
+    });
+    map.on("mousemove", handleMouseMove);
 
     map.on("mouseleave", "points", () => {
       map.getCanvas().style.cursor = "grab";
-      markerDiv.classList.add("hidden")
+      markerDiv.classList.add("hidden");
     });
   }
 }
