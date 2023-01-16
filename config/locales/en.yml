@@ -31,6 +31,7 @@
 
 en:
   hello: "Japan Craft Beer Adventure"
+  home: "Home"
   save: "Save"
   monday: "Monday"
   tuesday: "Tuesday"
@@ -45,6 +46,7 @@ en:
     sign_up: "Sign Up"
     sign_out: "Sign Out"
     new_place: "Add a Location To The Map"
+    visits: "My Beer Adventures"
   place:
     show:
       bottle_shop: "Bottle Shop"

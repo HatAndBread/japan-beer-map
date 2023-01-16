@@ -7,8 +7,8 @@ module Views
     end
 
     def template
-      div(data_controller: "map", class: "w-full") do
-        div(id: "the-map", class: "w-screen h-[800px]") do
+      div(data_controller: "map", class: "w-screen flex justify-center") do
+        div(id: "the-map", class: "w-[95vw] h-[800px] rounded overflow-hidden") do
           render MapControls.new
         end
         @places.map do |place|

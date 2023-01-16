@@ -31,6 +31,7 @@
 
 ja:
   hello: "クラフトビールの冒険"
+  home: "ホーム"
   save: "保存"
   monday: "月曜日"
   tuesday: "火曜日"
@@ -45,6 +46,7 @@ ja:
     sign_up: "会員登録"
     sign_out: "ログアウト"
     new_place: "新しい場所を追加する"
+    visits: "ビールの旅"
   place:
     show:
       bottle_shop: "ボトルショップ"

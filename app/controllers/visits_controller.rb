@@ -1,6 +1,11 @@
 class VisitsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
 
+  def index
+    visits = Visit.where(user_id: current_user.id)
+    render Views::Visits::Index.new(visits:)
+  end
+
   def create
     Time.zone = "Japan"
     visit = Visit.create(visit_params.merge(time: Time.zone.now, user_id: current_user.id))

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
 
   resources :places, only: [:show, :create]
-  resources :visits, only: [:create]
+  resources :visits, only: [:create, :index]
 
   get "admin", to: "admin#index"
   namespace :admin do
