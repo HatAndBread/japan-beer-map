@@ -61,4 +61,8 @@ export default class extends Controller {
     this.parsedPlace = JSON.parse(this.element.dataset.place)
     return this.parsedPlace;
   }
+
+  close() {
+    this.element.parentNode.removeChild(this.element);
+  }
 }

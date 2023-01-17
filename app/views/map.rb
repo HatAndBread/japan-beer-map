@@ -2,13 +2,16 @@ module Views
   class Map < Phlex::HTML
     register_element :turbo_frame
 
-    def initialize(places:)
+    def initialize(places:, geo_json:)
       @places = places
+      @geo_json = geo_json
     end
 
     def template
+      meta(data_geo_json: @geo_json, id: "geo-json")
       div(data_controller: "map", class: "w-screen flex justify-center") do
-        div(id: "the-map", class: "w-[95vw] h-[800px] rounded overflow-hidden") do
+        turbo_frame(id: "place_being_viewed")
+        div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden") do
           render MapControls.new
         end
         @places.map do |place|
@@ -25,6 +28,10 @@ module Views
     end
 
     private
+
+    def map_only?
+      helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")
+    end
 
     def triangle
       "absolute h-0 w-0 bottom-[-8px] left-[4px] border-l-[12px] border-r-[12px] border-l-transparent border-r-transparent border-t-[12px] border-t-slate-800"

@@ -15,7 +15,7 @@ export default class extends Controller {
     "userLocation",
     "toolsContainer",
     "toolsOpener",
-    "toolsWrapper",
+    "toolsWrapper"
   ];
   connect() {
     const map = new mapboxgl.Map({
@@ -44,7 +44,6 @@ export default class extends Controller {
     }
     const search = document.querySelector(".mapboxgl-ctrl-geocoder");
     document.getElementById("tools-content").prepend(search);
-    console.log(search);
     const geoJson = JSON.parse(this.geoJson());
     this.___g = geoJson;
     const iconUrl = this.iconUrl();

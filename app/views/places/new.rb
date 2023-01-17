@@ -11,7 +11,7 @@ module Views
 
     def template
       div(class: "flex flex-col items-center w-full text-sm") do
-        div(class: "max-w-[800px] w-[90%] border border-grey-200 p-8 rounded mb-8", data_controller: "place-new") do
+        div(class: "max-w-[800px] w-[90%] border border-grey-200 p-8 rounded mb-8 bg-white mt-[32px]", data_controller: "place-new") do
           p(class: "leading-relaxed") do
             div(class: "mb-4") do
               b { "Thank you " }

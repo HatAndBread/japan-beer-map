@@ -10,8 +10,13 @@ module Views
     end
 
     def template
-      turbo_frame(id: "place_being_viewed") do
-        div(class: "", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
+      turbo_frame(id: "place_being_viewed", class: "relative") do
+        div(class: "relative top-0 w-screen h-screen z-50", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
+          div(class: "w-full flex justify-end") do
+            button(class: "text-4xl text-indigo-800 pt-2 pr-2", title: "close", data_action: "click->place-show#close") do
+              i(class: "las la-window-close")
+            end
+          end
           h1(class: "") { @place.name }
           div(class: "bg-red-100 text-red-600 hidden", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
           turbo_frame(id: "visit") do

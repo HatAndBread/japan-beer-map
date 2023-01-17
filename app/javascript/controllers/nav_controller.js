@@ -1,13 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu", "avatar"];
+  static targets = ["menu", "avatar", "dropdown", "hamburger"];
 
   connect() {
-    console.log("hello from nav", this.menuTarget);
     document.addEventListener("click", (e) => {
-      console.log(this.avatarTarget, e.target)
       if (!this.avatarTarget.contains(e.target)) this.closeMenu();
+      if (!this.hamburgerTarget.contains(e.target)) this.closeNav();
     });
   }
 
@@ -17,5 +16,21 @@ export default class extends Controller {
 
   closeMenu() {
     this.menuTarget.classList.add("hidden");
+  }
+
+  openNav() {
+    this.dropdownTarget.classList.remove("hidden");
+  }
+
+  closeNav() {
+    this.dropdownTarget.classList.add("hidden");
+  }
+  
+  toggleMenu() {
+    this.menuTarget.classList.contains("hidden") ? this.openMenu() : this.closeMenu();
+  }
+
+  toggleNav() {
+    this.dropdownTarget.classList.contains("hidden") ? this.openNav() : this.closeNav()
   }
 }

@@ -42,6 +42,7 @@ en:
   sunday: "Sunday"
   nav:
     home: "Home"
+    map: "Map"
     sign_in: "Sign In"
     sign_up: "Sign Up"
     sign_out: "Sign Out"

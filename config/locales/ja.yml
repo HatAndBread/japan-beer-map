@@ -42,6 +42,7 @@ ja:
   sunday: "日曜日"
   nav:
     home: "ホーム"
+    map: "地図"
     sign_in: "ログイン"
     sign_up: "会員登録"
     sign_out: "ログアウト"

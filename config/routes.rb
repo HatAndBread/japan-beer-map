@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   scope "(:locale)", locale: /en|ja/ do
     resources :users
     resources :places, only: [:new]
+    get "/map", to: "pages#map", as: "map"
   end
 
   resources :places, only: [:show, :create]
