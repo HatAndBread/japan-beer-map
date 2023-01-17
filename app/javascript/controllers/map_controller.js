@@ -151,7 +151,7 @@ export default class extends Controller {
   }
 
   async findMe() {
-    if (this.userLocation) {
+    if (window.userLocation) {
       this.flyToUser();
     } else {
       this.findMeTarget.children[0].classList.remove("hidden");
@@ -161,10 +161,10 @@ export default class extends Controller {
   }
 
   flyToUser() {
-    if (!this.userLocation)
+    if (!window.userLocation)
       throw new Error("Must create userLocation before calling flyToUser");
     this.map.flyTo({
-      center: this.userLocation,
+      center: window.userLocation,
       zoom: 14,
     });
   }
@@ -183,15 +183,14 @@ export default class extends Controller {
 
   async nearestBeer() {
     const goToNearest = (closest) => {
-      document.getElementById(`place_${closest.id}`).children[0].click();
       this.nearestBeerTarget.children[0].classList.add("hidden");
       this.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 14,
       });
     };
-    if (this.userLocation) {
-      goToNearest(this._nearestBeer(this.userLocation));
+    if (window.userLocation) {
+      goToNearest(this._nearestBeer(window.userLocation));
     } else {
       this.nearestBeerTarget.children[0].classList.remove("hidden");
       const location = await this.updateUserLocation();
@@ -213,21 +212,22 @@ export default class extends Controller {
 
   updateUserLocation() {
     return new Promise((resolve, reject) => {
-      if (this.noGeolocation) {
+      if (this.noGeolocation || window.noGeolocation) {
+        window.noGeolocation = true;
+        this.noGeolocation = true;
         reject("noGeolocation");
       } else {
         const update = (position) => {
-          this.userLocation = {
+          window.userLocation = {
             lng: position.coords.longitude,
             lat: position.coords.latitude,
           };
           this.userHeading = position.coords.heading || 0;
-          window.userLocation = this.userLocation;
-          this.userLocationMarker.setLngLat(this.userLocation);
+          this.userLocationMarker.setLngLat(window.userLocation);
           this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`;
           this.userLocationTarget.classList.remove("hidden");
           this.findMeTarget.children[0].classList.add("hidden");
-          resolve(this.userLocation);
+          resolve(window.userLocation);
         };
         navigator.geolocation.watchPosition(update);
       }
@@ -241,8 +241,8 @@ export default class extends Controller {
     markerDiv.className =
       "relative hidden p-2 rounded pointer-events-none bg-slate-800 text-slate-50";
     triangle.className =
-      "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_8px)]";
-    const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -32] })
+      "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_14px)]";
+    const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -48] })
       .setLngLat(startLngLat)
       .addTo(map);
     map.on(
