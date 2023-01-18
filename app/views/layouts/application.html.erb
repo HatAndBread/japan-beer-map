@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "line-awesome/css/line-awesome.min.css", "data-turbo-track": "reload" %>
@@ -15,13 +19,13 @@
 
   <body class="bg-slate-50">
     <%= render Views::Nav.new %>
-    <main class="flex flex-col md:flex-row">
-      <p class="notice" id="the-notice"><%=notice%></p>
-      <p class="alert" id="the-alert"><%=alert%></p>
+    <main class="flex flex-col min-h-[calc(100vh_-_64px)] md:flex-row">
       <%= yield %>
     </main>
     <%= render "shared/footer" unless current_page?(map_path) || current_page?("/map") %>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+    <p class="fixed bottom-0 z-50 flex items-center justify-center hidden w-screen p-16 text-xl text-green-600 bg-green-100 animate__animated" id="the-notice"><%=notice%></p>
+    <p class="fixed bottom-0 z-50 flex items-center justify-center hidden w-screen p-16 text-xl text-rose-600 bg-rose-100 animate__animated" id="the-alert"><%=alert%></p>
   </body>
   <%= render "shared/mapbox" %>
 </html>

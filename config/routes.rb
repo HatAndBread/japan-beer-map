@@ -9,11 +9,11 @@ Rails.application.routes.draw do
   root "pages#home"
 
   scope "(:locale)", locale: /en|ja/ do
-    resources :users
     resources :places, only: [:new]
     get "/map", to: "pages#map", as: "map"
   end
 
+  resources :users
   resources :places, only: [:show, :create]
   resources :visits, only: [:create, :index]
 

@@ -4,7 +4,7 @@ import { distance } from "lib/distance";
 export default class extends Controller {
   static targets = ["visit", "tooFar"];
 
-  connected() {
+  connect() {
     this.tooFarTarget.classList.add("hidden")
   }
   async checkin() {
@@ -63,6 +63,9 @@ export default class extends Controller {
   }
 
   close() {
-    this.element.parentNode.removeChild(this.element);
+    this.element.classList.add("animate__zoomOut");
+    setTimeout(() => {
+      this.element.parentNode.removeChild(this.element);
+    }, 400);
   }
 }

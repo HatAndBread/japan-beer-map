@@ -8,8 +8,15 @@ document.addEventListener("turbo:load", () => {
     const element = document.getElementById(notice);
     if (!element || !element.innerText) return;
 
+    element.classList.remove("hidden");
+    element.classList.add("animate__fadeIn");
     setTimeout(()=>{
-      element.innerText = ""
-    }, 2000)
+      element.classList.add("animate__fadeOut");
+      setTimeout(() => {
+        element.innerText = ""
+        element.classList.add("hidden")
+        element.classList.remove("animate__fadeOut", "animate_fadeIn");
+      }, 2000);
+    }, 4000)
   });
 });

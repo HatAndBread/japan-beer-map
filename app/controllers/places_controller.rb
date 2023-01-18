@@ -33,7 +33,7 @@ class PlacesController < ApplicationController
   end
 
   def authenticate_needing_approval!
-    @place = Place.find(params[:id])
+    @place = Place.includes(reviews: :user).find(params[:id])
     redirect_to root_path unless @place.approved? || current_user&.admin?
   end
 end

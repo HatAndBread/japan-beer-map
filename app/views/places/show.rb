@@ -11,7 +11,7 @@ module Views
 
     def template
       turbo_frame(id: "place_being_viewed", class: "relative") do
-        div(class: "relative top-0 w-full h-full z-20 bg-indigo-50", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
+        div(class: "relative top-0 w-full h-full z-20 bg-indigo-50 overflow-scroll animate__animated animate__zoomIn", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
           div(class: "w-full flex justify-end") do
             button(class: "text-4xl text-indigo-600 hover:text-indigo-800 pt-2 pr-2 transition", title: "close", data_action: "click->place-show#close") do
               i(class: "las la-window-close")
@@ -58,11 +58,7 @@ module Views
                 end
               end
             end
-            div do
-              @place.reviews.each do |review|
-                p(class: "max-w-[300px]") { review.text }
-              end
-            end
+            render Views::Reviews.new(reviews: @place.reviews)
           end
         end
       end

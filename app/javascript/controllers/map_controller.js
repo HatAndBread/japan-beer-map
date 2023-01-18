@@ -186,7 +186,7 @@ export default class extends Controller {
       this.nearestBeerTarget.children[0].classList.add("hidden");
       this.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
-        zoom: 14,
+        zoom: 18,
       });
     };
     if (window.userLocation) {

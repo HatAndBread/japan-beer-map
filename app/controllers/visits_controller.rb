@@ -1,5 +1,5 @@
 class VisitsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:index, :create]
 
   def index
     visits = Visit.where(user_id: current_user.id)

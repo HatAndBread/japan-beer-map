@@ -32,6 +32,13 @@
 ja:
   hello: "クラフトビールの冒険"
   home: "ホーム"
+  email: "Eメール"
+  username: "ユーザーネーム"
+  login: "Eメールまたはユーザーネーム"
+  password: "パスワード"
+  password_confirmation: "パスワード確認"
+  forgot_password: "パスワードをお忘れですか？"
+  remember_me: "自動ログイン"
   save: "保存"
   monday: "月曜日"
   tuesday: "火曜日"
