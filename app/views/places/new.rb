@@ -129,6 +129,7 @@ module Views
             f.text_field :lng, id: :lng, class: "hidden", data: {place_new_target: "lng"}
             f.text_field :lat, id: :lat, class: "hidden", data: {place_new_target: "lat"}
             f.text_field :periods, id: :periods, class: "hidden", data: {place_new_target: "periods"}
+            f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input"}
             div(class: "flex justify-between") do
               span(class: "block text-sm font-medium text-gray-700") { "Images" }
               span(class: "text-sm text-gray-500") { "Optional" }

@@ -1,0 +1,33 @@
+<% if images.size.positive? %>
+  <div id="carouselExampleControls" class="relative carousel slide w-[400px] rounded-lg overflow-hidden" data-bs-ride="carousel">
+    <div class="relative w-full overflow-hidden carousel-inner">
+      <% images.each_with_index do |url, i| %>
+        <div class="relative float-left w-full carousel-item <%= "active" if i.zero? %>">
+          <img
+            src="<%= url %>"
+            class="block w-full object-cover !h-[300px]"
+            alt="Missing Image"
+          />
+        </div>
+      <% end %>
+    </div>
+    <button
+      class="absolute top-0 bottom-0 left-0 flex items-center justify-center p-0 text-center border-0 carousel-control-prev hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="prev"
+    >
+      <span class="inline-block bg-no-repeat carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="absolute top-0 bottom-0 right-0 flex items-center justify-center p-0 text-center border-0 carousel-control-next hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="next"
+    >
+      <span class="inline-block bg-no-repeat carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+<% end %>

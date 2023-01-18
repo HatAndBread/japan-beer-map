@@ -33,6 +33,8 @@ gem "jbuilder"
 
 gem "awesome_print"
 
+gem "cloudinary", "~> 1.2", ">= 1.2.2"
+
 gem "http_accept_language"
 
 gem "devise", "~> 4.8"

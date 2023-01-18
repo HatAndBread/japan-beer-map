@@ -10,9 +10,9 @@ module Views
     def template
       meta(data_geo_json: @geo_json, id: "geo-json")
       div(data_controller: "map", class: "w-screen flex justify-center") do
-        turbo_frame(id: "place_being_viewed")
-        div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden") do
+        div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden relative") do
           render MapControls.new
+          turbo_frame(id: "place_being_viewed", class: "relative transition h-0")
         end
         @places.map do |place|
           turbo_frame(id: "place_#{place.id}", class: "marker hidden", data_food: place.has_food, data_brewery: place.is_brewery, data_shop: place.is_shop) do

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "line-awesome/css/line-awesome.min.css", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <meta name="i18n-lang" data-lang="<%= I18n.locale %>">
     <meta name="icon-url" data-path="<%= image_path("beer-kun.png") %>">
@@ -20,6 +20,8 @@
       <p class="alert" id="the-alert"><%=alert%></p>
       <%= yield %>
     </main>
+    <%= render "shared/footer" unless current_page?(map_path) || current_page?("/map") %>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
   </body>
   <%= render "shared/mapbox" %>
 </html>

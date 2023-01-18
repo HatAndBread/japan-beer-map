@@ -10,14 +10,16 @@ class PlacesController < ApplicationController
   end
 
   def create
-    # Notify admin to approve it to avoid spam.
-    @place = Place.create(place_params)
+    @place = Place.new(place_params)
+    @place.approved = !!current_user&.admin?
+    @place.save!
     if @place
       flash[:notice] = "Place successfully submitted. We will approve your submission soon."
     else
       flash[:alert] = "A server error prevented submission of this business. Please try again later."
     end
     redirect_to root_path
+    return if current_user&.admin?
     User.where(admin: true).each do |admin|
       UserMailer.new_place_admin_review(admin, @place).deliver_now
     end
@@ -26,7 +28,8 @@ class PlacesController < ApplicationController
   private
 
   def place_params
-    params.require(:place).permit(:lng, :lat, :website, :google_maps_url, :periods, :name, :address, :phone, :google_place_id, :has_food, :is_shop, :is_brewery, :user_id)
+    params.require(:place)
+      .permit(:lng, :lat, :website, :google_maps_url, :periods, :name, :address, :phone, :google_place_id, :has_food, :is_shop, :is_brewery, :user_id, photos: [])
   end
 
   def authenticate_needing_approval!
