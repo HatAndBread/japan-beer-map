@@ -8,8 +8,11 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: {case_sensitive: false}
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
 
+  after_commit :create_profile!, on: [:create]
+
   has_many :reviews
   has_many :places
+  has_one :profile
   attr_writer :login
 
   def self.find_for_database_authentication(warden_conditions)
@@ -23,5 +26,13 @@ class User < ApplicationRecord
 
   def login
     @login || self.username || self.email
+  end
+
+  def avatar_url = profile.photo&.key ? Cloudinary::Utils.cloudinary_url(profile.photo.key, width: 100, height: 100, crop: :fill) : ActionController::Base.helpers.image_path("bg.png")
+
+  private
+
+  def create_profile!
+    Profile.create(user: self, email:)
   end
 end

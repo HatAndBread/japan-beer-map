@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   around_action :switch_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
+  helper_method :user_avatar
 
   def switch_locale(&action)
     update_preferred_locale
@@ -10,6 +11,10 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options = {locale: I18n.locale}
+
+  def user_avatar
+    current_user&.profile&.photo&.key ? helpers.cl_image_path(current_user.profile.photo.key, width: 100, height: 100, crop: :fill) : helpers.image_path("bg.png")
+  end
 
   protected
 

@@ -30,7 +30,7 @@ module Views
               div(class: "lg:w-[50%]") do
                 render "shared/carousel", images: @place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos
               end
-              div(class: "") do
+              div(class: "lg:w-full") do
                 h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
                   span(class: "block xl:inline text-center") { @place.name }
                 end

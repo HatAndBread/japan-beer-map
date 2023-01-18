@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'profiles/edit'
   devise_scope :user do
     # Redirests signing out users to home
     get "users", to: "pages#home"
@@ -9,11 +10,12 @@ Rails.application.routes.draw do
   root "pages#home"
 
   scope "(:locale)", locale: /en|ja/ do
+    resources :users
     resources :places, only: [:new]
     get "/map", to: "pages#map", as: "map"
   end
 
-  resources :users
+  resources :profiles, only: [:show, :edit, :update]
   resources :places, only: [:show, :create]
   resources :visits, only: [:create, :index]
 

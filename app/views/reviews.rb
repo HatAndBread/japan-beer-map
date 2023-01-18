@@ -7,7 +7,7 @@ module Views
     end
 
     def template
-      div do
+      div(class: "mt-16") do
         h2(class: "sr-only") { "Customer Reviews" }
         div(class: "-my-10") do
           @reviews.map do |review|
@@ -28,7 +28,7 @@ module Views
     def review_component(review)
       div(class: "flex space-x-4 text-sm text-gray-500") do
         div(class: "flex-none py-10") do
-          img src: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80", alt: "", class: "h-10 w-10 rounded-full bg-gray-100"
+          img src: review.user.avatar_url, alt: "", class: "h-10 w-10 rounded-full bg-gray-100"
         end
         div(class: "flex-1 py-10") do
           h3(class: "font-medium text-gray-900") { review.user.username || "Anonymous" }
@@ -40,7 +40,7 @@ module Views
             (5 - review.rating.to_i).times { star("text-slate-400") }
           end
           div(class: "prose prose-sm mt-4 max-w-none text-gray-500") do
-            p { review.text }
+            p(class: "whitespace-pre-wrap") { review.text }
           end
         end
       end

@@ -32,12 +32,12 @@ module Views
                 div do
                   button(type: "button", class: "flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", id: "user-menu-button", aria_expanded: "false", aria_haspopup: "true", data_action: "click->nav#toggleMenu", data_nav_target: "avatar") do
                     span(class: "sr-only") { "Open user menu" }
-                    img class: "h-8 w-8 rounded-full", src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", alt: ""
+                    img class: "h-8 w-8 rounded-full", src: helpers.user_avatar
                   end
                 end
                 div(class: "absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden", role: "menu", aria_orientation: "vertical", aria_labelledby: "user-menu-button", tabindex: "-1", data_nav_target: "menu") do
                   if helpers.current_user
-                  a(href: "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 flex items-center justify-between", role: "menuitem", tabindex: "-1", id: "user-menu-item-0") do
+                    a(href: helpers.edit_profile_path(helpers.current_user.profile), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 flex items-center justify-between", role: "menuitem", tabindex: "-1", id: "user-menu-item-0") do
                     span { "Your Profile" }
                     i(class: "las la-tools")
                   end
@@ -72,7 +72,7 @@ module Views
 
     def nav_links
       a(href: helpers.root_path, class: (helpers.current_page?(helpers.root_path) || helpers.current_page?("/")) ? current_page_link_class : other_page_link_class) { helpers.t("home") }
-      a(href: helpers.map_path, class: (helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")) ? current_page_link_class : other_page_link_class) { helpers.t("map") }
+      a(href: helpers.map_path, class: (helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")) ? current_page_link_class : other_page_link_class) { helpers.t("nav.map") }
       a(href: helpers.new_place_path, class: helpers.current_page?(helpers.new_place_path) ? current_page_link_class : other_page_link_class) { helpers.t("nav.new_place") }
       a(href: helpers.visits_path, class: helpers.current_page?(helpers.visits_path) ? current_page_link_class : other_page_link_class) { helpers.t("nav.visits") }
       a(href: helpers.admin_path, class: helpers.current_page?(helpers.admin_path) ? current_page_link_class : other_page_link_class) { "Admin" } if admin?
@@ -81,7 +81,7 @@ module Views
     def mobile_nav_links
       div(class: "space-y-1 pt-2 pb-4") do
         a(href: helpers.root_path, class: (helpers.current_page?(helpers.root_path) || helpers.current_page?("/")) ? mobile_current_page_link_class : mobile_other_page_link_class) { helpers.t("home") }
-        a(href: helpers.map_path, class: (helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")) ? mobile_current_page_link_class : mobile_other_page_link_class) { helpers.t("map") }
+        a(href: helpers.map_path, class: (helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")) ? mobile_current_page_link_class : mobile_other_page_link_class) { helpers.t("nav.map") }
         a(href: helpers.new_place_path, class: helpers.current_page?(helpers.new_place_path) ? mobile_current_page_link_class : mobile_other_page_link_class) { helpers.t("nav.new_place") }
         a(href: helpers.visits_path, class: helpers.current_page?(helpers.visits_path) ? mobile_current_page_link_class : mobile_other_page_link_class) { helpers.t("nav.visits") }
         a(href: helpers.admin_path, class: helpers.current_page?(helpers.admin_path) ? mobile_current_page_link_class : mobile_other_page_link_class) { "Admin" } if admin?
