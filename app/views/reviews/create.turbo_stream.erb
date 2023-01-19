@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "the-comment" do %>
+  <%= render Views::Reviews::Show.new(review: @review) %>
+<% end %>

@@ -45,6 +45,8 @@ class Place < ApplicationRecord
     def approved = Place.where(approved: true)
   end
 
+  def reviewed_by?(user) = reviews.where(user:).present?
+
   def owner = user
 
   private

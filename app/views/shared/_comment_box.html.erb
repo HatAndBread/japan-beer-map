@@ -1,0 +1,37 @@
+<div class="flex items-start mb-8 space-x-4">
+  <div class="flex-shrink-0">
+    <img class="inline-block w-10 h-10 rounded-full" src="<%= user_avatar %>" alt="avatar">
+  </div>
+  <div class="flex-1 min-w-0">
+    <%= form_with model: [@place, review], class: "relative" do |f| %>
+      <div class="overflow-hidden border border-gray-300 rounded-lg shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+        <label for="comment" class="sr-only">Add your comment</label>
+        <%= f.text_area :text, class: "block w-full py-3 border-0 resize-none focus:ring-0 sm:text-sm", placeholder: "Add your comment...", rows: 3 %>
+        <div class="py-2" aria-hidden="true">
+          <div class="py-px">
+            <div class="h-9"></div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+        <div class="flex items-center" data-controller="stars">
+          <!-- stars -->
+          <% 5.times do |i|%>
+            <div data-stars-target="star<%=i + 1%>" class="cursor-pointer" data-action="click->stars#starClick" data-star="<%= i + 1%>">
+              <svg class="flex-shrink-0 w-5 h-5 text-yellow-400 star-yellow" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" aria_hidden="true">
+                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd">
+              </svg>
+              <svg class="flex-shrink-0 hidden w-5 h-5 text-gray-500 star-gray" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" aria_hidden="true">
+                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd">
+              </svg>
+            </div>
+          <% end %>
+        </div>
+        <%= f.number_field :rating, class: "hidden hidden-rating", default_value: 5 %>
+        <div class="flex-shrink-0">
+          <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Post</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   end
 
   resources :profiles, only: [:show, :edit, :update]
-  resources :places, only: [:show, :create]
+  resources :places, only: [:show, :create] do
+    resources :reviews, only: [:create, :edit, :show]
+  end
   resources :visits, only: [:create, :index]
 
   get "admin", to: "admin#index"

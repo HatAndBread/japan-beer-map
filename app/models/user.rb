@@ -28,8 +28,6 @@ class User < ApplicationRecord
     @login || self.username || self.email
   end
 
-  def avatar_url = profile.photo&.key ? Cloudinary::Utils.cloudinary_url(profile.photo.key, width: 100, height: 100, crop: :fill) : ActionController::Base.helpers.image_path("bg.png")
-
   private
 
   def create_profile!
