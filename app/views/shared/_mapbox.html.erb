@@ -11,7 +11,18 @@
     const url = "https://api.mapbox.com/directions/v5/mapbox/" + type + "/" + lng1 + "," + lat1 + ";" + lng2 + "," + lat2 + "?geometries=geojson&access_token=<%= ENV["MAPBOX_KEY"] %>"
     const res = await fetch(url);
     const data = await res.json()
-    return data;
+
+    const { distance, duration, geometry } = data.routes[0];
+    const route = geometry.coordinates;
+    const geojson = {
+      type: "Feature",
+      properties: {},
+      geometry: {
+        type: "LineString",
+        coordinates: route,
+      },
+    };
+    return {distance, duration, geojson};
   }
 
 </script>

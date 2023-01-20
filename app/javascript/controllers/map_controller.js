@@ -35,7 +35,6 @@ export default class extends Controller {
       "top-left"
     );
     window.map = map;
-    window.map = map;
 
     if (!"geolocation" in navigator) {
       this.findMeTarget.remove();
@@ -55,9 +54,16 @@ export default class extends Controller {
         this.toolsWrapperTarget.classList.remove("hidden");
 
         map.addImage("icon", image);
+        if (window.userLocationMarker) window.userLocationMarker.remove();
         window.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget)
           .setLngLat(startLngLat)
           .addTo(map);
+
+        if (window.screen.width > 700) {
+          // Let's assume it's a touch screen if the screen is smaller than 700.
+          // Needed for accessibility if using an old fashioned mouse.
+          map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+        }
 
         this.addPlaceLayer(geoJson);
 

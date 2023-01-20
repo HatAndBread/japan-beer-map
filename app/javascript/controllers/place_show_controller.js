@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
 import { useUserLocation } from "lib/use-user-location";
+import { drawRoute } from "lib/draw-route";
+import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 export default class extends Controller {
   static targets = ["visit", "tooFar", "fileInput"];
@@ -49,46 +51,16 @@ export default class extends Controller {
       const lng = window.userLocation.lng;
       const lat = window.userLocation.lat;
       const p = this.place();
-      const result = await window.getDirections(
+      const {distance, duration, geojson} = await window.getDirections(
         type,
         lng,
         lat,
         p.lng,
         p.lat
       );
-      const { distance, duration, geometry } = result.routes[0];
-      const route = geometry.coordinates;
-
-      const geojson = {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: route,
-        },
-      };
-      if (map.getSource("route")) {
-        map.getSource("route").setData(geojson);
-      }
-      else {
-        map.addLayer({
-          id: "route",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: geojson,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#3887be",
-            "line-width": 5,
-            "line-opacity": 0.75,
-          },
-        });
-      }
+      drawRoute(geojson);
+      fitMapToBounds([lng, p.lat], [p.lng, lat])
+      this.close();
     }
     useUserLocation(() => {
       handler();
