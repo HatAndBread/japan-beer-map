@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
+import { useUserLocation } from "lib/use-user-location";
 
 export default class extends Controller {
   static targets = ["visit", "tooFar", "fileInput"];
@@ -7,10 +8,9 @@ export default class extends Controller {
   connect() {
     this.tooFarTarget.classList.add("hidden");
   }
-  async checkin() {
-    let lng;
-    let lat;
+  checkin() {
     const validate = () => {
+      const {lng, lat} = window.userLocation;
       const p = this.place();
       const d = distance(lng, lat, p.lng, p.lat);
       if (d < 3) {
@@ -22,38 +22,9 @@ export default class extends Controller {
         this.tooFarTarget.classList.remove("hidden");
       }
     };
-    if (window.userLocation) {
-      lng = window.userLocation.lng;
-      lat = window.userLocation.lat;
+    useUserLocation(() => {
       validate();
-    } else {
-      this.dispatch("updateUserLocation");
-      await this.updateUserLocation();
-      lng = window.userLocation.lng;
-      lat = window.userLocation.lat;
-      const interval = setInterval(() => {
-        if (window.userLocation || window.noGeolocation) {
-          clearInterval(interval);
-          validate();
-        }
-      });
-    }
-  }
-
-  updateUserLocation() {
-    return new Promise((resolve, reject) => {
-      if (window.noGeolocation) {
-        reject("noGeolocation");
-        return;
-      }
-      navigator.geolocation.getCurrentPosition((position) => {
-        window.userLocation = {
-          lng: position.coords.longitude,
-          lat: position.coords.latitude,
-        };
-        resolve(window.userLocation);
-      });
-    });
+    })
   }
 
   place() {
@@ -72,13 +43,14 @@ export default class extends Controller {
   showImageForm() {
     this.fileInputTarget.classList.remove("hidden");
   }
-  async takeMeThere() {
+  async takeMeThere(e) {
+    const type = e.currentTarget.dataset.type;
     const handler = async () => {
       const lng = window.userLocation.lng;
       const lat = window.userLocation.lat;
       const p = this.place();
       const result = await window.getDirections(
-        "walking",
+        type,
         lng,
         lat,
         p.lng,
@@ -117,25 +89,12 @@ export default class extends Controller {
           },
         });
       }
-      console.log(distance, duration, geometry);
     }
-    if (window.userLocation) {
-      handler()
-    } else {
-      this.dispatch("updateUserLocation");
-      const interval = setInterval(()=> {
-        if (window.userLocation) {
-          clearInterval(interval);
-          handler();
-        }
-      }, 10);
-    }
+    useUserLocation(() => {
+      handler();
+    });
   }
 
   async takeMeThereWithGoogle() {
-    this.dispatch("updateUserLocation");
-    await this.updateUserLocation();
-    const lng = window.userLocation.lng;
-    const lat = window.userLocation.lat;
   }
 }

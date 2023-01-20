@@ -68,8 +68,11 @@ module Views
             end
             button(class: "btn-primary", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
             button(class: "btn-primary", data_action: "click->place-show#showImageForm") { "Add Images" }
-            button(class: "btn-primary", data_action: "click->place-show#takeMeThere") { "Take me there" }
-            button(class: "btn-primary", data_action: "click->place-show#takeMeThereWithGoogle") { "Take me there with Google" }
+            span(class: "isolate inline-flex rounded-md shadow-sm") do
+              button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
+              button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
+              button(title: "Be taken there", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-bus") }
+            end
             render Views::Reviews.new(place: @place)
           end
         end

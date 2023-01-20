@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
 import debounce from "lodash.debounce";
+import { useUserLocation } from "lib/use-user-location";
 
 const startLngLat = [139.6503, 35.6762];
 const maxBounds = [
@@ -33,7 +34,7 @@ export default class extends Controller {
       }),
       "top-left"
     );
-    this.map = map;
+    window.map = map;
     window.map = map;
 
     if (!"geolocation" in navigator) {
@@ -42,6 +43,7 @@ export default class extends Controller {
       this.noGeolocation = true;
       window.noGeolocation = true;
     }
+
     const search = document.querySelector(".mapboxgl-ctrl-geocoder");
     document.getElementById("tools-content").prepend(search);
     const geoJson = JSON.parse(this.geoJson());
@@ -53,7 +55,7 @@ export default class extends Controller {
         this.toolsWrapperTarget.classList.remove("hidden");
 
         map.addImage("icon", image);
-        this.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget)
+        window.userLocationMarker = new mapboxgl.Marker(this.userLocationTarget)
           .setLngLat(startLngLat)
           .addTo(map);
 
@@ -126,7 +128,7 @@ export default class extends Controller {
   }
 
   addPlaceLayer(geoJson) {
-    const map = this.map;
+    const map = window.map;
     map.addSource("point", geoJson);
 
     map.addLayer({
@@ -142,8 +144,8 @@ export default class extends Controller {
   }
 
   removePlaceLayer() {
-    this.map.removeLayer("points");
-    this.map.removeSource("point");
+    window.map.removeLayer("points");
+    window.map.removeSource("point");
   }
 
   markers() {
@@ -155,15 +157,16 @@ export default class extends Controller {
       this.flyToUser();
     } else {
       this.findMeTarget.children[0].classList.remove("hidden");
-      await this.updateUserLocation();
-      this.flyToUser();
+      useUserLocation(() => {
+        this.flyToUser();
+      })
     }
   }
 
   flyToUser() {
     if (!window.userLocation)
       throw new Error("Must create userLocation before calling flyToUser");
-    this.map.flyTo({
+    window.map.flyTo({
       center: window.userLocation,
       zoom: 14,
     });
@@ -181,10 +184,10 @@ export default class extends Controller {
     this.toolsWrapperTarget.classList.remove("!w-fit");
   }
 
-  async nearestBeer() {
+  nearestBeer() {
     const goToNearest = (closest) => {
       this.nearestBeerTarget.children[0].classList.add("hidden");
-      this.map.flyTo({
+      window.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 18,
       });
@@ -193,8 +196,9 @@ export default class extends Controller {
       goToNearest(this._nearestBeer(window.userLocation));
     } else {
       this.nearestBeerTarget.children[0].classList.remove("hidden");
-      const location = await this.updateUserLocation();
-      goToNearest(this._nearestBeer(location));
+      useUserLocation((location) => {
+        goToNearest(this._nearestBeer(location));
+      })
     }
   }
 
@@ -210,32 +214,8 @@ export default class extends Controller {
     );
   }
 
-  updateUserLocation() {
-    return new Promise((resolve, reject) => {
-      if (this.noGeolocation || window.noGeolocation) {
-        window.noGeolocation = true;
-        this.noGeolocation = true;
-        reject("noGeolocation");
-      } else {
-        const update = (position) => {
-          window.userLocation = {
-            lng: position.coords.longitude,
-            lat: position.coords.latitude,
-          };
-          this.userHeading = position.coords.heading || 0;
-          this.userLocationMarker.setLngLat(window.userLocation);
-          this.userLocationTarget.style.transform = `rotate(${this.userHeading}deg)`;
-          this.userLocationTarget.classList.remove("hidden");
-          this.findMeTarget.children[0].classList.add("hidden");
-          resolve(window.userLocation);
-        };
-        navigator.geolocation.watchPosition(update);
-      }
-    });
-  }
-
   handleMouseOver() {
-    const map = this.map;
+    const map = window.map;
     const markerDiv = document.createElement("div");
     const triangle = document.createElement("div");
     markerDiv.className =

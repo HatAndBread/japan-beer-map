@@ -19,7 +19,7 @@ module Views
             a(href: helpers.place_path(place), data_lng: place.lng, data_lat: place.lat, data_id: place.id, data_turbo_frame: "place_being_viewed")
           end
         end
-        div(class: "w-[32px] h-[32px] hidden", data_map_target: "userLocation") do
+        div(class: "w-[32px] h-[32px] hidden", data_map_target: "userLocation", id: "user-location-element") do
           div(class: "animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75") do
           end
           img(src: helpers.image_path("location.png"), class: "z-10")
