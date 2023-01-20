@@ -59,7 +59,17 @@ module Views
                 f.submit(data: {place_show_target: "visit"})
               end
             end
+            div(data_place_show_target: "fileInput", class: "hidden") do
+              form_with(model: @place) do |f|
+                f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input"}
+                render "shared/file_input"
+                f.submit helpers.t("save"), class: "btn-primary"
+              end
+            end
             button(class: "btn-primary", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
+            button(class: "btn-primary", data_action: "click->place-show#showImageForm") { "Add Images" }
+            button(class: "btn-primary", data_action: "click->place-show#takeMeThere") { "Take me there" }
+            button(class: "btn-primary", data_action: "click->place-show#takeMeThereWithGoogle") { "Take me there with Google" }
             render Views::Reviews.new(place: @place)
           end
         end

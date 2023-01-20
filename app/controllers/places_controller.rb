@@ -25,11 +25,21 @@ class PlacesController < ApplicationController
     end
   end
 
+  def update
+    @place = Place.find(params[:id])
+    @place.update(update_params)
+    redirect_to root_path
+  end
+
   private
 
   def place_params
     params.require(:place)
       .permit(:lng, :lat, :website, :google_maps_url, :periods, :name, :address, :phone, :google_place_id, :has_food, :is_shop, :is_brewery, :user_id, photos: [])
+  end
+
+  def update_params
+    params.require(:place).permit(photos: [])
   end
 
   def authenticate_needing_approval!
