@@ -9,7 +9,6 @@ export default class extends Controller {
 
   connect() {
     this.tooFarTarget.classList.add("hidden");
-    document.getElementById("the-carousel").appendChild(this.addImgBtnTarget);
   }
   checkin() {
     const validate = () => {

@@ -18,25 +18,23 @@ module Views
             end
           end
           div(class: "flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg") do
-            div(class: "flex items-center lg:items-start flex-col lg:flex-row") do
+            div(class: "flex items-center lg:items-start flex-col lg:flex-row w-full") do
               div(class: "w-full relative") do
                 div(class: "w-full flex justify-center") do
                   render "shared/carousel", images: (@place.photos.empty? && @place.google_photos.empty?) ? [helpers.image_path("bg.png")] : @place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos
-                  button(class: "left-0 top-0 btn-primary text-3xl rounded absolute z-20", data_action: "click->place-show#showImageForm", data_place_show_target: "addImgBtn") do
-                    i(class: "las la-plus-circle")
-                    i(class: "las la-camera-retro")
-                  end
                   div(data_place_show_target: "fileInput", class: "hidden w-full max-w-[400px]") do
                     form_with(model: @place) do |f|
                       f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input", place_show_target: "input"}
                       render "shared/file_input"
-                      f.submit helpers.t("save"), class: "btn-primary mr-8", data: { action: "click->place-show#saveFile" }
-                      f.button helpers.t("cancel"), class: "btn-secondary", data: { action: "click->place-show#hideFileInput" }
+                      div(class: "w-full flex justify-end mt-4") do
+                        f.button helpers.t("cancel"), class: "btn-secondary mr-4", data: { action: "click->place-show#hideFileInput" }
+                        f.submit helpers.t("save"), class: "btn-primary", data: { action: "click->place-show#saveFile" }
+                      end
                     end
                   end
                 end
               end
-              div(class: "w-fit lg:w-full flex flex-col items-start mt-4") do
+              div(class: "w-full lg:p-2 flex flex-col items-start mt-4") do
                 h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
                   span(class: "block xl:inline text-center") { @place.name }
                 end
@@ -56,7 +54,7 @@ module Views
                 end
               end
             end
-            div(class: "mt-4 ml-2 flex flex-col gap-4") do
+            div(class: "mt-4 flex flex-col gap-4") do
               div(class: "bg-red-100 text-red-600 hidden p-2 rounded", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
               turbo_frame(id: "visit") do
                 form_with(model: Visit.new(place: @place), class: "hidden") do |f|

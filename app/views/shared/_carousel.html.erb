@@ -1,35 +1,17 @@
-<% if images.size.positive? %>
-<div id="carouselExampleControls" class="relative carousel slide w-full h-[300px] rounded-lg overflow-hidden" data-bs-ride="carousel">
-  <div id="the-carousel">
-    <div class="relative w-full overflow-hidden carousel-inner">
-      <% images.each_with_index do |url, i| %>
-        <div class="relative float-left w-full carousel-item <%= "active" if i.zero? %>">
-          <img
-            src="<%= url %>"
-            class="block object-cover object-center w-full rounded-lg"
-            alt="Missing Image"
-          />
-        </div>
-      <% end %>
-    </div>
-    <button
-      class="absolute top-0 bottom-0 left-0 flex items-center justify-center p-0 text-center border-0 carousel-control-prev hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
-      type="button"
-      data-bs-target="#carouselExampleControls"
-      data-bs-slide="prev"
-    >
-      <span class="inline-block bg-no-repeat carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button
-      class="absolute top-0 bottom-0 right-0 flex items-center justify-center p-0 text-center border-0 carousel-control-next hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
-      type="button"
-      data-bs-target="#carouselExampleControls"
-      data-bs-slide="next"
-    >
-      <span class="inline-block bg-no-repeat carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+<div id="the-carousel" class="relative w-full h-[300px]">
+  <div class="absolute bottom-0 text-3xl text-white bg-[rgba(50,50,50,0.5)] z-10 p-2 rounded animate__animated animate__pulse"><i class="las la-chevron-circle-down"></i></div>
+  <button class="absolute top-0 left-0 z-20 text-3xl rounded btn-primary" data-action="click->place-show#showImageForm" data-place-show-target="addImgBtn">
+    <i class="las la-plus-circle"> </i>
+    <i class="las la-camera-retro"></i>
+  </button>
+  <div class="relative w-full rounded overflow-x-scroll h-[300px]">
+    <% images.each_with_index do |url, i| %>
+      <img
+        src="<%= url %>"
+        class="block object-cover w-full !w-full h-[300px]"
+        alt="Missing Image"
+        loading="lazy"
+      />
+    <% end %>
   </div>
 </div>
-<% end %>
