@@ -5,10 +5,11 @@ import { drawRoute } from "lib/draw-route";
 import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 export default class extends Controller {
-  static targets = ["visit", "tooFar", "fileInput", "input"];
+  static targets = ["visit", "tooFar", "fileInput", "input", "addImgBtn"];
 
   connect() {
     this.tooFarTarget.classList.add("hidden");
+    document.getElementById("the-carousel").appendChild(this.addImgBtnTarget);
   }
   checkin() {
     const validate = () => {
@@ -42,8 +43,12 @@ export default class extends Controller {
     }, 400);
   }
 
-  showImageForm() {
+  showImageForm(e) {
+    this.imageBtn = e.currentTarget
+    this.imageBtn.classList.add("hidden");
     this.fileInputTarget.classList.remove("hidden");
+    document.getElementById("carousel-image-preview").classList.remove("hidden");
+    document.getElementById("the-carousel").classList.add("hidden");
   }
   async takeMeThere(e) {
     const type = e.currentTarget.dataset.type;
@@ -73,8 +78,19 @@ export default class extends Controller {
     window.open(url, "_blank");
   }
 
+  hideFileInput(e) {
+    e.preventDefault()
+    this.fileInputTarget.classList.add("hidden");
+    document.getElementById("the-carousel").classList.remove("hidden");
+    document.getElementById("carousel-image-preview").classList.add("hidden");
+    document.getElementById("carousel-image-preview").innerHTML = "";
+    this.imageBtn.classList.remove("hidden");
+  }
   saveFile() {
     this.fileInputTarget.classList.add("hidden");
+    document.getElementById("the-carousel").classList.remove("hidden");
+    document.getElementById("carousel-image-preview").classList.add("hidden");
     document.getElementById("carousel-image-preview").innerHTML = "";
+    this.imageBtn.classList.remove("hidden");
   }
 }

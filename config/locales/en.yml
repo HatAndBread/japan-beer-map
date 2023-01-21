@@ -47,6 +47,7 @@ en:
   friday: "Friday"
   saturday: "Saturday"
   sunday: "Sunday"
+  cancel: "Cancel"
   nav:
     home: "Home"
     map: "Map"

@@ -45,7 +45,6 @@ export default class extends Controller {
   }
 
   clearPreview() {
-    console.log("hi")
     this.previewTarget.innerHTML = "";
   }
 

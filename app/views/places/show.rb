@@ -17,62 +17,75 @@ module Views
               i(class: "las la-window-close")
             end
           end
-          div(class: "flex flex-col max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg") do
+          div(class: "flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg") do
             div(class: "flex items-center lg:items-start flex-col lg:flex-row") do
-              div(class: "lg:w-[50%]") do
-                render "shared/carousel", images: @place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos
-              end
-              div(class: "lg:w-full") do
-                h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
-                  span(class: "block xl:inline text-center") { @place.name }
-                end
-                ul(class: "flex w-full justify-around mt-[8px]") do
-                  li(class: "flex") do
-                    text "#{helpers.t("place.show.bottle_shop")}: "
-                    @place.is_shop? ? img(src: helpers.image_path("ok.svg"), width: 24) : img(src: helpers.image_path("no.svg"), width: 24)
+              div(class: "w-full relative") do
+                div(class: "w-full flex justify-center") do
+                  render "shared/carousel", images: (@place.photos.empty? && @place.google_photos.empty?) ? [helpers.image_path("bg.png")] : @place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos
+                  button(class: "left-0 top-0 btn-primary text-3xl rounded absolute z-20", data_action: "click->place-show#showImageForm", data_place_show_target: "addImgBtn") do
+                    i(class: "las la-plus-circle")
+                    i(class: "las la-camera-retro")
                   end
-                  li(class: "flex") do
-                    text "#{helpers.t("place.show.brewery")}: "
-                    @place.is_brewery? ? img(src: helpers.image_path("ok.svg"), width: 24) : img(src: helpers.image_path("no.svg"), width: 24)
-                  end
-                  li(class: "flex") do
-                    text "#{helpers.t("place.show.has_food")}: "
-                    @place.has_food? ? img(src: helpers.image_path("ok.svg"), width: 24) : img(src: helpers.image_path("no.svg"), width: 24)
-                  end
-                end
-                if @place.website
-                  div(class: "w-full flex justify-center mt-[8px]") do
-                    a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline text-lg", href: @place.website, target: "_blank") do
-                      text "Website"
-                      svg(aria_hidden: "true", class: "w-5 h-5 ml-1", fill: "currentColor", viewbox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg") do
-                        path fill_rule: "evenodd", d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z", clip_rule: "evenodd"
-                      end
+                  div(data_place_show_target: "fileInput", class: "hidden w-full max-w-[400px]") do
+                    form_with(model: @place) do |f|
+                      f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input", place_show_target: "input"}
+                      render "shared/file_input"
+                      f.submit helpers.t("save"), class: "btn-primary mr-8", data: { action: "click->place-show#saveFile" }
+                      f.button helpers.t("cancel"), class: "btn-secondary", data: { action: "click->place-show#hideFileInput" }
                     end
                   end
                 end
               end
-            end
-            div(class: "bg-red-100 text-red-600 hidden", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
-            turbo_frame(id: "visit") do
-              form_with(model: Visit.new(place: @place), class: "hidden") do |f|
-                f.text_field(:place_id, readonly: "readonly")
-                f.submit(data: {place_show_target: "visit"})
+              div(class: "w-fit lg:w-full flex flex-col items-start mt-4") do
+                h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
+                  span(class: "block xl:inline text-center") { @place.name }
+                end
+                ul(class: "flex w-full justify-around items-center mt-[8px] text-gray-500 shadow rounded-lg border h-[2em]") do
+                  li(class: "flex border-r w-full h-full items-center justify-center whitespace-nowrap") do
+                    div(class: "mr-2") { "#{helpers.t("place.show.bottle_shop")}: " }
+                    @place.is_shop? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
+                  end
+                  li(class: "flex border-r w-full h-full items-center justify-center whitespace-nowrap") do
+                    div(class: "mr-2") { "#{helpers.t("place.show.brewery")}: " }
+                    @place.is_brewery? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
+                  end
+                  li(class: "flex w-full h-full items-center justify-center whitespace-nowrap") do
+                    div(class: "mr-2") { "#{helpers.t("place.show.has_food")}: " }
+                    @place.has_food? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
+                  end
+                end
               end
             end
-            div(data_place_show_target: "fileInput", class: "hidden") do
-              form_with(model: @place) do |f|
-                f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input", place_show_target: "input"}
-                render "shared/file_input"
-                f.submit helpers.t("save"), class: "btn-primary", data: {action: "click->place-show#saveFile" }
+            div(class: "mt-4 ml-2 flex flex-col gap-4") do
+              div(class: "bg-red-100 text-red-600 hidden p-2 rounded", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
+              turbo_frame(id: "visit") do
+                form_with(model: Visit.new(place: @place), class: "hidden") do |f|
+                  f.text_field(:place_id, readonly: "readonly")
+                  f.submit(data: {place_show_target: "visit"})
+                end
               end
-            end
-            button(class: "btn-primary", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
-            button(class: "btn-primary", data_action: "click->place-show#showImageForm") { "Add Images" }
-            span(class: "isolate inline-flex rounded-md shadow-sm") do
-              button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
-              button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
-              button(title: "Drive there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-car") }
-              button(title: "Use Google Maps", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThereWithGoogle") { i(class: "lab la-google") }
+              button(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
+              # Website
+              if @place.website
+                div(class: "") do
+                  a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: @place.website, target: "_blank") do
+                    text "Website"
+                    svg(aria_hidden: "true", class: "w-5 h-5 ml-1", fill: "currentColor", viewbox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg") do
+                      path fill_rule: "evenodd", d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z", clip_rule: "evenodd"
+                    end
+                  end
+                end
+              end
+              # Directions
+              div(class: "flex flex-col gap-2") do
+                div(class: "text-gray-500 underline") { "Get Directions" }
+                span(class: "isolate inline-flex rounded-md") do
+                  button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
+                  button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
+                  button(title: "Drive there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-car") }
+                  button(title: "Use Google Maps", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThereWithGoogle") { i(class: "lab la-google") }
+                end
+              end
             end
             render Views::Reviews.new(place: @place)
           end

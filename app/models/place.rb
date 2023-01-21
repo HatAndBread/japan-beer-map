@@ -1,5 +1,6 @@
 class Place < ApplicationRecord
   has_many :reviews, -> { order(time: :desc) }, dependent: :destroy
+  has_many :visits, -> { order(time: :desc) }, dependent: :destroy
   has_many_attached :photos
   belongs_to :user, optional: true
   after_commit :clear_cache!, on: [:create, :update, :destroy]
