@@ -28,7 +28,7 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find(params[:id])
     @place.update(update_params)
-    redirect_to root_path
+    respond_to { |format| format.turbo_stream }
   end
 
   private

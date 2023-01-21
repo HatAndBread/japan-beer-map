@@ -9,6 +9,15 @@ module Views
 
     def template
       meta(data_geo_json: @geo_json, id: "geo-json")
+      div(id: "map-loader", class: "hidden top-0 w-screen h-screen fixed z-[100] flex items-center justify-center bg-[rgba(50,50,50,0.5)]") do
+        div(class: "translate-y-[-104px] flex text-white md:text-xl flex-col items-center") do
+          img(class: "mb-4 h-[88px]", src: helpers.image_path("puff.svg"))
+          span(class: "flex items-end") do
+            text("Finding your location. Please wait")
+            img(class: "ml-2 w-[18px] translate-y-[-6px]", src: helpers.image_path("three-dots.svg"))
+          end
+        end
+      end
       div(data_controller: "map", class: "w-screen flex justify-center") do
         div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden relative") do
           render MapControls.new

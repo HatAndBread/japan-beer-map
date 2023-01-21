@@ -2,10 +2,13 @@
 export const useUserLocation = (callback) => {
   if (window.userLocation) return callback(window.userLocation);
 
+  const loader = document.getElementById("map-loader");
+  loader.classList.remove("hidden");
   navigator.geolocation.watchPosition(update);
   const interval = setInterval(() => {
     if (window.userLocation) {
       clearInterval(interval);
+      loader.classList.add("hidden");
       callback(window.userLocation);
     }
   }, 10);

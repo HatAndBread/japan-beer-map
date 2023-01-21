@@ -5,14 +5,14 @@ import { drawRoute } from "lib/draw-route";
 import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 export default class extends Controller {
-  static targets = ["visit", "tooFar", "fileInput"];
+  static targets = ["visit", "tooFar", "fileInput", "input"];
 
   connect() {
     this.tooFarTarget.classList.add("hidden");
   }
   checkin() {
     const validate = () => {
-      const {lng, lat} = window.userLocation;
+      const { lng, lat } = window.userLocation;
       const p = this.place();
       const d = distance(lng, lat, p.lng, p.lat);
       if (d < 3) {
@@ -26,7 +26,7 @@ export default class extends Controller {
     };
     useUserLocation(() => {
       validate();
-    })
+    });
   }
 
   place() {
@@ -51,7 +51,7 @@ export default class extends Controller {
       const lng = window.userLocation.lng;
       const lat = window.userLocation.lat;
       const p = this.place();
-      const {distance, duration, geojson} = await window.getDirections(
+      const { distance, duration, geojson } = await window.getDirections(
         type,
         lng,
         lat,
@@ -59,14 +59,22 @@ export default class extends Controller {
         p.lat
       );
       drawRoute(geojson);
-      fitMapToBounds([lng, p.lat], [p.lng, lat])
+      fitMapToBounds([lng, p.lat], [p.lng, lat]);
       this.close();
-    }
+    };
     useUserLocation(() => {
       handler();
     });
   }
 
-  async takeMeThereWithGoogle() {
+  takeMeThereWithGoogle() {
+    const {lng, lat} = this.place();
+    const url = `https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`;
+    window.open(url, "_blank");
+  }
+
+  saveFile() {
+    this.fileInputTarget.classList.add("hidden");
+    document.getElementById("carousel-image-preview").innerHTML = "";
   }
 }

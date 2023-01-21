@@ -11,7 +11,7 @@ module Views
 
     def template
       turbo_frame(id: "place_being_viewed", class: "relative") do
-        div(class: "relative top-0 w-full h-full z-20 bg-gray-50 border-t border-t-indigo-200 overflow-scroll animate__animated animate__zoomIn", data_controller: "place-show", data_action: "place-show:checkin->map#updateUserLocation", data_place: @place.to_json) do
+        div(class: "relative top-0 w-full h-full z-20 bg-gray-50 border-t border-t-indigo-200 overflow-scroll animate__animated animate__zoomIn", data_controller: "place-show", data_place: @place.to_json) do
           div(class: "w-full flex justify-end") do
             button(class: "text-4xl text-indigo-600 hover:text-indigo-800 pt-2 pr-2 transition", title: "close", data_action: "click->place-show#close") do
               i(class: "las la-window-close")
@@ -61,9 +61,9 @@ module Views
             end
             div(data_place_show_target: "fileInput", class: "hidden") do
               form_with(model: @place) do |f|
-                f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input"}
+                f.file_field :photos, accept: "image/*", as: :file, multiple: true, class: "hidden", data: {file_target: "input", place_show_target: "input"}
                 render "shared/file_input"
-                f.submit helpers.t("save"), class: "btn-primary"
+                f.submit helpers.t("save"), class: "btn-primary", data: {action: "click->place-show#saveFile" }
               end
             end
             button(class: "btn-primary", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
@@ -71,7 +71,8 @@ module Views
             span(class: "isolate inline-flex rounded-md shadow-sm") do
               button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
               button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
-              button(title: "Be taken there", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-bus") }
+              button(title: "Drive there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-car") }
+              button(title: "Use Google Maps", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThereWithGoogle") { i(class: "lab la-google") }
             end
             render Views::Reviews.new(place: @place)
           end

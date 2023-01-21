@@ -18,8 +18,6 @@ export default class extends Controller {
     this.labelTarget.classList.remove("animate__animated", "animate__pulse")
     const files = new DataTransfer();
     const input = this.getInput();
-    if (input.multiple)
-      Array.from(input.files).forEach((f) => files.items.add(f));
     if (e.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
       [...e.dataTransfer.items].forEach((item, i) => {
@@ -44,6 +42,11 @@ export default class extends Controller {
   handleFileInput() {
     const input = this.getInput();
     this.appendImages(input.files);
+  }
+
+  clearPreview() {
+    console.log("hi")
+    this.previewTarget.innerHTML = "";
   }
 
   appendImages(files) {

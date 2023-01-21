@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
 import debounce from "lodash.debounce";
 import { useUserLocation } from "lib/use-user-location";
+import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 const startLngLat = [139.6503, 35.6762];
 const maxBounds = [
@@ -165,7 +166,7 @@ export default class extends Controller {
       this.findMeTarget.children[0].classList.remove("hidden");
       useUserLocation(() => {
         this.flyToUser();
-      })
+      });
     }
   }
 
@@ -192,20 +193,14 @@ export default class extends Controller {
 
   nearestBeer() {
     const goToNearest = (closest) => {
-      this.nearestBeerTarget.children[0].classList.add("hidden");
       window.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 18,
       });
     };
-    if (window.userLocation) {
-      goToNearest(this._nearestBeer(window.userLocation));
-    } else {
-      this.nearestBeerTarget.children[0].classList.remove("hidden");
-      useUserLocation((location) => {
-        goToNearest(this._nearestBeer(location));
-      })
-    }
+    useUserLocation((location) => {
+      goToNearest(this._nearestBeer(location));
+    });
   }
 
   _nearestBeer(location) {

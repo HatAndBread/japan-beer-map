@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "the-carousel" do %>
+  <%= render "shared/carousel", images: @place.photos.map { |p| cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos %>
+<% end %>
