@@ -62,7 +62,7 @@ module Views
                   f.submit(data: {place_show_target: "visit"})
                 end
               end
-              button(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
+              button(class: "inline-flex items-center font-medium text-indigo-600 hover:underline w-fit", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
               # Website
               if @place.website
                 div(class: "") do
