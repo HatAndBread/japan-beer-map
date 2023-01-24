@@ -47,7 +47,7 @@ def seed_places
       attrs = {
         user:,
         place: p,
-        text: review[:text],
+        text: review[:text].delete("\n"),
         rating: review[:rating],
         time: Time.at(review[:time].to_i),
         language: review[:language]
