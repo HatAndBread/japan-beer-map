@@ -14,7 +14,7 @@ module Views
         if @place.approved
           p { "Place already approved. No action needs to be taken." }
         else
-          div(class: "", data_controller: "place-show", data_place: @place.to_json) do
+          div(class: "", data_place: @place.to_json) do
             h1(class: "") { @place.name }
             pre do
               code(class: ""){ JSON.pretty_generate(@place.attributes) }

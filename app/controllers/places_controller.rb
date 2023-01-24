@@ -1,5 +1,6 @@
 class PlacesController < ApplicationController
   before_action :authenticate_needing_approval!, only: [:show]
+  before_action :authenticate_user!, only: [:new, :create, :update]
 
   def show
     render Views::Places::Show.new(place: @place)
@@ -11,14 +12,15 @@ class PlacesController < ApplicationController
 
   def create
     @place = Place.new(place_params)
+    @place.periods = JSON.parse(@place.periods)
     @place.approved = !!current_user&.admin?
-    @place.save!
-    if @place
-      flash[:notice] = "Place successfully submitted. We will approve your submission soon."
+    result = @place.save!
+    if result
+      flash[:notice] = current_user.admin? ? "New place added with admin privileges" : "Place successfully submitted. We will approve your submission soon."
     else
       flash[:alert] = "A server error prevented submission of this business. Please try again later."
     end
-    redirect_to root_path
+    redirect_to map_path
     return if current_user&.admin?
     User.where(admin: true).each do |admin|
       UserMailer.new_place_admin_review(admin, @place).deliver_now

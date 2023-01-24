@@ -136,6 +136,7 @@ export default class extends Controller {
 
   addPlaceLayer(geoJson) {
     const map = window.map;
+    if (map.getSource("point")) return;
     map.addSource("point", geoJson);
 
     map.addLayer({

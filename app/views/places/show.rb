@@ -18,6 +18,9 @@ module Views
             end
           end
           div(class: "flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg") do
+            div(class: "w-full flex justify-end") do
+              a(class: "mb-2 text-indigo-600 hover:text-idigo-800 hover:underline transition text-lg", href: helpers.place_place_updates_path(@place)) { "Update Info" }
+            end
             div(class: "flex items-center lg:items-start flex-col lg:flex-row w-full") do
               div(class: "w-full relative") do
                 div(class: "w-full flex justify-center") do

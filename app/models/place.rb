@@ -50,10 +50,19 @@ class Place < ApplicationRecord
 
   def owner = user
 
+  def open_time_for_day(day) = time_for_day(day, "open")
+
+  def close_time_for_day(day) = time_for_day(day, "close")
+
   private
 
   def clear_cache!
     Rails.cache.delete("all_places")
     Rails.cache.delete("geo_json")
+  end
+
+  def time_for_day(day, open_or_close)
+    return unless periods
+    periods.find { |h| h.dig(open_or_close, "day") == day.to_i }.try(:dig, open_or_close, "time")&.insert(2, ":")
   end
 end

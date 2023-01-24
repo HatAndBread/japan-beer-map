@@ -18,11 +18,15 @@ Rails.application.routes.draw do
   resources :profiles, only: [:show, :edit, :update]
   resources :places do
     resources :reviews, only: [:create, :edit, :show]
+    resources :place_updates, only: [:index, :update]
   end
   resources :visits, only: [:create, :index]
 
   get "admin", to: "admin#index"
   namespace :admin do
     resources :places, only: [:show, :update, :destroy]
+    resources :place_updates, only: [:show, :update, :destroy] do
+      get "merge", to: "merge"
+    end
   end
 end

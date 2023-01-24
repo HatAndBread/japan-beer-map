@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_18_131209) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_24_000114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_18_131209) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "place_updates", force: :cascade do |t|
+    t.text "text"
+    t.bigint "place_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "website"
+    t.jsonb "periods"
+    t.string "name"
+    t.string "address"
+    t.string "phone"
+    t.string "has_food"
+    t.string "is_shop"
+    t.string "is_brewery"
+    t.index ["place_id"], name: "index_place_updates_on_place_id"
   end
 
   create_table "places", force: :cascade do |t|
@@ -112,6 +128,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_18_131209) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "place_updates", "places"
   add_foreign_key "places", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "reviews", "places"
