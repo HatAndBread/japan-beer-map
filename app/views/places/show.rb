@@ -37,6 +37,7 @@ module Views
                   end
                 end
               end
+              # Business type
               div(class: "w-full lg:p-2 flex flex-col items-start mt-4") do
                 h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
                   span(class: "block xl:inline text-center") { @place.name }
@@ -57,41 +58,67 @@ module Views
                 end
               end
             end
-            div(class: "mt-4 flex flex-col gap-4") do
-              div(class: "bg-red-100 text-red-600 hidden p-2 rounded", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
-              turbo_frame(id: "visit") do
-                form_with(model: Visit.new(place: @place), class: "hidden") do |f|
-                  f.text_field(:place_id, readonly: "readonly")
-                  f.submit(data: {place_show_target: "visit"})
+            div(class: "flex flex-col lg:flex-row lg:gap-4") do
+              div(class: "w-full") do
+                # Check in
+                div(class: "mt-4 flex flex-col gap-4") do
+                  div(class: "bg-red-100 text-red-600 hidden p-2 rounded", data_place_show_target: "tooFar") { helpers.t("place.show.too_far") }
+                  turbo_frame(id: "visit") do
+                    form_with(model: Visit.new(place: @place), class: "hidden") do |f|
+                      f.text_field(:place_id, readonly: "readonly")
+                      f.submit(data: {place_show_target: "visit"})
+                    end
+                  end
+                  button(class: "inline-flex items-center font-medium text-indigo-600 hover:underline w-fit", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
+                  # Website
+                  if @place.website
+                    div(class: "") do
+                      a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: @place.website, target: "_blank") do
+                        text "Website"
+                        svg(aria_hidden: "true", class: "w-5 h-5 ml-1", fill: "currentColor", viewbox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg") do
+                          path fill_rule: "evenodd", d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z", clip_rule: "evenodd"
+                        end
+                      end
+                    end
+                  end
+                  # Directions
+                  div(class: "flex flex-col gap-2") do
+                    div(class: "text-gray-500 underline") { "Get Directions" }
+                    span(class: "isolate inline-flex rounded-md") do
+                      button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
+                      button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
+                      button(title: "Drive there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-car") }
+                      button(title: "Use Google Maps", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThereWithGoogle") { i(class: "lab la-google") }
+                    end
+                  end
                 end
-              end
-              button(class: "inline-flex items-center font-medium text-indigo-600 hover:underline w-fit", data_action: "click->place-show#checkin") { helpers.t("place.show.check_in") }
-              # Website
-              if @place.website
-                div(class: "") do
-                  a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: @place.website, target: "_blank") do
-                    text "Website"
-                    svg(aria_hidden: "true", class: "w-5 h-5 ml-1", fill: "currentColor", viewbox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg") do
-                      path fill_rule: "evenodd", d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z", clip_rule: "evenodd"
+                # Time-table
+                ul(role: "list", class: "divide-y divide-gray-200 text-gray-600 lg:w-full w-[300px]") do
+                  7.times do |n|
+                    li(class: "py-4 flex justify-between w-full") do
+                      span(class: "font-semibold") { days[n] }
+                      div do
+                        span(class: "mr-1") { @place.open_time_for_day(n) }
+                        span(class: "mr-1") { "-" }
+                        span(class: "") { @place.close_time_for_day(n) }
+                      end
                     end
                   end
                 end
               end
-              # Directions
-              div(class: "flex flex-col gap-2") do
-                div(class: "text-gray-500 underline") { "Get Directions" }
-                span(class: "isolate inline-flex rounded-md") do
-                  button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
-                  button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
-                  button(title: "Drive there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "driving") { i(class: "las la-car") }
-                  button(title: "Use Google Maps", class: "relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThereWithGoogle") { i(class: "lab la-google") }
-                end
+              div(class: "w-full") do
+                render Views::Reviews.new(place: @place)
               end
             end
-            render Views::Reviews.new(place: @place)
           end
         end
       end
+    end
+
+    private
+
+    def days
+      [helpers.t("sunday"), helpers.t("monday"), helpers.t("tuesday"), helpers.t("wednesday"), helpers.t("thurday"), helpers.t("friday"), helpers.t("saturday")]
     end
   end
 end

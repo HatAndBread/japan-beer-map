@@ -5,7 +5,7 @@ module Views
     end
 
     def template
-      div(class: "mt-16") do
+      div(class: "mt-4") do
         h2(class: "sr-only") { "Customer Reviews" }
         div(id: "the-comment") do
           render "shared/comment_box", review: Review.new unless @place.reviewed_by?(helpers.current_user)
