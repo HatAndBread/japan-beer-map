@@ -31,6 +31,8 @@ gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "whenever", require: false
+
 gem "awesome_print"
 
 gem "cloudinary", "~> 1.2", ">= 1.2.2"
