@@ -30,11 +30,12 @@ function update(position) {
   );
   if (!locationMarkerElement) return;
 
-  locationMarkerElement.style.transform = `rotate(${window.userHeading}deg)`;
+  // locationMarkerElement.style.transform = `rotate(${window.userHeading}deg)`;
   locationMarkerElement.classList.remove("hidden");
   if (window.userLocationMarker) window.userLocationMarker.remove();
 
   window.userLocationMarker = new mapboxgl.Marker(locationMarkerElement)
     .setLngLat(window.userLocation)
-    .addTo(window.map);
+    .addTo(window.map)
+    .setRotation(window.userHeading)
 };
