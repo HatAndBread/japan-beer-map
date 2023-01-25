@@ -235,7 +235,7 @@ export default class extends Controller {
     const listener = () => {
       document.getElementById(`place_${markerDiv.dataset.id}`).children[0].click();
     }
-    markerDiv.addEventListener("click", listener)
+    markerDiv.addEventListener("touchend", listener)
     const handleMouseMove = debounce((e) => {
       const features = map.queryRenderedFeatures(e.point);
       if (features[0] && features[0].source === "point") {
