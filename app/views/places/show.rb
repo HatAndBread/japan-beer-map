@@ -19,9 +19,16 @@ module Views
           end
           div(class: "flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg overflow-scroll h-[84%]") do
             div(class: "w-full flex justify-end") do
-              a(class: "mb-2 text-indigo-600 hover:text-idigo-800 hover:underline transition text-lg", href: helpers.place_place_updates_path(@place)) { "Update Info" }
+              a(class: "text-indigo-600 hover:text-idigo-800 hover:underline transition text-lg p-0", href: helpers.place_place_updates_path(@place)) { "Update Info" }
             end
-            div(class: "flex items-center lg:items-start flex-col lg:flex-row w-full") do
+            # Business Name
+            div(class: "w-full lg:p-2 flex flex-col items-start mt-4") do
+              h1(class: "text-2xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
+                span(class: "block xl:inline text-center") { @place.name }
+              end
+            end
+            # Image
+            div(class: "mb-4 flex items-center lg:items-start flex-col lg:flex-row w-full") do
               div(class: "w-full relative") do
                 div(class: "w-full flex justify-center") do
                   render "shared/carousel", images: (@place.photos.empty? && @place.google_photos.empty?) ? [helpers.image_path("bg.png")] : @place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + @place.google_photos
@@ -34,26 +41,6 @@ module Views
                         f.submit helpers.t("save"), class: "btn-primary", data: { action: "click->place-show#saveFile" }
                       end
                     end
-                  end
-                end
-              end
-              # Business type
-              div(class: "w-full lg:p-2 flex flex-col items-start mt-4") do
-                h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl w-full flex justify-center") do
-                  span(class: "block xl:inline text-center") { @place.name }
-                end
-                ul(class: "flex w-full justify-around items-center mt-[8px] text-gray-500 shadow rounded-lg border h-[2em]") do
-                  li(class: "flex border-r w-full h-full items-center justify-center whitespace-nowrap") do
-                    div(class: "mr-2") { "#{helpers.t("place.show.bottle_shop")}: " }
-                    @place.is_shop? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
-                  end
-                  li(class: "flex border-r w-full h-full items-center justify-center whitespace-nowrap") do
-                    div(class: "mr-2") { "#{helpers.t("place.show.brewery")}: " }
-                    @place.is_brewery? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
-                  end
-                  li(class: "flex w-full h-full items-center justify-center whitespace-nowrap") do
-                    div(class: "mr-2") { "#{helpers.t("place.show.has_food")}: " }
-                    @place.has_food? ? img(src: helpers.image_path("ok.svg"), width: 16, height: 16) : img(src: helpers.image_path("no.svg"), width: 16)
                   end
                 end
               end

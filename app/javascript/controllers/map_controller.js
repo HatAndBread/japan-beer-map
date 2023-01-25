@@ -221,10 +221,10 @@ export default class extends Controller {
     const markerDiv = document.createElement("div");
     const triangle = document.createElement("div");
     markerDiv.className =
-      "relative hidden p-2 rounded pointer-events-none bg-slate-800 text-slate-50";
+      "relative hidden p-2 text-xl bg-white rounded pointer-events-none drop-shadow-lg text-slate-800";
     triangle.className =
-      "w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_14px)]";
-    const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -48] })
+      "w-0 h-0 border-t-[10px] border-t-white border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_14px)]";
+    const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -104] })
       .setLngLat(startLngLat)
       .addTo(map);
     map.on(
@@ -239,7 +239,15 @@ export default class extends Controller {
         const coordinates = { lng: properties.lng, lat: properties.lat };
         marker.setLngLat(coordinates);
         markerDiv.classList.remove("hidden");
-        markerDiv.innerText = `${properties.name}`;
+        markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
+        const types = document.createElement("pre");
+        types.className = "font-sans"
+        types.innerText = `Brewery: ${properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"}\nBottle Shop: ${properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"}\nFood: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`
+        const instructions = document.createElement("div");
+        instructions.innerText = "Click for more info"
+        instructions.className = "text-sm"
+        markerDiv.appendChild(types);
+        markerDiv.appendChild(instructions);
         markerDiv.appendChild(triangle);
       }
     });
