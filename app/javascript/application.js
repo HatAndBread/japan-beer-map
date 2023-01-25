@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails";
 import "controllers";
+import "custom/companion"
 
 document.addEventListener("turbo:load", () => {
   // Each time turbo fires remove flashes if they exist

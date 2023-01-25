@@ -29,4 +29,7 @@ Rails.application.routes.draw do
       get "merge", to: "merge"
     end
   end
+
+  get "/service-worker.js" => "service_worker#service_worker"
+  get "/manifest.json" => "service_worker#manifest"
 end
