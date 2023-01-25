@@ -12,14 +12,11 @@ module Views
     def template
       turbo_frame(id: "place_being_viewed", class: "relative") do
         div(class: "relative top-0 w-full h-full z-20 bg-[rgba(50,50,50,0.6)] border-t border-t-indigo-200 animate__animated animate__zoomIn flex items-center justify-center", data_controller: "place-show", data_place: @place.to_json) do
-          div(class: "absolute top-0 right-0") do
-            button(class: "text-5xl text-indigo-50 hover:text-indigo-400 font-bold pt-2 pr-2 transition", title: "close", data_action: "click->place-show#close") do
-              i(class: "las la-window-close")
-            end
-          end
-          div(class: "flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg overflow-scroll h-[84%]") do
-            div(class: "w-full flex justify-end") do
-              a(class: "text-indigo-600 hover:text-idigo-800 hover:underline transition text-lg p-0", href: helpers.place_place_updates_path(@place)) { "Update Info" }
+          div(class: "relative flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg overflow-scroll h-[90%]") do
+            div(class: "sticky top-0 w-full pointer-events-none") do
+              button(class: "absolute lg:right-[-56px] right-[-36px] top-[-32px] lg:top-[-56px] text-3xl text-indigo-600 hover:text-indigo-800 font-bold pt-2 pr-2 transition pointer-events-auto", title: "close", data_action: "click->place-show#close") do
+                i(class: "las la-window-close")
+              end
             end
             # Business Name
             div(class: "w-full lg:p-2 flex flex-col items-start mt-4") do
@@ -67,6 +64,9 @@ module Views
                       f.text_field(:place_id, readonly: "readonly")
                       f.submit(data: {place_show_target: "visit"})
                     end
+                  end
+                  div(class: "mt-2") do
+                    a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: helpers.place_place_updates_path(@place)) { "Update Info" }
                   end
                   # Website
                   if @place.website
