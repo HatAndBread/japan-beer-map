@@ -12,7 +12,7 @@ module Views
     def template
       turbo_frame(id: "place_being_viewed", class: "relative") do
         div(class: "relative top-0 w-full h-full z-20 bg-[rgba(50,50,50,0.6)] border-t border-t-indigo-200 animate__animated animate__zoomIn flex items-center justify-center", data_controller: "place-show", data_place: @place.to_json) do
-          div(class: "relative flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg overflow-scroll h-[90%]") do
+          div(class: "relative flex flex-col w-[90%] max-w-[1000px] mx-auto w-full lg:p-[64px] p-[32px] border border-indigo-200 bg-white rounded-lg overflow-x-hidden overflow-y-scroll h-[90%]") do
             div(class: "sticky top-0 w-full pointer-events-none") do
               button(class: "absolute lg:right-[-56px] right-[-36px] top-[-32px] lg:top-[-56px] text-3xl text-indigo-600 hover:text-indigo-800 font-bold pt-2 pr-2 transition pointer-events-auto", title: "close", data_action: "click->place-show#close") do
                 i(class: "las la-window-close")
@@ -81,7 +81,7 @@ module Views
                   end
                 end
                 # Time-table
-                ul(role: "list", class: "mt-2 divide-y divide-gray-200 text-gray-600 lg:w-full w-[300px]") do
+                ul(role: "list", class: "mt-2 divide-y divide-gray-200 text-gray-600 w-full") do
                   7.times do |n|
                     li(class: "py-4 flex justify-between w-full") do
                       span(class: "font-semibold") { days[n] }
