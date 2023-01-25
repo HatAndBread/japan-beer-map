@@ -221,7 +221,7 @@ export default class extends Controller {
     const markerDiv = document.createElement("div");
     const triangle = document.createElement("div");
     markerDiv.className =
-      "relative hidden p-2 text-xl bg-white rounded pointer-events-none drop-shadow-lg text-slate-800";
+      "relative hidden p-2 text-xl bg-white rounded drop-shadow-lg text-slate-800";
     triangle.className =
       "w-0 h-0 border-t-[10px] border-t-white border-l-[10px] border-r-[10px] border-l-transparent border-r-transparent absolute bottom-[-10px] z-10 left-[calc(50%_-_14px)]";
     const marker = new mapboxgl.Marker(markerDiv, { offset: [0, -104] })
@@ -232,11 +232,16 @@ export default class extends Controller {
       "points",
       () => (map.getCanvas().style.cursor = "pointer")
     );
+    const listener = () => {
+      document.getElementById(`place_${markerDiv.dataset.id}`).children[0].click();
+    }
+    markerDiv.addEventListener("click", listener)
     const handleMouseMove = debounce((e) => {
       const features = map.queryRenderedFeatures(e.point);
       if (features[0] && features[0].source === "point") {
         const properties = features[0].properties;
         const coordinates = { lng: properties.lng, lat: properties.lat };
+        markerDiv.dataset.id = properties.id;
         marker.setLngLat(coordinates);
         markerDiv.classList.remove("hidden");
         markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
