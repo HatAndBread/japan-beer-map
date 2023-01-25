@@ -2,9 +2,15 @@
 export const useUserLocation = (callback) => {
   if (window.userLocation) return callback(window.userLocation);
 
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
   const loader = document.getElementById("map-loader");
   loader.classList.remove("hidden");
-  navigator.geolocation.watchPosition(update);
+  navigator.geolocation.watchPosition(update, error, options);
   const interval = setInterval(() => {
     if (window.userLocation) {
       clearInterval(interval);
@@ -23,6 +29,8 @@ function update(position) {
     lng: position.coords.longitude,
     lat: position.coords.latitude,
   };
+  console.log(position)
+  document.body.prepend(JSON.stringify(position.coords.heading))
   window.userHeading = position.coords.heading || 0;
 
   const locationMarkerElement = document.getElementById(
@@ -30,7 +38,6 @@ function update(position) {
   );
   if (!locationMarkerElement) return;
 
-  // locationMarkerElement.style.transform = `rotate(${window.userHeading}deg)`;
   locationMarkerElement.classList.remove("hidden");
   if (window.userLocationMarker) window.userLocationMarker.remove();
 
@@ -39,3 +46,7 @@ function update(position) {
     .addTo(window.map)
     .setRotation(window.userHeading)
 };
+
+function error(e) {
+  console.error(e);
+}
