@@ -1,4 +1,4 @@
-
+let lastHeading = 0;
 export const useUserLocation = (callback) => {
   if (window.userLocation) return callback(window.userLocation);
 
@@ -29,9 +29,8 @@ function update(position) {
     lng: position.coords.longitude,
     lat: position.coords.latitude,
   };
-  console.log(position)
-  document.body.prepend(JSON.stringify(position.coords.heading))
-  window.userHeading = position.coords.heading || 0;
+
+  if (typeof position.coords.heading === "number") lastHeading = position.coords.heading;
 
   const locationMarkerElement = document.getElementById(
     "user-location-element"
@@ -44,7 +43,7 @@ function update(position) {
   window.userLocationMarker = new mapboxgl.Marker(locationMarkerElement)
     .setLngLat(window.userLocation)
     .addTo(window.map)
-    .setRotation(window.userHeading)
+    .setRotation(lastHeading)
 };
 
 function error(e) {
