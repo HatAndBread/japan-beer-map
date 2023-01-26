@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
   def show
     review = Review.find(params[:id])
     render Views::Reviews::Show.new(review:)
