@@ -4,9 +4,9 @@ import debounce from "lodash.debounce";
 import { useUserLocation } from "lib/use-user-location";
 import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
-const startLngLat = [139.6503, 35.6762];
+const startLngLat = [136.6503, 38.6762];
 const maxBounds = [
-  [121.83031059936349, 20.705762031300967], // Southwest coordinates
+  [121, 20], // Southwest coordinates
   [154.74125158604622, 49.413834542307185], // Northeast coordinates
 ];
 
@@ -24,7 +24,7 @@ export default class extends Controller {
       container: "the-map",
       style: this.mapStyle(),
       center: startLngLat,
-      zoom: 9,
+      zoom: 4,
       maxBounds: maxBounds,
     });
     map.addControl(
