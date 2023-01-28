@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def avatar_for_place(place)
-    (place.photos.map { |p| cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + place.google_photos).first || helpers.image_path("bg.png")
+    (place.photos.map { |p| helpers.cl_image_path(p.key, height: 300, width: 400, crop: :fill) } + place.google_photos).first || helpers.image_path("bg.png")
   end
 
   protected
