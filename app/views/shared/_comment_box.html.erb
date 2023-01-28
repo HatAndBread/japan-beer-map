@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
-        <div class="flex items-center gap-1" data-controller="stars">
+        <div class="flex items-center" data-controller="stars">
           <!-- stars -->
           <% 5.times do |i|%>
             <div data-stars-target="star<%=i + 1%>" class="cursor-pointer" data-action="click->stars#starClick" data-star="<%= i + 1%>">

@@ -2,7 +2,7 @@ class VisitsController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
 
   def index
-    visits = Visit.where(user_id: current_user.id)
+    visits = Visit.where(user_id: current_user.id).includes(:place)
     render Views::Visits::Index.new(visits:)
   end
 

@@ -44,7 +44,7 @@ module Views
             end
             div(class: "flex flex-col lg:flex-row lg:gap-4") do
               div(class: "w-full") do
-                div(class: "mt-4 flex flex-col") do
+                div(class: "mt-4 flex flex-col text-lg") do
                   # Directions
                   div(class: "flex flex-col") do
                     div(class: "text-gray-500 underline") { "Get Directions" }
