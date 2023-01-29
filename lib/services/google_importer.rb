@@ -17,8 +17,10 @@ module Services
         next if Place.where(lng: place[:geometry][:location][:lng], lat: place[:geometry][:location][:lng]).exists?
 
         place = place_data(place)
+        google_photos = photos(place)
         reviews = place[:reviews]
         place = unsaved_place(place)
+        place.google_photos = google_photos
         dupes = possible_duplicates(place)
         puts "*************** Reviews ****************"
         ap reviews
@@ -27,6 +29,7 @@ module Services
         if dupes.any?
           puts "Possible duplicates!".red
           ap dupes
+          puts "Possible duplicates!!!!!".red
         end
         puts "Place #{i} out of #{data.size}".cyan
         puts place.google_maps_url
@@ -46,6 +49,11 @@ module Services
       result = JSON.parse(RestClient.get(url)).with_indifferent_access[:result]
       ap result
       result
+    end
+
+    def photos(place)
+      response = RestClient.get place[:url]
+      response.body.scan(/https:\/\/lh5\.googleusercontent\.com\/p\/\w+\\/).to_a.map{ |x| x.chop }
     end
 
     def get_data
@@ -90,10 +98,7 @@ module Services
       has_food ||= is_a.("food")
       is_shop = is_a.("liquor_store")
       is_brewery = name.downcase.match?(/brewery/) || name.downcase.match?(/jozo/)
-      google_photos = place[:photos]&.map do |photo|
-        photo.dig(:raw_reference, :fife_url)
-      end&.compact || []
-      data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, google_photos:, is_brewery:, approved: true}
+      data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, is_brewery:, approved: true}
       p = Place.new(data)
     end
   end
