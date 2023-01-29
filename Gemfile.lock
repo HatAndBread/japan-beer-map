@@ -328,6 +328,7 @@ DEPENDENCIES
   phlex-rails
   puma (~> 5.0)
   rails (~> 7.0.4)
+  rest-client
   rspec-rails (~> 6.0)
   rubocop-rails
   rubocop-rspec

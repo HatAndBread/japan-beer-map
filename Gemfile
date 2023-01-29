@@ -41,6 +41,8 @@ gem "http_accept_language"
 
 gem "devise", "~> 4.8"
 
+gem "rest-client"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
