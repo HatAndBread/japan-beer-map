@@ -1,7 +1,11 @@
 module Services
   class GoogleImporter
-    def initialize(lat: 38.2682, lng: 140.8694, radius: 1000, query: "クラフトビール")
-      @places = Place.all
+    def initialize(lat:, lng:, radius:)
+      query = "クラフトビール"
+      lat ||= 38.2682
+      lng ||= 140.8694
+      radius ||= 2000
+      @places = Place.all;nil
       @url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat}%2C#{lng}&radius=#{radius}&keyword=#{CGI.escape(query)}&fields=formatted_address%2Cname%2Crating%2Ccurrent_opening_hours%2Cgeometry%2Cphotos%2Cbusiness_status%2Cformatted_phone_number%2Cwebsite&key=#{ENV["GOOGLE"]}"
     end
 
