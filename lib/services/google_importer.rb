@@ -19,7 +19,7 @@ module Services
 
         place = place_data(place)
         google_photos = photos(place)
-        reviews = place[:reviews]
+        reviews = place[:reviews] || []
         place = unsaved_place(place)
         place.google_photos = google_photos
         dupes = possible_duplicates(place)
