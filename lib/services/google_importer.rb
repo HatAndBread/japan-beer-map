@@ -7,6 +7,7 @@ module Services
       radius ||= 2000
       @places = Place.all;nil
       @url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat}%2C#{lng}&radius=#{radius}&keyword=#{CGI.escape(query)}&fields=formatted_address%2Cname%2Crating%2Ccurrent_opening_hours%2Cgeometry%2Cphotos%2Cbusiness_status%2Cformatted_phone_number%2Cwebsite&key=#{ENV["GOOGLE"]}"
+      @new_places = []
     end
 
     def start
@@ -36,24 +37,23 @@ module Services
         print "Do you want to save this place? "
         answer = gets.chomp!
         if answer.downcase == "y"
-          place.save!
-          save_reviews!(reviews, place)
+          @new_places << [place.attributes, review_attrs(reviews)]
         end
       end
+      puts "Here is the new place code!".cyan
+      puts "data = %|#{@new_places.to_json}|;data=JSON.parse(data);data.each{|p| o = Place.create!(p.first); p.second.each{|r| r = Review.new(r); r.place_id = o.id;r.save! }};"
     end
 
     private
 
     def place_data(place)
       url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=#{place[:place_id]}&key=#{ENV["GOOGLE"]}"
-      result = JSON.parse(RestClient.get(url)).with_indifferent_access[:result]
-      ap result
-      result
+      JSON.parse(RestClient.get(url)).with_indifferent_access[:result]
     end
 
     def photos(place)
       response = RestClient.get place[:url]
-      response.body.scan(/https:\/\/lh5\.googleusercontent\.com\/p\/\w+\\/).to_a.map{ |x| x.chop }
+      response.body.scan(/https:\/\/lh5\.googleusercontent\.com\/p\/\w+\\/).to_a.map { |x| x.chop }
     end
 
     def get_data
@@ -68,17 +68,15 @@ module Services
       end
     end
 
-    def save_reviews!(reviews, place)
-      reviews.each do |review|
-        attrs = {
-          user: User.where(email: "hello@beermap.jp").first,
-          place:,
+    def review_attrs(reviews)
+      reviews.map do |review|
+        {
+          user_id: User.where(email: "hello@beermap.jp").first.id,
           text: review[:text].delete("\n"),
           rating: review[:rating],
           time: Time.at(review[:time].to_i),
           language: review[:language]
         }
-        Review.create!(attrs)
       end
     end
 
@@ -99,7 +97,7 @@ module Services
       is_shop = is_a.("liquor_store")
       is_brewery = name.downcase.match?(/brewery/) || name.downcase.match?(/jozo/)
       data = {lng:, lat:, website:, google_maps_url:, periods:, name:, address:, phone:, google_place_id:, has_food:, is_shop:, is_brewery:, approved: true}
-      p = Place.new(data)
+      Place.new(data)
     end
   end
 end
