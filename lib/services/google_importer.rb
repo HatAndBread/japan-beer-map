@@ -41,7 +41,7 @@ module Services
         end
       end
       puts "Here is the new place code!".cyan
-      puts "data = %|#{@new_places.to_json}|;data=JSON.parse(data);data.each{|p| o = Place.create!(p.first); p.second.each{|r| r = Review.new(r); r.place_id = o.id;r.save! }};"
+      puts "data = %|#{@new_places.to_json}|;data=JSON.parse(data);data.each{|p| o = Place.create!(p.first); p.second.each{|r| r = Review.new(r); r.place_id = o.id;r.save! }};".remove("'")
     end
 
     private
@@ -72,7 +72,7 @@ module Services
       reviews.map do |review|
         {
           user_id: User.where(email: "hello@beermap.jp").first.id,
-          text: review[:text].delete("\n"),
+          text: review[:text].delete("\n").delete('"'),
           rating: review[:rating],
           time: Time.at(review[:time].to_i),
           language: review[:language]
