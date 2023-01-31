@@ -4,16 +4,14 @@ module Views
     register_element :turbo_frame
 
     def template
-      div(class: "") do
-        h1(class: "text-3xl") { "Admin" }
+      div(class: "w-full flex flex-col gap-4 p-8") do
+        h1(class: "text-3xl w-full text-center font-bold") { "Admin" }
 
-        section do
+        section(clas: "") do
           h1(class: "text-3xl underline") { "Places needing approval (#{places.count})" }
           ul(class: "flex flex-col") do
             places.map do |place|
-              turbo_frame(id: "place_#{place.id}") do
-                a(href: helpers.admin_place_path(place), class: "underline") { place.id }
-              end
+              a(href: helpers.admin_place_path(place), class: "underline") { place.id }
             end
           end
           h1(class: "text-3xl underline") { "Updates needing review (#{place_updates.count})" }
