@@ -9,6 +9,7 @@ module Views
 
     def template
       meta(data_geo_json: @geo_json, id: "geo-json")
+      div(class: "absolute top-70 w-full text-center bg-rose-100 text-rose-600 text-xl p-2 z-50 hidden", id: "the-map-error")
       div(id: "map-loader", class: "hidden top-0 w-screen h-screen fixed z-[100] flex items-center justify-center bg-[rgba(50,50,50,0.5)]") do
         div(class: "translate-y-[-104px] flex text-white md:text-xl flex-col items-center") do
           img(class: "mb-4 h-[88px]", src: helpers.image_path("puff.svg"))

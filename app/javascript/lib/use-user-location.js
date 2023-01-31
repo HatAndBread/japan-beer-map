@@ -10,7 +10,7 @@ export const useUserLocation = (callback) => {
 
   const loader = document.getElementById("map-loader");
   loader.classList.remove("hidden");
-  navigator.geolocation.watchPosition(update, error, options);
+  navigator.geolocation.watchPosition(update, handleError, options);
   const interval = setInterval(() => {
     if (window.userLocation) {
       clearInterval(interval);
@@ -20,32 +20,39 @@ export const useUserLocation = (callback) => {
   }, 10);
 };
 
-function update(position) {
-  if (!window.map) {
-    throw new error("Beermap error: Attempted to update user location before map was initialized.")
-  }
-
-  window.userLocation = {
-    lng: position.coords.longitude,
-    lat: position.coords.latitude,
-  };
-
-  if (typeof position.coords.heading === "number") lastHeading = position.coords.heading;
-
-  const locationMarkerElement = document.getElementById(
-    "user-location-element"
-  );
-  if (!locationMarkerElement) return;
-
-  locationMarkerElement.classList.remove("hidden");
-  if (window.userLocationMarker) window.userLocationMarker.remove();
-
-  window.userLocationMarker = new mapboxgl.Marker(locationMarkerElement)
-    .setLngLat(window.userLocation)
-    .addTo(window.map)
-    .setRotation(lastHeading)
-};
-
-function error(e) {
-  console.error(e);
+function handleError(e) {
+  const el = document.getElementById("the-map-error");
+  el.innerText = `${e.name} :::: ${e.message} :::: ${e.cause} :::: ${e.toString()}`;
+  el.classList.remove("hidden");
+  document.getElementById("map-loader")?.classList?.add("hidden");
 }
+
+function update(position) {
+  try {
+    if (!window.map) {
+      throw new Error("Beermap error: Attempted to update user location before map was initialized.")
+    }
+
+    window.userLocation = {
+      lng: position.coords.longitude,
+      lat: position.coords.latitude,
+    };
+
+    if (typeof position.coords.heading === "number") lastHeading = position.coords.heading;
+
+    const locationMarkerElement = document.getElementById(
+      "user-location-element"
+    );
+    if (!locationMarkerElement) return;
+
+    locationMarkerElement.classList.remove("hidden");
+    if (window.userLocationMarker) window.userLocationMarker.remove();
+
+    window.userLocationMarker = new mapboxgl.Marker(locationMarkerElement)
+      .setLngLat(window.userLocation)
+      .addTo(window.map)
+      .setRotation(lastHeading)
+  } catch(e) {
+    handleError(e)
+  }
+};
