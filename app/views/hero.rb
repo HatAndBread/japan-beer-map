@@ -11,7 +11,17 @@ module Views
                 span(class: "block xl:inline") { helpers.t("hello") }
               end
               p(class: "mx-auto mt-3 max-w-md text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl") do
-                "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua."
+                text helpers.t("hero_start")
+                if I18n.locale == :en
+                  text helpers.t("hero_map")
+                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_map_link") }
+                else
+                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_map_link") }
+                  text helpers.t("hero_map")
+                end
+                text helpers.t("hero_race")
+                a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_race_link") }
+                text helpers.t("hero_race_two")
               end
               div(class: "mt-10 sm:flex sm:justify-center lg:justify-start") do
                 unless helpers.current_user

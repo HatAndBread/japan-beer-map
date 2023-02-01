@@ -4,7 +4,7 @@ export const useUserLocation = (callback) => {
 
   const options = {
     enableHighAccuracy: true,
-    timeout: 1,
+    timeout: 5000,
     maximumAge: 0
   };
 

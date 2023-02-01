@@ -32,6 +32,12 @@
 en:
   hello: "Japan Craft Beer Adventure"
   home: "Home"
+  hero_start: "Welcome to the most complete database of purveyors of craft beer in Japan."
+  hero_map_link: "interactive map."
+  hero_race_link: "be the first"
+  hero_map: " Explore Japan's finest breweries, bars, and bottle shops in our "
+  hero_race: " Race to "
+  hero_race_two: " to visit every business in our database."
   save: "Save"
   email: "E-mail"
   username: "Username"

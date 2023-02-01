@@ -30,7 +30,13 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 ja:
-  hello: "クラフトビールの冒険"
+  hello: "クラフトビール\nマップ"
+  hero_start: "日本のクラフトビール業界の最も完全なデータベースへようこそ。"
+  hero_map: "で日本の最高のブルワリー、バー、ボトルショップを探索しましょう。"
+  hero_map_link: "インタラクティブな地図"
+  hero_race_link: "誰よりも早く"
+  hero_race: "データベース内の店を"
+  hero_race_two: "全て訪れるように頑張りましょう。"
   home: "ホーム"
   email: "Eメール"
   username: "ユーザーネーム"
