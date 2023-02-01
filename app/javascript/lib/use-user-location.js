@@ -4,7 +4,7 @@ export const useUserLocation = (callback) => {
 
   const options = {
     enableHighAccuracy: true,
-    timeout: 5000,
+    timeout: 1,
     maximumAge: 0
   };
 
@@ -22,7 +22,7 @@ export const useUserLocation = (callback) => {
 
 function handleError(e) {
   const el = document.getElementById("the-map-error");
-  el.innerText = `${e.name} :::: ${e.message} :::: ${e.cause} :::: ${e.toString()}`;
+  el.innerText = window.translate("map_error");
   el.classList.remove("hidden");
   document.getElementById("map-loader")?.classList?.add("hidden");
 }

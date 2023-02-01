@@ -2,6 +2,9 @@
 import "@hotwired/turbo-rails";
 import "controllers";
 import "custom/companion"
+import { translate } from "lib/translate";
+
+window.translate = translate;
 
 document.addEventListener("turbo:load", () => {
   // Each time turbo fires remove flashes if they exist
