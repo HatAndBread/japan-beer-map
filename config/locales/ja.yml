@@ -54,9 +54,9 @@ ja:
   saturday: "土曜日"
   sunday: "日曜日"
   cancel: "キャンセル"
-  map_how_to: ""
-  track_how_to: ""
-  race_how_to: ""
+  map_how_to: "最寄りのビールを探す"
+  track_how_to: "工事中"
+  race_how_to: "工事中"
   nav:
     home: "ホーム"
     map: "地図"

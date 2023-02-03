@@ -6,8 +6,10 @@ module Views
           h1(class: "w-full text-center font-semibold text-xl my-4") do
             a(class: "hover:underline hover:text-indigo-600 text-indigo-400", href: helpers.map_path) { "Map" }
           end
-          img(class: "h-[200px] w-[220px] rounded object-cover mx-auto", src: helpers.image_path("map-preview.png"))
-          p(class: "text-gray-500 text-center") do
+          a(href: helpers.map_path) do
+            img(class: "h-[200px] w-[200px] rounded-lg object-cover mx-auto", src: helpers.image_path("map-preview.png"))
+          end
+          p(class: "text-gray-500 text-center mt-8") do
             helpers.t("map_how_to")
           end
         end
@@ -15,7 +17,10 @@ module Views
           h1(class: "w-full text-center font-semibold text-xl my-4") do
             a(class: "hover:underline hover:text-indigo-600 text-indigo-400", href: helpers.visits_path) { "Keep Track" }
           end
-          p(class: "text-gray-500 text-center") do
+          a(href: helpers.visits_path) do
+            img(class: "h-[200px] w-[200px] rounded-lg object-cover mx-auto", src: helpers.image_path("construction.png"))
+          end
+          p(class: "text-gray-500 text-center mt-8") do
             helpers.t("track_how_to")
           end
         end
@@ -23,7 +28,10 @@ module Views
           h1(class: "w-full text-center font-semibold text-xl my-4") do
             a(class: "hover:underline hover:text-indigo-600 text-indigo-400", href: helpers.visits_path) { "Race" }
           end
-          p(class: "text-gray-500 text-center") do
+          a(href: helpers.map_path) do
+            img(class: "h-[200px] w-[200px] rounded-lg object-cover mx-auto", src: helpers.image_path("construction.png"))
+          end
+          p(class: "text-gray-500 text-center mt-8") do
             helpers.t("race_how_to")
           end
         end
