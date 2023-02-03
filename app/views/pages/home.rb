@@ -12,6 +12,7 @@ module Views
     def template
       div(class: "flex flex-col items-center") do
         render Views::Hero.new
+        render Views::HowItWorks.new
         render Views::Map.new(places: @places, geo_json: @geo_json)
       end
     end

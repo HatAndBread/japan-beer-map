@@ -32,7 +32,7 @@
 en:
   hello: "Japan Craft Beer Adventure"
   home: "Home"
-  hero_start: "Welcome to the most complete database of purveyors of craft beer in Japan."
+  hero_start: "Welcome to the most complete database of craft beer businesses in Japan."
   hero_map_link: "interactive map."
   hero_race_link: "be the first"
   hero_map: " Explore Japan's finest breweries, bars, and bottle shops in our "
@@ -54,6 +54,9 @@ en:
   saturday: "Saturday"
   sunday: "Sunday"
   cancel: "Cancel"
+  map_how_to: "Find the nearest brew to you right now with our Beer Map."
+  track_how_to: "Keep track of your favorite purveyors of fine brews."
+  race_how_to: "Join the race to be the first to visit every place."
   nav:
     home: "Home"
     map: "Map"

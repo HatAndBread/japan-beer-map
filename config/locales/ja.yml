@@ -30,13 +30,13 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 ja:
-  hello: "クラフトビール\nマップ"
-  hero_start: "日本のクラフトビール業界の最も完全なデータベースへようこそ。"
+  hello: "Japan Craft Beer Adventure"
+  hero_start: "日本最大のクラフトビール企業データベースへようこそ。"
   hero_map: "で日本の最高のブルワリー、バー、ボトルショップを探索しましょう。"
-  hero_map_link: "インタラクティブな地図"
+  hero_map_link: "マップ"
   hero_race_link: "誰よりも早く"
-  hero_race: "データベース内の店を"
-  hero_race_two: "全て訪れるように頑張りましょう。"
+  hero_race: "すべての店を"
+  hero_race_two: "訪れるように頑張りましょう。"
   home: "ホーム"
   email: "Eメール"
   username: "ユーザーネーム"
@@ -54,6 +54,9 @@ ja:
   saturday: "土曜日"
   sunday: "日曜日"
   cancel: "キャンセル"
+  map_how_to: ""
+  track_how_to: ""
+  race_how_to: ""
   nav:
     home: "ホーム"
     map: "地図"
@@ -73,4 +76,3 @@ ja:
   map_controls:
     nearest_beer: "一番近いビール"
     my_location: "現在地"
-
