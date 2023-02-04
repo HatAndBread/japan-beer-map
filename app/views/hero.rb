@@ -12,7 +12,7 @@ module Views
         main(class: "lg:relative") do
           div(class: "w-full pt-16 pb-20 text-center lg:text-left") do
             div(class: "lg:w-1/2  lg:flex lg:flex-col items-center px-8 lg:px-32") do
-              h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl whitespace-nowrap") do
+              h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl md:whitespace-nowrap") do
                 span(class: "block xl:inline") { helpers.t("hello") }
               end
               img(class: "max-w-[300px] rounded-full mx-auto lg:mx-0 mt-8", src: helpers.image_path("bg.png"), alt: "logo")
