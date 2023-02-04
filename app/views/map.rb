@@ -10,7 +10,7 @@ module Views
     def template
       meta(data_geo_json: @geo_json, id: "geo-json")
       div(class: "absolute top-70 w-full text-center bg-rose-100 text-rose-600 text-xl p-2 z-50 hidden", id: "the-map-error")
-      unless helpers.current_page?(action: "map")
+      if show_full_screen_button?
         div(class: "w-full flex justify-center") do
           a(class: "link-primary text-2xl sm:hidden text-center underline mb-4", href: helpers.map_path) { helpers.t("full_screen") }
         end
@@ -25,8 +25,8 @@ module Views
         end
       end
       div(data_controller: "map", class: "w-full flex justify-center") do
-        div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[80vw] h-screen"} rounded overflow-hidden relative") do
-          unless helpers.current_page?(action: "map")
+        div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[86vw] h-screen"} rounded overflow-hidden relative") do
+          if show_full_screen_button?
             a(class: "link-primary text-2xl hidden sm:block absolute z-10 right-0 mr-[8px] mt-[8px] p-2 bg-indigo-600 text-white hover:text-indigo-200 hover:bg-indigo-800 rounded md:top-0", href: helpers.map_path) { helpers.t("full_screen") }
           end
           render MapControls.new
@@ -46,6 +46,10 @@ module Views
     end
 
     private
+
+    def show_full_screen_button?
+      !(helpers.current_page?(action: "map") || helpers.current_page?("/map"))
+    end
 
     def map_only?
       helpers.current_page?(helpers.map_path) || helpers.current_page?("/map")
