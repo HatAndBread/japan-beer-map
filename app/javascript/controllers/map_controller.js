@@ -17,7 +17,7 @@ export default class extends Controller {
     "userLocation",
     "toolsContainer",
     "toolsOpener",
-    "toolsWrapper"
+    "toolsWrapper",
   ];
   connect() {
     const map = new mapboxgl.Map({
@@ -233,12 +233,15 @@ export default class extends Controller {
       () => (map.getCanvas().style.cursor = "pointer")
     );
     const listener = () => {
-      document.getElementById(`place_${markerDiv.dataset.id}`).children[0].click();
-    }
-    markerDiv.addEventListener("touchend", listener)
+      document
+        .getElementById(`place_${markerDiv.dataset.id}`)
+        .children[0].click();
+    };
+    markerDiv.addEventListener("touchend", listener);
     const handleMouseMove = debounce((e) => {
       const features = map.queryRenderedFeatures(e.point);
       if (features[0] && features[0].source === "point") {
+        const translate = window.translate;
         const properties = features[0].properties;
         const coordinates = { lng: properties.lng, lat: properties.lat };
         markerDiv.dataset.id = properties.id;
@@ -246,11 +249,15 @@ export default class extends Controller {
         markerDiv.classList.remove("hidden");
         markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
         const types = document.createElement("pre");
-        types.className = "font-sans"
-        types.innerText = `Brewery: ${properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"}\nBottle Shop: ${properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"}\nFood: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`
+        types.className = "font-sans";
+        types.innerText = `${translate("brewery")}: ${
+          properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"
+        }\n${translate("bottle_shop")}: ${properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"}\n${translate("food")}: ${
+          properties.has_food ? "🙆‍♀️" : "🙅‍♀️"
+        }`;
         const instructions = document.createElement("div");
-        instructions.innerText = "Click for more info"
-        instructions.className = "text-sm"
+        instructions.innerText = window.translate("click_for_info");
+        instructions.className = "text-sm text-gray-600";
         markerDiv.appendChild(types);
         markerDiv.appendChild(instructions);
         markerDiv.appendChild(triangle);
