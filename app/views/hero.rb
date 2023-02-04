@@ -20,9 +20,9 @@ module Views
                 text helpers.t("hero_start")
                 if I18n.locale == :en
                   text helpers.t("hero_map")
-                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_map_link") }
+                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer", href: helpers.map_path) { helpers.t("hero_map_link") }
                 else
-                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_map_link") }
+                  a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer", href: helpers.map_path) { helpers.t("hero_map_link") }
                   text helpers.t("hero_map")
                 end
                 text helpers.t("hero_race")
