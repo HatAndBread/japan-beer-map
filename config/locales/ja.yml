@@ -59,6 +59,11 @@ ja:
   map_how_to: "最寄りのビールを探す"
   track_how_to: "工事中"
   race_how_to: "工事中"
+  shop: "ボトルショップ"
+  food: "フード"
+  brewery: "ブルワリー"
+  leader_board: "ランキング"
+  leader_board_link: "ランキングを表示する"
   nav:
     home: "ホーム"
     map: "地図"

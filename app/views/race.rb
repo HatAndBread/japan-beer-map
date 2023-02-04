@@ -8,7 +8,7 @@ module Views
 
     def template
       turbo_frame(id: "the-race", class: "w-full p-8 sm:p-16") do
-        h1(class: "w-full text-3xl text-center font-bold mb-8") { "Leader Board" }
+        h1(class: "w-full text-3xl text-center font-bold mb-8") { helpers.t("leader_board") }
         div(class: "w-full") do
           ul(class: "flex flex-col gap-2") do
             @race.map do |data|

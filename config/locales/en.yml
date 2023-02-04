@@ -59,6 +59,10 @@ en:
   map_how_to: "Find the nearest brew to you right now with our Beer Map."
   track_how_to: "Under Construction"
   race_how_to: "Under Construction"
+  shop: "Bottle Shop"
+  food: "Food"
+  brewery: "Brewery"
+  leader_board_link: "View the leader board"
   nav:
     home: "Home"
     map: "Map"

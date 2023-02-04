@@ -11,9 +11,11 @@ module Views
     def template
       div(class: "p-4 sm:p8 lg:p-16 2xl:p-24") do
         div(class: "font-semibold text-lg") do
-          "You have visited #{unique_visits} out of #{place_count} places"
+          (I18n.locale == :en) ?
+            "You have visited #{unique_visits} out of #{place_count} #{(place_count == 1) ? "place" : "places"}" :
+            "#{unique_visits}か所中#{place_count}か所を訪れました"
         end
-        a(class: "link-primary", href: helpers.race_path) { "View the leader board" }
+        a(class: "link-primary", href: helpers.race_path) { helpers.t("leader_board_link") }
         ul(role: "list", class: "divide-y divide-gray-200") do
           if @visits.size.positive?
             @visits.map do |visit|

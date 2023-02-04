@@ -43,7 +43,7 @@ module Views
     def box(type)
       div(class: "", id: "#{type}-box", name: "#{type}-box") do
         input(type: "checkbox", checked: true, data_type: type, class: "cursor-pointer h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2")
-        label(for: "#{type}-box", class: "select-none font-medium text-gray-700 text-sm") { type.humanize }
+        label(for: "#{type}-box", class: "select-none font-medium text-gray-700 text-sm") { helpers.t(type) }
       end
     end
   end
