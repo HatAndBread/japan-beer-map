@@ -30,7 +30,8 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Japan Craft Beer Adventure"
+  hello: "Japan Craft Beer Map"
+  full_screen: "Full Screen"
   home: "Home"
   hero_start: "Welcome to the most complete database of craft beer businesses in Japan."
   hero_map_link: "interactive map."

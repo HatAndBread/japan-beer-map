@@ -1,7 +1,7 @@
 module Views
   class HowItWorks < Phlex::HTML
     def template
-      div(class: "w-full items-center justify-center flex flex-col md:flex-row max-w-[1200px] gap-4 lg:gap-8 md:px-8 mb-8") do
+      div(class: "w-full items-center justify-center flex flex-col md:flex-row max-w-[1200px] gap-4 lg:gap-8 md:px-8 mb-8 mt-[200px] md:mt-0") do
         div(class: card_class) do
           h1(class: "w-full text-center font-semibold text-xl my-4") do
             a(class: "hover:underline hover:text-indigo-600 text-indigo-400", href: helpers.map_path) { "Map" }

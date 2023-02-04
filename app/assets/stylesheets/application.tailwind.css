@@ -16,6 +16,6 @@
     @apply inline-flex items-center px-6 py-3 text-base font-medium text-indigo-700 bg-indigo-100 border border-transparent rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
   }
   .link-primary {
-    @apply font-semibold text-indigo-400 cursor-pointer hover:underline;
+    @apply font-semibold text-indigo-400 cursor-pointer hover:underline hover:text-indigo-600;
   }
 }
