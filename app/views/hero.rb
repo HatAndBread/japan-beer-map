@@ -26,7 +26,7 @@ module Views
                   text helpers.t("hero_map")
                 end
                 text helpers.t("hero_race")
-                a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer") { helpers.t("hero_race_link") }
+                a(class: "font-semibold hover:underline text-indigo-400 hover:text-indigo-600 cursor-pointer", href: helpers.race_path) { helpers.t("hero_race_link") }
                 text helpers.t("hero_race_two")
               end
               div(class: "mt-10 sm:flex sm:justify-center lg:justify-start") do

@@ -12,6 +12,10 @@ class VisitsController < ApplicationController
     render Views::Places::Visit.new(visit:)
   end
 
+  def race
+    render Views::Race.new(race: User.race)
+  end
+
   private
 
   def visit_params

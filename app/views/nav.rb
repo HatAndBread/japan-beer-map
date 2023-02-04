@@ -35,7 +35,7 @@ module Views
                     img class: "h-8 w-8 rounded-full", src: helpers.user_avatar
                   end
                 end
-                div(class: "absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden", role: "menu", aria_orientation: "vertical", aria_labelledby: "user-menu-button", tabindex: "-1", data_nav_target: "menu") do
+                div(class: "absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden", role: "menu", aria_orientation: "vertical", aria_labelledby: "user-menu-button", tabindex: "-1", data_nav_target: "menu") do
                   if helpers.current_user
                     a(href: helpers.edit_profile_path(helpers.current_user.profile), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 flex items-center justify-between", role: "menuitem", tabindex: "-1", id: "user-menu-item-0") do
                     span { "Your Profile" }

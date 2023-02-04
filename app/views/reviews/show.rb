@@ -1,7 +1,5 @@
 module Views
   class Reviews::Show < Phlex::HTML
-    register_element :turbo_frame
-
     def initialize(review:)
       @review = review
     end

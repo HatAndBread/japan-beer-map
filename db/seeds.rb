@@ -1,6 +1,6 @@
 class Seed
   def call
-    # create_fake_users
+    create_fake_users
     create_fake_visits
   end
 
@@ -8,7 +8,7 @@ class Seed
 
   def create_fake_users
     puts "Creating fake users..."
-    30.times do
+    20.times do
       user = Faker::Internet.user
       User.create!(email: user[:email], password: ENV["ADMIN_PASSWORD"], username: user[:username])
     end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get "/map", to: "pages#map", as: "map"
   end
 
+  get "/race", to: "visits#race", as: "race"
   resources :profiles, only: [:show, :edit, :update]
   resources :places do
     resources :reviews, only: [:create, :edit, :show]

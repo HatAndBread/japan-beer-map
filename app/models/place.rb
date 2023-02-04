@@ -42,6 +42,10 @@ class Place < ApplicationRecord
       end
     end
 
+    def cached_count
+      Rails.cache.fetch("cached_count", expires_in: 12.hours) { count }
+    end
+
     def needs_approval = Place.where(approved: false)
 
     def approved = Place.where(approved: true)
@@ -60,6 +64,7 @@ class Place < ApplicationRecord
   def clear_cache!
     Rails.cache.delete("all_places")
     Rails.cache.delete("geo_json")
+    Rails.cache.delete("cached_count")
   end
 
   def time_for_day(day, open_or_close)

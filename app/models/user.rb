@@ -29,8 +29,8 @@ class User < ApplicationRecord
 
     def race
       Rails.cache.fetch("race", expires_in: 12.hours) do
-        includes(visits: [:place]).all.filter_map { |user| {user:, visits: user.visits, places: user.visits.map { |v| v.place }} if user.visits.count.positive? }
-          .sort_by { |u| u[:places].size }
+        includes(visits: [:place]).all.filter_map { |user| {user:, unique_visits: user.visits.map { |v| v.place_id }.uniq.size} if user.visits.count.positive? }
+          .sort_by { |u| u[:unique_visits] }
           .reverse
       end
     end
