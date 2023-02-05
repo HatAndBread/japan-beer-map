@@ -15,26 +15,24 @@ module Views
         div(class: "max-w-[800px] w-[90%] border border-grey-200 p-8 rounded mb-8 bg-white mt-[32px]", data_controller: "place-new", data_update: 1) do
           p(class: "leading-relaxed") do
             div(class: "mb-4") do
-              b { "Thank you " }
-              text "for contributing to this project. There are a few steps you need to complete in order to a new business to this map."
+              helpers.t("update_place.thank_you")
             end
             ol(class: "") do
-              li(class: "mb-2") { "① Set the location of the business by clicking on it's location on the map. Please be as accuraate as possible." }
-              li(class: "mb-2") { '② Fill in as much information about the business as you can. If you don\'t know everything that\'s OK! "Name" is the only mandatory parameter.' }
-              li(class: "mb-2") { "③ Add any images you have available of the business." }
-              li(class: "mb-2") { "④ Our admins review every new submission to avoid spam. We will try to approve your submission within 1 day." }
+              li(class: "mb-2") { helpers.t("update_place.step_one") }
+              li(class: "mb-2") { helpers.t("update_place.step_two") }
+              li(class: "mb-2") { helpers.t("update_place.step_three") }
             end
           end
           form_with model: [@place, @place_update], class: "mt-8", method: "patch", data: {action: "submit->place-new#handleSubmit"} do |f|
             div(class: "mb-4") do
-              label(class: "block text-sm font-medium text-gray-700", for: "comment") { "Add a comment" }
+              label(class: "block text-sm font-medium text-gray-700", for: "comment") { helpers.t("new_place.comment") }
               div(class: "mt-1") do
-                f.text_area :text, class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", rows: 4, placeholder: "Please update..."
+                f.text_area :text, class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", rows: 4, placeholder: helpers.t("new_place.comment_place_holder")
               end
             end
             # Name
             div(class: "mb-4") do
-              label(for: "name", class: "block text-sm font-medium text-gray-700") { "Name Of Business" }
+              label(for: "name", class: "block text-sm font-medium text-gray-700") { helpers.t("new_place.name") }
               div(class: "mt-1") do
                 f.text_field :name, value: @place.name, id: "name", placeholder: "Example Store", class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: {place_new_target: "placeName"}
               end
@@ -42,7 +40,7 @@ module Views
             # website
             div(class: "mb-4") do
               div(class: "flex justify-between") do
-                label(for: "website", class: "block text-sm font-medium text-gray-700") { "Website" }
+                label(for: "website", class: "block text-sm font-medium text-gray-700") { helpers.t "website" }
               end
               div(class: "relative mt-1 rounded-md shadow-sm") do
                 f.text_field :website, id: "website", value: @place.website, placeholder: "www.example.com", class: "block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -51,7 +49,7 @@ module Views
             # phone
             div(class: "mb-4") do
               div(class: "flex justify-between") do
-                label(for: "phone", class: "block text-sm font-medium text-gray-700") { "Phone" }
+                label(for: "phone", class: "block text-sm font-medium text-gray-700") { helpers.t "phone" }
               end
               div(class: "mt-1") do
                 f.text_field :phone, id: "phone", placeholder: "090-1111-1111", value: @place.phone, class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -62,9 +60,9 @@ module Views
               div(class: "divide-y divide-gray-200") do
                 div(class: "relative flex items-start py-4") do
                   div(class: "min-w-0 flex-1 text-sm") do
-                    label(for: "is_brewery", class: "font-medium text-gray-700") { "Brewery" }
+                    label(for: "is_brewery", class: "font-medium text-gray-700") { helpers.t "brewery" }
                     p(id: "comments-description", class: "text-gray-500") do
-                      "This business brews and sells beer on location."
+                      helpers.t "new_place.brewery_explanation"
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
@@ -73,9 +71,9 @@ module Views
                 end
                 div(class: "relative flex items-start py-4") do
                   div(class: "min-w-0 flex-1 text-sm") do
-                    label(for: "is_shop", class: "font-medium text-gray-700") { "Bottle Shop" }
+                    label(for: "is_shop", class: "font-medium text-gray-700") { helpers.t "shop" }
                     p(id: "is_shop-description", class: "text-gray-500") do
-                      "This business sells bottles or cans of beer."
+                      helpers.t "new_place.shop_explanation"
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
@@ -84,9 +82,9 @@ module Views
                 end
                 div(class: "relative flex items-start py-4") do
                   div(class: "min-w-0 flex-1 text-sm") do
-                    label(for: "has_food", class: "font-medium text-gray-700") { "Food" }
+                    label(for: "has_food", class: "font-medium text-gray-700") { helpers.t "food" }
                     p(id: "has_food-description", class: "text-gray-500") do
-                      "This business serves food or is a restuarant."
+                      helpers.t "new_place.food_explanation"
                     end
                   end
                   div(class: "ml-3 flex h-5 items-center") do
@@ -99,10 +97,10 @@ module Views
             div(class: "mb-4") do
               div(class: "min-w-0 flex-1 text-sm") do
                 div(class: "flex justify-between") do
-                  span(class: "font-medium text-gray-700") { "Hours" }
+                  span(class: "font-medium text-gray-700") { helpers.t "hours" }
                 end
                 p(id: "has_food-description", class: "text-gray-500") do
-                  "If possible please enter operating hours for this business."
+                  helpers.t "new_place.hours_explanation"
                 end
               end
               div(class: "grid grid-cols-1 divide-y divide-gray-200") do

@@ -4,8 +4,8 @@
     <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:p-6">
       <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
-          <h3 class="text-lg font-medium text-gray-900 leading-6">Profile</h3>
-          <p class="mt-1 text-sm text-gray-500">This information will be displayed publicly so be careful what you share.</p>
+          <h3 class="text-lg font-medium text-gray-900 leading-6"><%= t "profile.profile" %></h3>
+          <p class="mt-1 text-sm text-gray-500"><%= t "profile.warning" %></p>
         </div>
         <div class="mt-5 space-y-6 md:col-span-2 md:mt-0">
           <div class="col-span-3 sm:col-span-2">
@@ -16,15 +16,15 @@
           </div>
 
           <div>
-            <label for="about" class="block text-sm font-medium text-gray-700">About</label>
+            <label for="about" class="block text-sm font-medium text-gray-700"><%= t "profile.about" %></label>
             <div class="mt-1">
               <%= f.text_area :about, class: "block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", placeholder: "I love beer!", rows: 3 %>
             </div>
-            <p class="mt-2 text-sm text-gray-500">Brief description for your profile. URLs are hyperlinked.</p>
+            <p class="mt-2 text-sm text-gray-500"><%= t "profile.description_explanation" %></p>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Photo</label>
+            <label class="block text-sm font-medium text-gray-700"><%= t "photo" %></label>
             <div class="flex items-center mt-1 space-x-5">
               <span class="inline-block w-12 h-12 overflow-hidden bg-gray-100 rounded-full">
                 <img class="w-full h-full text-gray-300" src="<%= user_avatar %>">
@@ -34,14 +34,14 @@
           </div>
 
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">Change Photo</label>
+            <label class="block mb-2 text-sm font-medium text-gray-700"><%= t "profile.change_photo" %></label>
             <%= f.file_field :photo, accept: "image/*", as: :file, class: "hidden", data: {file_target: "input"} %>
             <%= render "shared/file_input" %>
           </div>
         </div>
       </div>
       <div class="flex justify-end mt-8">
-        <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
+        <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"><%= t "save" %></button>
       </div>
     </div>
   <% end %>

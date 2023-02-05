@@ -11,9 +11,8 @@ module Views
 
     def template
       div(class: "flex flex-col") do
-        div(class: "flex flex-col items-center mb-[400px] lg:mb-0") do
+        div(class: "flex flex-col items-center mb-[400px] lg:mb-[64px]") do
           render Views::Hero.new(places: @places, geo_json: @geo_json)
-          # render Views::HowItWorks.new
         end
       end
     end

@@ -15,8 +15,7 @@ export default class extends Controller {
       const { lng, lat } = window.userLocation;
       const p = this.place();
       const d = distance(lng, lat, p.lng, p.lat);
-      if (d < 0.3) {
-        // Let's assume 300 meters is close enough
+      if (d < .2) {
         this.visitTarget.click();
         this.visitTarget.disabled = true;
       } else {
