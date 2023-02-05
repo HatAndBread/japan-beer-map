@@ -86,6 +86,8 @@ ja:
       check_in: "チェックイン"
       too_far: "どうやらこの場所にいないようです。ブラウザの設定を確認して、位置トラッキングが有効になっていることを確認してください。"
       saved: "保存しました。"
+      get_directions: "行き方を調べる"
+      update: "情報を更新する"
   map_controls:
     nearest_beer: "一番近いビール"
     my_location: "現在地"

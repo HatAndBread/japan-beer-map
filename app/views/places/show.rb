@@ -47,7 +47,7 @@ module Views
                 div(class: "mt-4 flex flex-col text-lg") do
                   # Directions
                   div(class: "flex flex-col") do
-                    div(class: "text-gray-500 underline") { "Get Directions" }
+                    div(class: "text-gray-500 underline") { helpers.t "place.show.get_directions" }
                     span(class: "isolate inline-flex rounded-md") do
                       button(title: "Walk there", class: "relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "walking") { i(class: "las la-walking") }
                       button(title: "Bike there", class: "relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-xl font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500", data_action: "click->place-show#takeMeThere", data_type: "cycling") { i(class: "las la-bicycle") }
@@ -66,13 +66,13 @@ module Views
                     end
                   end
                   div(class: "mt-2") do
-                    a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: helpers.place_place_updates_path(@place)) { "Update Info" }
+                    a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: helpers.place_place_updates_path(@place)) { helpers.t "place.show.update" }
                   end
                   # Website
                   if @place.website
                     div(class: "mt-2") do
                       a(class: "inline-flex items-center font-medium text-indigo-600 hover:underline", href: @place.website, target: "_blank") do
-                        text "Website"
+                        text(helpers.t("website"))
                         svg(aria_hidden: "true", class: "w-5 h-5 ml-1", fill: "currentColor", viewbox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg") do
                           path fill_rule: "evenodd", d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z", clip_rule: "evenodd"
                         end
