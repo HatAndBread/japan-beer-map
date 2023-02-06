@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
 import debounce from "lodash.debounce";
-import { useUserLocation } from "lib/use-user-location";
+import { useUserLocation, getWatchId } from "lib/use-user-location";
 import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 const startLngLat = [136.6503, 38.6762];
@@ -20,6 +20,7 @@ export default class extends Controller {
     "toolsWrapper",
   ];
   connect() {
+    this.clearExistingGeolocationData();
     const map = new mapboxgl.Map({
       container: "the-map",
       style: this.mapStyle(),
@@ -80,6 +81,10 @@ export default class extends Controller {
         this.handleMouseOver();
       });
     });
+  }
+
+  disconnect() {
+    this.clearExistingGeolocationData();
   }
 
   getLanguage() {
@@ -183,6 +188,15 @@ export default class extends Controller {
       center: window.userLocation,
       zoom: 14,
     });
+  }
+
+  clearExistingGeolocationData() {
+    const watchId = getWatchId();
+    if (window.locationMarkerElement) window.locationMarkerElement.classList.add("hidden");
+    if (watchId) {
+      navigator.geolocation.clearWatch(watchId)
+      window.userLocation = null;
+    }
   }
 
   closeTools() {

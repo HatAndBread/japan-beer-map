@@ -1,4 +1,6 @@
+let watchId;
 let lastHeading = 0;
+
 export const useUserLocation = (callback) => {
   if (window.userLocation) return callback(window.userLocation);
 
@@ -10,7 +12,7 @@ export const useUserLocation = (callback) => {
 
   const loader = document.getElementById("map-loader");
   loader.classList.remove("hidden");
-  navigator.geolocation.watchPosition(update, handleError, options);
+  watchId = navigator.geolocation.watchPosition(update, handleError, options);
   const interval = setInterval(() => {
     if (window.userLocation) {
       clearInterval(interval);
@@ -43,6 +45,7 @@ function update(position) {
     const locationMarkerElement = document.getElementById(
       "user-location-element"
     );
+    window.locationMarkerElement = locationMarkerElement;
     if (!locationMarkerElement) return;
 
     locationMarkerElement.classList.remove("hidden");
@@ -56,3 +59,5 @@ function update(position) {
     handleError(e)
   }
 };
+
+export const getWatchId = () => watchId;
