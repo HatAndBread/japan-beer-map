@@ -5,7 +5,7 @@ module Services
       lat ||= 38.2682
       lng ||= 140.8694
       radius ||= 2000
-      @places = Place.all
+      @places = Place.all;nil
       @url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat}%2C#{lng}&radius=#{radius}&keyword=#{CGI.escape(query)}&fields=formatted_address%2Cname%2Crating%2Ccurrent_opening_hours%2Cgeometry%2Cphotos%2Cbusiness_status%2Cformatted_phone_number%2Cwebsite&key=#{ENV["GOOGLE"]}"
       @new_places = []
     end
@@ -72,7 +72,7 @@ module Services
       reviews.map do |review|
         {
           user_id: User.where(email: "hello@beermap.jp").first.id,
-          text: review[:text].delete("\n").delete('"'),
+          text: review[:text]&.delete("\n")&.delete('"')&.delete("|"),
           rating: review[:rating],
           time: Time.at(review[:time].to_i),
           language: review[:language]
@@ -85,12 +85,12 @@ module Services
 
       lng = place[:geometry][:location][:lng]
       lat = place[:geometry][:location][:lat]
-      website = place[:website]
+      website = place[:website]&.delete("|")
       google_maps_url = place[:url]
       periods = place.dig(:opening_hours, :periods)
-      name = place[:name]
-      address = place[:formatted_address]
-      phone = place[:formatted_phone_number]
+      name = place[:name]&.delete("|")
+      address = place[:formatted_address]&.delete("|")
+      phone = place[:formatted_phone_number]&.delete("|")
       google_place_id = place[:place_id]
       has_food = is_a.("restaurant")
       has_food ||= is_a.("food")
