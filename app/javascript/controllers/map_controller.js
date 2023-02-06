@@ -251,13 +251,13 @@ export default class extends Controller {
       "points",
       () => (map.getCanvas().style.cursor = "pointer")
     );
-    const listener = () => {
-      document.getElementById("place-loader").classList.remove("hidden");
-      document
-        .getElementById(`place_${markerDiv.dataset.id}`)
-        .children[0].click();
-    };
-    markerDiv.addEventListener("touchend", listener);
+    // const listener = () => {
+    //   document.getElementById("place-loader").classList.remove("hidden");
+    //   document
+    //     .getElementById(`place_${markerDiv.dataset.id}`)
+    //     .children[0].click();
+    // };
+    // markerDiv.addEventListener("touchend", listener);
     const handleMouseMove = debounce((e) => {
       const features = map.queryRenderedFeatures(e.point);
       if (features[0] && features[0].source === "point") {
