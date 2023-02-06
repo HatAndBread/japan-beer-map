@@ -70,6 +70,7 @@ export default class extends Controller {
 
         map.on("click", "points", (e) => {
           const { id } = e.features[0].properties;
+          document.getElementById("place-loader").classList.remove("hidden");
           document.getElementById(`place_${id}`).children[0].click();
         });
         this.handleMouseOver();
@@ -233,6 +234,7 @@ export default class extends Controller {
       () => (map.getCanvas().style.cursor = "pointer")
     );
     const listener = () => {
+      document.getElementById("place-loader").classList.remove("hidden");
       document
         .getElementById(`place_${markerDiv.dataset.id}`)
         .children[0].click();
