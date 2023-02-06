@@ -36,6 +36,10 @@ export default class extends Controller {
       "top-left"
     );
     window.map = map;
+    // disable map rotation using right click + drag
+    map.dragRotate.disable();
+    // disable map rotation using touch rotation gesture
+    map.touchZoomRotate.disableRotation();
 
     if (!"geolocation" in navigator) {
       this.findMeTarget.remove();
@@ -254,9 +258,9 @@ export default class extends Controller {
         types.className = "font-sans";
         types.innerText = `${translate("brewery")}: ${
           properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"
-        }\n${translate("bottle_shop")}: ${properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"}\n${translate("food")}: ${
-          properties.has_food ? "🙆‍♀️" : "🙅‍♀️"
-        }`;
+        }\n${translate("bottle_shop")}: ${
+          properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"
+        }\n${translate("food")}: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`;
         const instructions = document.createElement("div");
         instructions.innerText = window.translate("click_for_info");
         instructions.className = "text-sm text-gray-600";
