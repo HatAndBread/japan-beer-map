@@ -1,4 +1,5 @@
 # Japan Beer Map
+This is the sourcecode for the website https://www.japanbeermap.com/
 
 ## Requirements
 * Ruby version: 3.2.0
@@ -10,8 +11,12 @@
 Create .env file. Ask for secret keys.
 It should look like this:
 ```
-ADMIN_PASSWORD=password
-MAPBOX_KEY=add_the_secret_key_here
+ADMIN_PASSWORD=secret
+MAPBOX_KEY=secret
+ADMIN_EMAIL_PASSWORD=secret
+MAIN_EMAIL=japanbeermap@gmail.com
+CLOUDINARY_URL=secret
+GOOGLE=secret
 ```
 
 Run the following in the root directory:
@@ -19,9 +24,6 @@ Run the following in the root directory:
 bundle
 rails db:create
 rails db:migrate
-rails db:seed
+make pull # Pull the database to your local system
 bin/dev
 ```
-
-## Why?
-Let's learn Hotwire!
