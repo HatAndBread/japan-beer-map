@@ -33,6 +33,7 @@ ja:
   hello: "Japan Craft Beer Map"
   anonymouse: "匿名"
   full_screen: "フルスクリーン"
+  loading_map: "読み込み中"
   hero_start: "日本最大のクラフトビール企業データベースへようこそ。"
   hero_map: "で日本の最高のブルワリー、バー、ボトルショップを探索しましょう。"
   hero_map_link: "マップ"

@@ -30,6 +30,10 @@ module Views
         end
       end
       div(data_controller: "map", class: "w-full flex justify-center") do
+        div(class: "absolute w-full h-full bg-blue-100 flex justify-center items-center text-lg flex-col") do
+          img(src: helpers.image_path("loading-map.svg"), class: "w-32")
+          div { helpers.t("loading_map") }
+        end
         div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden relative") do
           if show_full_screen_button?
             a(class: full_screen_button, href: helpers.map_path) { helpers.t("full_screen") }

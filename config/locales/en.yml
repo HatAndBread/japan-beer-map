@@ -33,6 +33,7 @@ en:
   hello: "Japan Craft Beer Map"
   anonymouse: "Anonymous"
   full_screen: "Full Screen"
+  loading_map: "Loading Map..."
   home: "Home"
   hero_start: "Welcome to the most complete database of craft beer businesses in Japan."
   hero_map_link: "interactive map."
