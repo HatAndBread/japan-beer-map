@@ -18,6 +18,7 @@ export default class extends Controller {
     "toolsContainer",
     "toolsOpener",
     "toolsWrapper",
+    "initialLoader"
   ];
   connect() {
     this.clearExistingGeolocationData();
@@ -54,6 +55,7 @@ export default class extends Controller {
     const geoJson = JSON.parse(this.geoJson());
     this.___g = geoJson;
     const iconUrl = this.iconUrl();
+    this.initialLoaderTarget.classList.add("hidden");
     map.on("load", () => {
       map.loadImage(iconUrl, (error, image) => {
         if (error) throw new Error(error);
@@ -85,6 +87,7 @@ export default class extends Controller {
 
   disconnect() {
     this.clearExistingGeolocationData();
+    this.initialLoaderTarget.classList.remove("hidden");
   }
 
   getLanguage() {

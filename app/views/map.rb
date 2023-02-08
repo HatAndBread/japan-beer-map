@@ -30,7 +30,7 @@ module Views
         end
       end
       div(data_controller: "map", class: "w-full flex justify-center") do
-        div(class: "absolute w-full h-full bg-blue-100 flex justify-center items-center text-lg flex-col") do
+        div(class: "absolute w-full h-[calc(100vh_-_64px)] bg-blue-100 flex justify-center items-center text-lg flex-col", data_map_target: "initialLoader") do
           img(src: helpers.image_path("loading-map.svg"), class: "w-32")
           div { helpers.t("loading_map") }
         end

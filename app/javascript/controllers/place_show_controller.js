@@ -9,7 +9,7 @@ export default class extends Controller {
 
   connect() {
     this.tooFarTarget.classList.add("hidden");
-    document.getElementById("place-loader").classList.add("hidden");
+    document.getElementById("map-loader").classList.add("hidden")
   }
   checkin() {
     const validate = () => {
