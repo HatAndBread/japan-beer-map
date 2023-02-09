@@ -8,8 +8,8 @@ module Views
     end
 
     def template
-      div(class: "relative bg-gray-50 w-screen mb-[104px] border-t border-indigo-200") do
-        main(class: "lg:relative") do
+      div(class: "relative bg-gray-50 w-screen lg:mb-[104px] border-t border-indigo-200") do
+        div(class: "lg:relative") do
           div(class: "w-full pt-16 pb-20 text-center lg:text-left") do
             div(class: "lg:w-1/2  lg:flex lg:flex-col items-center px-8 lg:px-32") do
               h1(class: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl md:whitespace-nowrap") do
@@ -41,7 +41,7 @@ module Views
               end
             end
           end
-          div(class: "relative h-64 w-full sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-1/2") do
+          div(class: "relative h-fit w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2") do
             render Views::Map.new(places: @places, geo_json: @geo_json)
           end
         end
