@@ -3,7 +3,6 @@ import { distance } from "lib/distance";
 import debounce from "lodash.debounce";
 import { useUserLocation, getWatchId, maxBounds } from "lib/use-user-location";
 import {showPopup } from "lib/show-popup";
-import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 const startLngLat = [136.6503, 38.6762];
 export default class extends Controller {
@@ -18,6 +17,9 @@ export default class extends Controller {
   ];
   connect() {
     this.clearExistingGeolocationData();
+    if (window.mapLanguage && this.getLanguage() !== window.mapLanguage) {
+      window.location.reload();
+    };
     if (window.map ) {
       if (!document.getElementById("the-map")){
         this.element.appendChild(window.theContainer)
@@ -141,7 +143,9 @@ export default class extends Controller {
   }
 
   mapStyle() {
-    if (this.getLanguage() === "ja") return window.japaneseURL;
+    const language = this.getLanguage()
+    window.mapLanguage = language;
+    if (language === "ja") return window.japaneseURL;
     return window.englishURL;
   }
 
