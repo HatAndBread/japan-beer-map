@@ -66,7 +66,6 @@ export default class extends Controller {
     const search = document.querySelector(".mapboxgl-ctrl-geocoder");
     document.getElementById("tools-content").prepend(search);
     const geoJson = JSON.parse(this.geoJson());
-    this.___g = geoJson;
     const iconUrl = this.iconUrl();
     this.initialLoaderTarget.classList.add("hidden");
     map.on("load", () => {
@@ -163,7 +162,7 @@ export default class extends Controller {
         features: [],
       },
     };
-    this.___g.data.features.forEach((f) => {
+    JSON.parse(document.getElementById("geo-json").dataset.geoJson).data.features.forEach((f) => {
       const myTypes = Object.keys(f.properties)
         .map((p) => (f.properties[p] && legend[p] ? legend[p] : null))
         .filter((p) => p);
@@ -181,7 +180,7 @@ export default class extends Controller {
       .map((el) => el.dataset.type);
   }
   checkboxes() {
-    return Array.from(this.element.querySelectorAll("*")).filter(
+    return Array.from(document.getElementById("map-container").querySelectorAll("*")).filter(
       (el) => el.type === "checkbox"
     );
   }
