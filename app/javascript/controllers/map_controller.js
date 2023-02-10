@@ -30,8 +30,6 @@ export default class extends Controller {
       window.map.resize()
       return;
     };
-    if (window.location.pathname.match(/map/)) {
-    }
     const container = document.getElementById("the-map")
     window.theContainer = container;
     this.updateStyles();
@@ -92,7 +90,6 @@ export default class extends Controller {
           const { id, lng, lat } = e.features[0].properties;
           if (window.isTouch && (!window.lastTouchedPlace || window.lastTouchedPlace !== id)) {
             window.lastTouchedPlace = id;
-            console.log(e.features[0].properties)
             map.flyTo({center: [lng, lat] })
             this.closeTools();
             showPopup(e)
@@ -242,9 +239,9 @@ export default class extends Controller {
   }
 
   closeTools() {
-    this.toolsContainerTarget.classList.add("hidden");
-    this.toolsOpenerTarget.classList.remove("hidden");
-    this.toolsWrapperTarget.classList.add("!w-fit");
+    document.getElementById("tools-container").classList.add("hidden");
+    document.getElementById("tools-opener").classList.remove("hidden");
+    document.getElementById("tools-wrapper").classList.add("!w-fit");
   }
 
   openTools() {
