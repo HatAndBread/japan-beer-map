@@ -1,47 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import { distance } from "lib/distance";
 import debounce from "lodash.debounce";
-import { useUserLocation, getWatchId } from "lib/use-user-location";
+import { useUserLocation, getWatchId, maxBounds } from "lib/use-user-location";
+import {showPopup } from "lib/show-popup";
 import { fitMapToBounds } from "lib/fit-map-to-bounds";
 
 const startLngLat = [136.6503, 38.6762];
-const maxBounds = [
-  [121, 20], // Southwest coordinates
-  [154.74125158604622, 49.413834542307185], // Northeast coordinates
-];
-
-
-const showPopup = (e) => {
-  const features = window.map.queryRenderedFeatures(e.point);
-  if (features[0] && features[0].source === "point") {
-    const translate = window.translate;
-    const properties = features[0].properties;
-    const coordinates = { lng: properties.lng, lat: properties.lat };
-    markerDiv.dataset.id = properties.id;
-    marker.setLngLat(coordinates);
-    markerDiv.classList.remove("hidden");
-    markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
-    const types = document.createElement("pre");
-    types.className = "font-sans";
-    types.innerText = `${translate("brewery")}: ${
-      properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"
-    }\n${translate("bottle_shop")}: ${
-      properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"
-    }\n${translate("food")}: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`;
-    const instructions = document.createElement("div");
-    instructions.innerText = window.translate("click_for_info");
-    instructions.className = "text-sm text-gray-600";
-    markerDiv.appendChild(types);
-    markerDiv.appendChild(instructions);
-    markerDiv.appendChild(triangle);
-  }
-};
-
-const handleMouseMove = debounce((e) => {
-  if (window.isTouch) return;
-  showPopup(e);
-})
-
 export default class extends Controller {
   static targets = [
     "findMe",
@@ -125,18 +89,21 @@ export default class extends Controller {
         this.addPlaceLayer(geoJson);
 
         map.on("click", "points", (e) => {
-          const { id } = e.features[0].properties;
+          const { id, lng, lat } = e.features[0].properties;
           if (window.isTouch && (!window.lastTouchedPlace || window.lastTouchedPlace !== id)) {
             window.lastTouchedPlace = id;
+            console.log(e.features[0].properties)
+            map.flyTo({center: [lng, lat] })
+            this.closeTools();
             showPopup(e)
           } else if (window.isTouch && window.lastTouchedPlace === id) {
             document.getElementById("place-loader").classList.remove("hidden");
             document.getElementById(`place_${id}`).children[0].click();
             window.lastTouchedPlace = null;
           } else if (!window.isTouch) {
-            window.lastTouchedPlace = null;
             document.getElementById("place-loader").classList.remove("hidden");
             document.getElementById(`place_${id}`).children[0].click();
+            window.lastTouchedPlace = null;
           }
         });
         this.handleMouseOver();
@@ -258,6 +225,7 @@ export default class extends Controller {
   flyToUser() {
     if (!window.userLocation)
       throw new Error("Must create userLocation before calling flyToUser");
+    if (window.isTouch) this.closeTools();
     window.map.flyTo({
       center: window.userLocation,
       zoom: 14,
@@ -287,6 +255,7 @@ export default class extends Controller {
 
   nearestBeer() {
     const goToNearest = (closest) => {
+      if (window.isTouch) this.closeTools();
       window.map.flyTo({
         center: { lng: parseFloat(closest.lng), lat: parseFloat(closest.lat) },
         zoom: 18,
@@ -328,6 +297,12 @@ export default class extends Controller {
     window.triangle = triangle;
     window.markerDiv = markerDiv;
     window.marker = marker;
+
+    const handleMouseMove = debounce((e) => {
+      if (window.isTouch) return;
+      showPopup(e);
+    })
+
     map.on("mousemove", handleMouseMove);
 
     map.on("mouseleave", "points", () => {
