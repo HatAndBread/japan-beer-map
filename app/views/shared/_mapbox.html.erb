@@ -6,6 +6,7 @@
   mapboxgl.accessToken = "<%=ENV["MAPBOX_KEY"]%>"
   window.japaneseURL = "mapbox://styles/hatandbeard/clcn4yuyh000014nyxtgmilu7"
   window.englishURL = "mapbox://styles/hatandbeard/clco3a4v7001j15rqepdt67y1"
+
   window.getDirections = async (type, lng1, lat1, lng2, lat2) => {
     // types: driving-traffic, driving, walking, cycling
     const url = "https://api.mapbox.com/directions/v5/mapbox/" + type + "/" + lng1 + "," + lat1 + ";" + lng2 + "," + lat2 + "?geometries=geojson&access_token=<%= ENV["MAPBOX_KEY"] %>"

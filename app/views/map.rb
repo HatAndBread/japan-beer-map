@@ -35,9 +35,7 @@ module Views
           div { helpers.t("loading_map") }
         end
         div(id: "the-map", class: "#{map_only? ? "w-screen h-[calc(100vh_-_64px)]" : "w-[90vw] h-screen"} rounded overflow-hidden relative") do
-          if show_full_screen_button?
-            a(class: full_screen_button, href: helpers.map_path) { helpers.t("full_screen") }
-          end
+          a(class: full_screen_button, href: helpers.map_path, id: "fullscreen-btn") { helpers.t("full_screen") }
           render MapControls.new
           turbo_frame(id: "place_being_viewed", class: "relative transition h-0")
         end

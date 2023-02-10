@@ -22,8 +22,25 @@ export default class extends Controller {
   ];
   connect() {
     this.clearExistingGeolocationData();
+    if (window.map ) {
+      if (!document.getElementById("the-map")){
+        this.element.appendChild(window.theContainer)
+        this.updateStyles()
+      } else {
+        document.getElementById("the-map").replaceWith(window.theContainer)
+        this.updateStyles()
+      }
+      this.initialLoaderTarget.classList.add("hidden")
+      window.map.resize()
+      return;
+    };
+    if (window.location.pathname.match(/map/)) {
+    }
+    const container = document.getElementById("the-map")
+    window.theContainer = container;
+    this.updateStyles();
     const map = new mapboxgl.Map({
-      container: "the-map",
+      container,
       style: this.mapStyle(),
       center: startLngLat,
       zoom: 4,
@@ -83,6 +100,18 @@ export default class extends Controller {
         this.handleMouseOver();
       });
     });
+  }
+
+  updateStyles() {
+    if (window.location.pathname.match(/map/)) {
+      window.theContainer.querySelector("#fullscreen-btn").classList.remove("sm:block")
+      window.theContainer.classList.remove("w-[90vw]")
+      window.theContainer.classList.add("w-screen")
+    } else {
+      window.theContainer.querySelector("#fullscreen-btn").classList.add("sm:block")
+      window.theContainer.classList.add("w-[90vw]")
+      window.theContainer.classList.remove("w-screen")
+    }
   }
 
   disconnect() {

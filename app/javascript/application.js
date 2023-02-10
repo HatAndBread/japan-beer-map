@@ -6,6 +6,12 @@ import { translate } from "lib/translate";
 
 window.translate = translate;
 
+const touchListener = () => {
+  window.isTouch = true;
+  document.removeEventListener("touchstart", touchListener);
+}
+document.addEventListener("touchstart", touchListener);
+
 document.addEventListener("turbo:load", () => {
   // Each time turbo fires remove flashes if they exist
   ["the-notice", "the-alert"].forEach((notice) => {
