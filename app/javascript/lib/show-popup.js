@@ -22,5 +22,8 @@ export const showPopup = (e) => {
     markerDiv.appendChild(types);
     markerDiv.appendChild(instructions);
     markerDiv.appendChild(triangle);
+    if (Math.ceil(markerDiv.clientWidth) % 2) {
+      markerDiv.style.width = (Math.ceil(markerDiv.clientWidth) + 1) + 'px'
+    }
   }
 };
