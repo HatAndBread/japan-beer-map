@@ -10,6 +10,38 @@ const maxBounds = [
   [154.74125158604622, 49.413834542307185], // Northeast coordinates
 ];
 
+
+const showPopup = (e) => {
+  const features = window.map.queryRenderedFeatures(e.point);
+  if (features[0] && features[0].source === "point") {
+    const translate = window.translate;
+    const properties = features[0].properties;
+    const coordinates = { lng: properties.lng, lat: properties.lat };
+    markerDiv.dataset.id = properties.id;
+    marker.setLngLat(coordinates);
+    markerDiv.classList.remove("hidden");
+    markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
+    const types = document.createElement("pre");
+    types.className = "font-sans";
+    types.innerText = `${translate("brewery")}: ${
+      properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"
+    }\n${translate("bottle_shop")}: ${
+      properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"
+    }\n${translate("food")}: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`;
+    const instructions = document.createElement("div");
+    instructions.innerText = window.translate("click_for_info");
+    instructions.className = "text-sm text-gray-600";
+    markerDiv.appendChild(types);
+    markerDiv.appendChild(instructions);
+    markerDiv.appendChild(triangle);
+  }
+};
+
+const handleMouseMove = debounce((e) => {
+  if (window.isTouch) return;
+  showPopup(e);
+})
+
 export default class extends Controller {
   static targets = [
     "findMe",
@@ -96,6 +128,7 @@ export default class extends Controller {
           const { id } = e.features[0].properties;
           if (window.isTouch && (!window.lastTouchedPlace || window.lastTouchedPlace !== id)) {
             window.lastTouchedPlace = id;
+            showPopup(e)
           } else if (window.isTouch && window.lastTouchedPlace === id) {
             document.getElementById("place-loader").classList.remove("hidden");
             document.getElementById(`place_${id}`).children[0].click();
@@ -292,38 +325,9 @@ export default class extends Controller {
       "points",
       () => (map.getCanvas().style.cursor = "pointer")
     );
-    // const listener = () => {
-    //   document.getElementById("place-loader").classList.remove("hidden");
-    //   document
-    //     .getElementById(`place_${markerDiv.dataset.id}`)
-    //     .children[0].click();
-    // };
-    // markerDiv.addEventListener("touchend", listener);
-    const handleMouseMove = debounce((e) => {
-      const features = map.queryRenderedFeatures(e.point);
-      if (features[0] && features[0].source === "point") {
-        const translate = window.translate;
-        const properties = features[0].properties;
-        const coordinates = { lng: properties.lng, lat: properties.lat };
-        markerDiv.dataset.id = properties.id;
-        marker.setLngLat(coordinates);
-        markerDiv.classList.remove("hidden");
-        markerDiv.innerHTML = `<span class="underline font-semibold">${properties.name}</span>`;
-        const types = document.createElement("pre");
-        types.className = "font-sans";
-        types.innerText = `${translate("brewery")}: ${
-          properties.is_brewery ? "🙆‍♀️" : "🙅‍♀️"
-        }\n${translate("bottle_shop")}: ${
-          properties.is_shop ? "🙆‍♀️" : "🙅‍♀️"
-        }\n${translate("food")}: ${properties.has_food ? "🙆‍♀️" : "🙅‍♀️"}`;
-        const instructions = document.createElement("div");
-        instructions.innerText = window.translate("click_for_info");
-        instructions.className = "text-sm text-gray-600";
-        markerDiv.appendChild(types);
-        markerDiv.appendChild(instructions);
-        markerDiv.appendChild(triangle);
-      }
-    });
+    window.triangle = triangle;
+    window.markerDiv = markerDiv;
+    window.marker = marker;
     map.on("mousemove", handleMouseMove);
 
     map.on("mouseleave", "points", () => {
