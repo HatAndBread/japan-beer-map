@@ -8,9 +8,12 @@ window.translate = translate;
 
 const touchListener = () => {
   window.isTouch = true;
-  document.removeEventListener("touchstart", touchListener);
 }
 document.addEventListener("touchstart", touchListener);
+
+document.addEventListener("pointerup", (e) => {
+  if (e.pointerType !== "touch") window.isTouch = false;
+})
 
 document.addEventListener("turbo:load", () => {
   // Each time turbo fires remove flashes if they exist

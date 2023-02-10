@@ -94,8 +94,17 @@ export default class extends Controller {
 
         map.on("click", "points", (e) => {
           const { id } = e.features[0].properties;
-          document.getElementById("place-loader").classList.remove("hidden");
-          document.getElementById(`place_${id}`).children[0].click();
+          if (window.isTouch && (!window.lastTouchedPlace || window.lastTouchedPlace !== id)) {
+            window.lastTouchedPlace = id;
+          } else if (window.isTouch && window.lastTouchedPlace === id) {
+            document.getElementById("place-loader").classList.remove("hidden");
+            document.getElementById(`place_${id}`).children[0].click();
+            window.lastTouchedPlace = null;
+          } else if (!window.isTouch) {
+            window.lastTouchedPlace = null;
+            document.getElementById("place-loader").classList.remove("hidden");
+            document.getElementById(`place_${id}`).children[0].click();
+          }
         });
         this.handleMouseOver();
       });
